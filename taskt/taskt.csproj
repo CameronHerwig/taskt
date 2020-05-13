@@ -563,7 +563,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\Utilities\CodeAssistedTextBox.cs">
+    <Compile Include="UI\Utilities\CodeAssistListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="UI\CustomControls\CommandGroupControl.resx">

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using taskt.Core;
+using taskt.UI.Utilities;
 
 namespace taskt.UI.CustomControls
 {
@@ -103,6 +104,16 @@ namespace taskt.UI.CustomControls
             }
 
             inputBox.Name = parameterName;
+
+            inputBox.KeyUp += (sender, e) =>
+            {
+                List<string> varList = CurrentEditor.scriptVariables.Select(f => f.VariableName).ToList();
+                varList.AddRange(Core.Common.GenerateSystemVariables().Select(f => f.VariableName));
+                //Need to retrieve CodeAssistList from rendered controls
+                
+                CodeAssistListBox codeAssistList = (CodeAssistListBox)parent.RenderedControls.Find(control => control is CodeAssistListBox);
+                codeAssistList.DisplayCodeAssistList(inputBox, varList, e);
+            };
             return inputBox;
 
         }
@@ -779,6 +790,7 @@ public class AutomationCommand
             {
    
                 var renderedControls = Command.Render(editorForm);
+                renderedControls.Add(new CodeAssistListBox());
 
                 if (renderedControls.Count == 0)
                 {
