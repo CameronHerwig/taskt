@@ -12,7 +12,7 @@ namespace taskt.Core
     public static class ExtensionMethods
     {
         /// <summary>
-        /// Replaces variable placeholders ([variable]) with variable text.
+        /// Replaces variable placeholders ({variable}) with variable text.
         /// </summary>
         /// <param name="sender">The script engine instance (frmScriptEngine) which contains session variables.</param>
         public static string ConvertToUserVariable(this String str, object sender)
