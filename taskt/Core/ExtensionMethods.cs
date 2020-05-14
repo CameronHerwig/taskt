@@ -110,7 +110,7 @@ namespace taskt.Core
                                 else
                                 {
                                     //attempt to match object based on user defined pattern
-                                    JObject parsedObject = JObject.Parse(complexJson);        
+                                    JObject parsedObject = JObject.Parse(complexJson);
                                     match = parsedObject.SelectToken(jsonPattern);
                                 }
 
@@ -191,7 +191,7 @@ namespace taskt.Core
 
 
                         }
-                        else if (potentialVariable.Split('.').Length == 2) // This handles vVariable.count 
+                        else if (potentialVariable.Split('.').Length == 2) // This handles vVariable.count
                         {
                             string propertyName = potentialVariable.Split('.')[1];
                             str = str.Replace(searchVariable, (string)varCheck.GetDisplayValue(propertyName));
@@ -211,7 +211,7 @@ namespace taskt.Core
                         {
 
                         }
-                       
+
                     }
                 }
 
@@ -249,8 +249,6 @@ namespace taskt.Core
                     }
 
                 }
-
-
             }
 
 
@@ -277,7 +275,7 @@ namespace taskt.Core
 
                 //bypass math for types that are dates
                 DateTime dateTest;
-                if ((DateTime.TryParse(str, out dateTest) && (str.Length > 6)))
+                if (DateTime.TryParse(str, out dateTest) && (str.Length > 6))
                 {
                     return str;
                 }
