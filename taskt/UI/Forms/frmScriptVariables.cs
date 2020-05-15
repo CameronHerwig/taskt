@@ -27,8 +27,9 @@ namespace taskt.UI.Forms
     {
         public List<Core.Script.ScriptVariable> scriptVariables { get; set; }
         TreeNode userVariableParentNode;
-        public string leadingValue = "Default Value: ";
-        public string emptyValue = "(no default value)";
+        private string leadingValue = "Default Value: ";
+        private string emptyValue = "(no default value)";
+        private string typeLeadingValue = "Type: ";
         #region Initialization and Form Load
 
         public frmScriptVariables()
@@ -51,7 +52,7 @@ namespace taskt.UI.Forms
             //add each item to parent
             foreach (var item in variables)
             {
-                AddUserVariableNode(parentNode, item.VariableName, (string)item.VariableValue);
+                AddUserVariableNode(parentNode, item.VariableName, (string)item.VariableValue, item.VariableType.ToString());
             }
 
             //add parent to treeview
@@ -66,7 +67,6 @@ namespace taskt.UI.Forms
         #region Add/Cancel Buttons
         private void uiBtnOK_Click(object sender, EventArgs e)
         {
-
             //remove all variables
             scriptVariables.Clear();
 
@@ -74,12 +74,18 @@ namespace taskt.UI.Forms
             for (int i = 0; i < userVariableParentNode.Nodes.Count; i++)
             {
                 //get name and value
-                var VariableName = userVariableParentNode.Nodes[i].Text;
-                var VariableValue = userVariableParentNode.Nodes[i].Nodes[0].Text.Replace(leadingValue, "").Replace(emptyValue, "");
+                var variableName = userVariableParentNode.Nodes[i].Text;
+                var variableValue = userVariableParentNode.Nodes[i].Nodes[0].Text.Replace(leadingValue, "").Replace(emptyValue, "");
+                string variableType = userVariableParentNode.Nodes[i].Nodes[1].Text.Replace(typeLeadingValue, "").Replace(emptyValue, "");
 
                 //add to list
-                scriptVariables.Add(new Core.Script.ScriptVariable() { VariableName = VariableName, VariableValue = VariableValue });
-        
+                scriptVariables.Add(new Core.Script.ScriptVariable()
+                {
+                    VariableName = variableName,
+                    VariableValue = variableValue,
+                    VariableType = Type.GetType(variableType)
+                });
+
 
             }
 
@@ -107,13 +113,18 @@ namespace taskt.UI.Forms
             if (addVariableForm.ShowDialog() == DialogResult.OK)
             {
                 //add newly edited node
-                AddUserVariableNode(userVariableParentNode, addVariableForm.txtVariableName.Text, addVariableForm.txtDefaultValue.Text);
+                AddUserVariableNode(
+                    userVariableParentNode,
+                    addVariableForm.txtVariableName.Text,
+                    addVariableForm.txtDefaultValue.Text,
+                    addVariableForm.txtVariableType.Text
+                    );
             }
 
 
         }
 
-        
+
 
         private void tvScriptVariables_DoubleClick(object sender, EventArgs e)
         {
@@ -139,23 +150,25 @@ namespace taskt.UI.Forms
                 return;
             }
 
-            string VariableName, VariableValue;
+            string variableName, variableValue, variableType;
             TreeNode parentNode;
             if(tvScriptVariables.SelectedNode.Nodes.Count == 0)
             {
                 parentNode = tvScriptVariables.SelectedNode.Parent;
-                VariableName = tvScriptVariables.SelectedNode.Parent.Text;
-                VariableValue = tvScriptVariables.SelectedNode.Text.Replace(leadingValue, "").Replace(emptyValue, "");
+                variableName = tvScriptVariables.SelectedNode.Parent.Text;
+                variableValue = tvScriptVariables.SelectedNode.Text.Replace(leadingValue, "").Replace(emptyValue, "");
+                variableType = tvScriptVariables.SelectedNode.Text.Replace(typeLeadingValue, "").Replace(emptyValue, "");
             }
             else
             {
                 parentNode = tvScriptVariables.SelectedNode;
-                VariableName = tvScriptVariables.SelectedNode.Text;
-                VariableValue = tvScriptVariables.SelectedNode.Nodes[0].Text.Replace(leadingValue, "").Replace(emptyValue, "");
+                variableName = tvScriptVariables.SelectedNode.Text;
+                variableValue = tvScriptVariables.SelectedNode.Nodes[0].Text.Replace(leadingValue, "").Replace(emptyValue, "");
+                variableType = tvScriptVariables.SelectedNode.Nodes[1].Text.Replace(typeLeadingValue, "").Replace(emptyValue, "");
             }
 
             //create variable editing form
-            Supplement_Forms.frmAddVariable addVariableForm = new Supplement_Forms.frmAddVariable(VariableName, VariableValue);
+            Supplement_Forms.frmAddVariable addVariableForm = new Supplement_Forms.frmAddVariable(variableName, variableValue, variableType);
             ExpandUserVariableNode();
 
             //validate if user added variable
@@ -165,14 +178,19 @@ namespace taskt.UI.Forms
                 parentNode.Remove();
 
                 //add newly edited node
-                AddUserVariableNode(userVariableParentNode, addVariableForm.txtVariableName.Text, addVariableForm.txtDefaultValue.Text);
+                AddUserVariableNode(
+                    userVariableParentNode,
+                    addVariableForm.txtVariableName.Text,
+                    addVariableForm.txtDefaultValue.Text,
+                    addVariableForm.txtVariableType.Text
+                    );
             }
 
         }
-        private void AddUserVariableNode(TreeNode parentNode, string VariableName, string variableText)
+        private void AddUserVariableNode(TreeNode parentNode, string variableName, string variableText, string variableType)
         {
             //add new node and sort
-            var childNode = new TreeNode(VariableName);
+            var childNode = new TreeNode(variableName);
 
             if (variableText == string.Empty)
             {
@@ -180,6 +198,7 @@ namespace taskt.UI.Forms
             }
 
             childNode.Nodes.Add(leadingValue + variableText);
+            childNode.Nodes.Add(typeLeadingValue + variableType);
             parentNode.Nodes.Add(childNode);
             tvScriptVariables.Sort();
             ExpandUserVariableNode();
@@ -195,7 +214,7 @@ namespace taskt.UI.Forms
         }
 
 
- 
+
         private void tvScriptVariables_KeyDown(object sender, KeyEventArgs e)
         {
             //handling outside
