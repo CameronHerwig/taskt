@@ -42,7 +42,7 @@ namespace taskt.UI.Forms
         private List<Core.Script.ScriptVariable> scriptVariables;
         private List<taskt.UI.CustomControls.AutomationCommand> automationCommands { get; set; }
         bool editMode { get; set; }
-        private ImageList uiImages; 
+        private ImageList uiImages;
         public Core.ApplicationSettings appSettings;
         private List<List<ListViewItem>> undoList;
         private DateTime lastAntiIdleEvent;
@@ -114,7 +114,7 @@ namespace taskt.UI.Forms
             appSettings = appSettings.GetOrCreateApplicationSettings();
 
             if (appSettings.ServerSettings.ServerConnectionEnabled && appSettings.ServerSettings.HTTPGuid == Guid.Empty)
-            {              
+            {
                 Core.Server.HttpServerClient.GetGuid();
             }
             else if (appSettings.ServerSettings.ServerConnectionEnabled && appSettings.ServerSettings.HTTPGuid != Guid.Empty)
@@ -210,7 +210,7 @@ namespace taskt.UI.Forms
                     {
                         subNode.ForeColor = Color.Red;
                     }
-                    
+
 
                     newGroup.Nodes.Add(subNode);
                 }
@@ -491,7 +491,7 @@ namespace taskt.UI.Forms
                 lstScriptActions_DoubleClick(null, null);
             }
             else if ((e.Control) && (e.KeyCode == Keys.X))
-            {     
+            {
                 CutRows();
             }
             else if ((e.Control) && (e.KeyCode == Keys.C))
@@ -499,7 +499,7 @@ namespace taskt.UI.Forms
                 CopyRows();
             }
             else if ((e.Control) && (e.KeyCode == Keys.V))
-            {        
+            {
                 PasteRows();
             }
             else if ((e.Control) && (e.KeyCode == Keys.Z))
@@ -531,7 +531,7 @@ namespace taskt.UI.Forms
         private void CutRows()
         {
 
-            //initialize list of items to copy   
+            //initialize list of items to copy
             if (rowsSelectedForCopy == null)
             {
                 rowsSelectedForCopy = new List<ListViewItem>();
@@ -541,7 +541,7 @@ namespace taskt.UI.Forms
                 rowsSelectedForCopy.Clear();
             }
 
-            //copy into list for all selected            
+            //copy into list for all selected
             if (lstScriptActions.SelectedItems.Count >= 1)
             {
                 foreach (ListViewItem item in lstScriptActions.SelectedItems)
@@ -557,7 +557,7 @@ namespace taskt.UI.Forms
         private void CopyRows()
         {
 
-            //initialize list of items to copy   
+            //initialize list of items to copy
             if (rowsSelectedForCopy == null)
             {
                 rowsSelectedForCopy = new List<ListViewItem>();
@@ -567,7 +567,7 @@ namespace taskt.UI.Forms
                 rowsSelectedForCopy.Clear();
             }
 
-            //copy into list for all selected            
+            //copy into list for all selected
             if (lstScriptActions.SelectedItems.Count >= 1)
             {
                 foreach (ListViewItem item in lstScriptActions.SelectedItems)
@@ -593,13 +593,13 @@ namespace taskt.UI.Forms
                 }
 
                 int destinationIndex = lstScriptActions.SelectedItems[0].Index + 1;
-                
+
                 foreach (ListViewItem item in rowsSelectedForCopy)
                 {
                     Core.Automation.Commands.ScriptCommand duplicatedCommand = (Core.Automation.Commands.ScriptCommand)Core.Common.Clone(item.Tag);
                     duplicatedCommand.GenerateID();
                     lstScriptActions.Items.Insert(destinationIndex, CreateScriptCommandListViewItem(duplicatedCommand));
-                    destinationIndex += 1;                  
+                    destinationIndex += 1;
                 }
 
                 lstScriptActions.Invalidate();
@@ -607,7 +607,7 @@ namespace taskt.UI.Forms
                 Notify(rowsSelectedForCopy.Count + " item(s) pasted!");
             }
 
-         
+
 
         }
 
@@ -770,7 +770,7 @@ namespace taskt.UI.Forms
 
                 }
 
-             
+
 
             }
             else
@@ -884,7 +884,7 @@ namespace taskt.UI.Forms
             if ((appSettings.ClientSettings.InsertCommandsInline) && (lstScriptActions.SelectedItems.Count > 0))
             {
                 //insert inline
-                insertionIndex = lstScriptActions.SelectedItems[0].Index + 1;            
+                insertionIndex = lstScriptActions.SelectedItems[0].Index + 1;
             }
 
 
@@ -910,7 +910,7 @@ namespace taskt.UI.Forms
                 lstScriptActions.Items.Insert(insertionIndex + 4, CreateScriptCommandListViewItem(new Core.Automation.Commands.EndTryCommand()));
             }
 
-           
+
 
             CreateUndoSnapshot();
 
@@ -1101,7 +1101,7 @@ namespace taskt.UI.Forms
                     {
                         //log exception?
                     }
-  
+
                 }
 
                 lstScriptActions.Invalidate();
@@ -1111,7 +1111,7 @@ namespace taskt.UI.Forms
         }
         private void lstScriptActions_MouseClick(object sender, MouseEventArgs e)
         {
-       
+
             if (e.Button == MouseButtons.Right)
             {
                 if (lstScriptActions.FocusedItem.Bounds.Contains(e.Location) == true)
@@ -1344,7 +1344,7 @@ namespace taskt.UI.Forms
                 PopulateExecutionCommands(deserializedScript.Commands);
 
                 //format listview
-               
+
 
                 //notify
                 Notify("Script Loaded Successfully!");
@@ -1382,7 +1382,7 @@ namespace taskt.UI.Forms
 
             try
             {
-                //deserialize file      
+                //deserialize file
                 Core.Script.Script deserializedScript = Core.Script.Script.DeserializeFile(filePath);
 
                 if (deserializedScript.Commands.Count == 0)
@@ -1412,7 +1412,7 @@ namespace taskt.UI.Forms
 
 
                 //format listview
-     
+
 
                 //notify
                 Notify("Script Imported Successfully!");
@@ -1433,7 +1433,7 @@ namespace taskt.UI.Forms
 
         public void PopulateExecutionCommands(List<Core.Script.ScriptAction> commandDetails)
         {
-            
+
 
             foreach (Core.Script.ScriptAction item in commandDetails)
             {
@@ -1665,7 +1665,7 @@ namespace taskt.UI.Forms
 
             newEngine.callBackForm = this;
             newEngine.Show();
-           
+
         }
 
         private void uiBtnNew_Click(object sender, EventArgs e)
@@ -1815,7 +1815,7 @@ namespace taskt.UI.Forms
         private void txtCommandSearch_TextChanged(object sender, EventArgs e)
         {
 
-   
+
 
             if (lstScriptActions.Items.Count == 0)
                 return;
@@ -1918,7 +1918,7 @@ namespace taskt.UI.Forms
                 itm.BackColor = Color.LightGoldenrodYellow;
             }
 
-           
+
 
             currentIndex = matchingItems[reqdIndex].Index;
 
@@ -1979,7 +1979,7 @@ namespace taskt.UI.Forms
             {
                 commandList.Reverse();
             }
-         
+
             //add to parent
             commandList.ForEach(x => parentBuilder.AddCommandToListView(x));
 
@@ -1994,7 +1994,7 @@ namespace taskt.UI.Forms
         private void frmScriptBuilder_Resize(object sender, EventArgs e)
         {
             //check when minimized
-          
+
             if ((this.WindowState == FormWindowState.Minimized) && (appSettings.ClientSettings.MinimizeToTray))
             {
                 appSettings = new Core.ApplicationSettings().GetOrCreateApplicationSettings();
@@ -2003,7 +2003,7 @@ namespace taskt.UI.Forms
                     notifyTray.Visible = true;
                     notifyTray.ShowBalloonTip(3000);
                     this.ShowInTaskbar = false;
-                }        
+                }
             }
 
             pnlMain.Invalidate();
@@ -2017,7 +2017,7 @@ namespace taskt.UI.Forms
                 this.WindowState = FormWindowState.Normal;
                 this.ShowInTaskbar = true;
                 notifyTray.Visible = false;
-            }        
+            }
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2189,12 +2189,11 @@ namespace taskt.UI.Forms
                 notifyTray.Visible = false;
                 notifyTray.Dispose();
             }
-                              
         }
 
         private void viewCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-         
+
             var currentCommand = lstScriptActions.SelectedItems[0].Tag;
 
             var jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(currentCommand, new Newtonsoft.Json.JsonSerializerSettings() { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All });

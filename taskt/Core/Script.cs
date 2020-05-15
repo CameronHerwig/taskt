@@ -220,6 +220,12 @@ namespace taskt.Core.Script
         /// <summary>
         /// retrieve value of the variable
         /// </summary>
+
+        /// <summary>
+        /// Type of the variable
+        /// 
+        /// </summary>
+        public Type VariableType { get; set; } = typeof(string);
         public string GetDisplayValue(string requiredProperty = "")
         {
            
