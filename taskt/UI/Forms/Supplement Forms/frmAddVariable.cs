@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace taskt.UI.Forms.Supplement_Forms
@@ -17,13 +10,14 @@ namespace taskt.UI.Forms.Supplement_Forms
             InitializeComponent();
         }
 
-        public frmAddVariable(string VariableName, string variableValue)
+        public frmAddVariable(string VariableName, string variableValue, string variableType)
         {
             InitializeComponent();
             this.Text = "edit variable";
             lblHeader.Text = "edit variable";
             txtVariableName.Text = VariableName;
             txtDefaultValue.Text = variableValue;
+            txtVariableType.Text = variableType;
         }
 
         private void frmAddVariable_Load(object sender, EventArgs e)
@@ -44,6 +38,11 @@ namespace taskt.UI.Forms.Supplement_Forms
         private void uiBtnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void txtVariableType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

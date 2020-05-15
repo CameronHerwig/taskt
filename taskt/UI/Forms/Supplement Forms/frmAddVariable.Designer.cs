@@ -38,6 +38,7 @@
             this.lblDefineDefaultValue = new System.Windows.Forms.Label();
             this.uiBtnOk = new taskt.UI.CustomControls.UIPictureButton();
             this.uiBtnCancel = new taskt.UI.CustomControls.UIPictureButton();
+            this.txtVariableType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnOk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnCancel)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +51,7 @@
             this.lblDefineName.ForeColor = System.Drawing.Color.White;
             this.lblDefineName.Location = new System.Drawing.Point(10, 48);
             this.lblDefineName.Name = "lblDefineName";
-            this.lblDefineName.Size = new System.Drawing.Size(167, 21);
+            this.lblDefineName.Size = new System.Drawing.Size(210, 28);
             this.lblDefineName.TabIndex = 15;
             this.lblDefineName.Text = "Define Variable Name";
             // 
@@ -62,7 +63,7 @@
             this.lblHeader.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblHeader.Location = new System.Drawing.Point(6, 3);
             this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(186, 45);
+            this.lblHeader.Size = new System.Drawing.Size(234, 54);
             this.lblHeader.TabIndex = 14;
             this.lblHeader.Text = "add variable";
             // 
@@ -72,7 +73,7 @@
             this.txtVariableName.ForeColor = System.Drawing.Color.SteelBlue;
             this.txtVariableName.Location = new System.Drawing.Point(16, 136);
             this.txtVariableName.Name = "txtVariableName";
-            this.txtVariableName.Size = new System.Drawing.Size(279, 27);
+            this.txtVariableName.Size = new System.Drawing.Size(279, 32);
             this.txtVariableName.TabIndex = 16;
             // 
             // lblDefineNameDescription
@@ -105,7 +106,7 @@
             this.txtDefaultValue.ForeColor = System.Drawing.Color.SteelBlue;
             this.txtDefaultValue.Location = new System.Drawing.Point(16, 259);
             this.txtDefaultValue.Name = "txtDefaultValue";
-            this.txtDefaultValue.Size = new System.Drawing.Size(279, 27);
+            this.txtDefaultValue.Size = new System.Drawing.Size(279, 32);
             this.txtDefaultValue.TabIndex = 19;
             // 
             // lblDefineDefaultValue
@@ -116,7 +117,7 @@
             this.lblDefineDefaultValue.ForeColor = System.Drawing.Color.White;
             this.lblDefineDefaultValue.Location = new System.Drawing.Point(12, 171);
             this.lblDefineDefaultValue.Name = "lblDefineDefaultValue";
-            this.lblDefineDefaultValue.Size = new System.Drawing.Size(220, 21);
+            this.lblDefineDefaultValue.Size = new System.Drawing.Size(278, 28);
             this.lblDefineDefaultValue.TabIndex = 18;
             this.lblDefineDefaultValue.Text = "Define Variable Default Value";
             // 
@@ -135,6 +136,7 @@
             this.uiBtnOk.Size = new System.Drawing.Size(53, 49);
             this.uiBtnOk.TabIndex = 21;
             this.uiBtnOk.TabStop = false;
+            this.uiBtnOk.Text = "Ok";
             this.uiBtnOk.Click += new System.EventHandler(this.uiBtnOk_Click);
             // 
             // uiBtnCancel
@@ -152,13 +154,30 @@
             this.uiBtnCancel.Size = new System.Drawing.Size(53, 49);
             this.uiBtnCancel.TabIndex = 22;
             this.uiBtnCancel.TabStop = false;
+            this.uiBtnCancel.Text = "Cancel";
             this.uiBtnCancel.Click += new System.EventHandler(this.uiBtnCancel_Click);
+            // 
+            // txtVariableType
+            // 
+            this.txtVariableType.FormattingEnabled = true;
+            this.txtVariableType.Items.AddRange(new object[] {
+            "System.String",
+            "System.Int32",
+            "System.Boolean",
+            "System.Object"});
+            this.txtVariableType.Location = new System.Drawing.Point(300, 136);
+            this.txtVariableType.Margin = new System.Windows.Forms.Padding(2);
+            this.txtVariableType.Name = "txtVariableType";
+            this.txtVariableType.Size = new System.Drawing.Size(154, 21);
+            this.txtVariableType.TabIndex = 23;
+            this.txtVariableType.SelectedIndexChanged += new System.EventHandler(this.txtVariableType_SelectedIndexChanged);
             // 
             // frmAddVariable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(465, 349);
+            this.Controls.Add(this.txtVariableType);
             this.Controls.Add(this.uiBtnOk);
             this.Controls.Add(this.uiBtnCancel);
             this.Controls.Add(this.lblDefineDefaultValueDescriptor);
@@ -169,6 +188,7 @@
             this.Controls.Add(this.lblDefineName);
             this.Controls.Add(this.lblHeader);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmAddVariable";
             this.Text = "Add Variable";
             this.Load += new System.EventHandler(this.frmAddVariable_Load);
@@ -190,5 +210,6 @@
         private CustomControls.UIPictureButton uiBtnCancel;
         public System.Windows.Forms.TextBox txtVariableName;
         public System.Windows.Forms.TextBox txtDefaultValue;
+        public System.Windows.Forms.ComboBox txtVariableType;
     }
 }
