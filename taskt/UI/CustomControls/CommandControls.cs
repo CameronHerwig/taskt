@@ -161,6 +161,7 @@ namespace taskt.UI.CustomControls
             inputBox.Height = 30;
             inputBox.Width = 300;
             inputBox.Name = parameterName;
+            
 
             var variableProperties = parent.GetType().GetProperties().Where(f => f.Name == parameterName).FirstOrDefault();
             var propertyAttributesAssigned = variableProperties.GetCustomAttributes(typeof(PropertyUISelectionOption), true);
@@ -169,6 +170,9 @@ namespace taskt.UI.CustomControls
             {
                 inputBox.Items.Add(option.UIOption);
             }
+
+            inputBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            
 
             return inputBox;
         }

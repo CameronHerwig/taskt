@@ -234,6 +234,7 @@ namespace taskt.Core.Automation.Commands
                     returnComboBox.Items.Add("Yes");
                     returnComboBox.Items.Add("No");
                     _assignmentsGridViewHelper.Rows[i].Cells[2] = returnComboBox;
+                    _assignmentsGridViewHelper.Rows[i].Cells[2].Value = "No";
                 }
             }
         }
