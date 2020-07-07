@@ -55,6 +55,9 @@ namespace taskt.Core.Automation.Commands
         [NonSerialized]
         private DataGridView _assignmentsGridViewHelper;
 
+        [XmlIgnore]
+        public frmScriptEngine NewEngine { get; set; }
+
         public RunTaskCommand()
         {
             CommandName = "RunTaskCommand";
@@ -117,17 +120,17 @@ namespace taskt.Core.Automation.Commands
                 }
             }
 
-            frmScriptEngine newEngine = new frmScriptEngine(startFile, null, variableList, true);
+            NewEngine = new frmScriptEngine(startFile, null, variableList, true);
 
             //Core.Automation.Engine.AutomationEngineInstance currentScriptEngine = (Core.Automation.Engine.AutomationEngineInstance) sender;
             currentScriptEngine.TasktEngineUI.Invoke((Action)delegate() 
             { 
                 currentScriptEngine.TasktEngineUI.TopMost = false; 
             });
-            Application.Run(newEngine);
+            Application.Run(NewEngine);
 
             //get new variable list from the new task engine after it finishes running
-            var newVariableList = newEngine.EngineInstance.VariableList;
+            var newVariableList = NewEngine.EngineInstance.VariableList;
             foreach (var variable in variableReturnList)
             {
                 //check if the variables we wish to return are in the new variable list
@@ -148,7 +151,7 @@ namespace taskt.Core.Automation.Commands
             }
 
             //get errors from new engine (if any)
-            var newEngineErrors = newEngine.EngineInstance.ErrorsOccured;
+            var newEngineErrors = NewEngine.EngineInstance.ErrorsOccured;
             if (newEngineErrors.Count > 0)
             {
                 currentScriptEngine.ChildScriptFailed = true;

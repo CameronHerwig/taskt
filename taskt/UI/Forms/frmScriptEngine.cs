@@ -495,8 +495,10 @@ namespace taskt.UI.Forms
             if (uiBtnPause.DisplayText == "Pause")
             {
                 lstSteppingCommands.Items.Add("[User Requested Pause]");
-                uiBtnPause.Image = Properties.Resources.action_bar_run;
+                uiBtnPause.Image = Properties.Resources.command_resume;
                 uiBtnPause.DisplayText = "Resume";
+                uiBtnStepOver.Visible = true;
+                uiBtnStepInto.Visible = true;
                 EngineInstance.PauseScript();
             }
             else
@@ -504,10 +506,22 @@ namespace taskt.UI.Forms
                 lstSteppingCommands.Items.Add("[User Requested Resume]");
                 uiBtnPause.Image = Properties.Resources.command_pause;
                 uiBtnPause.DisplayText = "Pause";
+                uiBtnStepOver.Visible = false;
+                uiBtnStepInto.Visible = false;
                 EngineInstance.ResumeScript();
             }
 
             lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
+        }
+
+        private void uiBtnStepOver_Click(object sender, EventArgs e)
+        {
+            EngineInstance.StepOverScript();
+        }
+
+        private void uiBtnStepInto_Click(object sender, EventArgs e)
+        {
+            EngineInstance.StepIntoScript();
         }
 
         private void pbBotIcon_Click(object sender, EventArgs e)
@@ -521,6 +535,8 @@ namespace taskt.UI.Forms
         {
             MessageBox.Show(lstSteppingCommands.SelectedItem.ToString(), "Item Status");
         }
+
         #endregion UI Elements
+
     }
 }

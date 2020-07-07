@@ -33,6 +33,8 @@ namespace taskt.Core.Automation.Engine
         public bool CurrentLoopCancelled { get; set; }
         public bool CurrentLoopContinuing { get; set; }
         private bool _isScriptPaused { get; set; }
+        private bool _isScriptSteppedOver { get; set; }
+        private bool _isScriptSteppedInto { get; set; }
         [JsonIgnore]
         public frmScriptEngine TasktEngineUI { get; set; }
         private Stopwatch _stopWatch { get; set; }
@@ -127,7 +129,7 @@ namespace taskt.Core.Automation.Engine
                 _currentStatus = EngineStatus.Running;
 
                 //create stopwatch for metrics tracking
-                _stopWatch = new System.Diagnostics.Stopwatch();
+                _stopWatch = new Stopwatch();
                 _stopWatch.Start();
 
                 //log starting
@@ -241,12 +243,25 @@ namespace taskt.Core.Automation.Engine
                 if (isFirstWait)
                 {
                     _currentStatus = EngineStatus.Paused;
-                    ReportProgress("Paused at Line " + parentCommand.LineNumber + " - " + parentCommand.GetDisplayValue());
                     ReportProgress("Paused on Line " + parentCommand.LineNumber + ": " + parentCommand.GetDisplayValue());
                     ReportProgress("[Please select 'Resume' when ready]");
                     isFirstWait = false;
                 }
 
+                if (_isScriptSteppedInto && parentCommand is RunTaskCommand)
+                {
+                    ((RunTaskCommand)parentCommand).NewEngine.EngineInstance.PauseScript();
+                    _isScriptSteppedInto = false;
+                    break;
+                }
+                else if (_isScriptSteppedOver || _isScriptSteppedInto)
+                {
+                    _isScriptSteppedOver = false;
+                    _isScriptSteppedInto = false;
+                    break;
+                }
+
+               
                 //wait
                 Thread.Sleep(2000);
             }
@@ -461,6 +476,16 @@ namespace taskt.Core.Automation.Engine
         public void ResumeScript()
         {
             _isScriptPaused = false;
+        }
+
+        public void StepOverScript()
+        {
+            _isScriptSteppedOver = true;
+        }
+
+        public void StepIntoScript()
+        {
+            _isScriptSteppedInto = true;
         }
 
         public virtual void ReportProgress(string progress)
