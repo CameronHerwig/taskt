@@ -53,7 +53,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 //Create new main script
                 uiScriptTabControl.TabPages.Clear();
 
-                string mainScriptPath = Path.Combine(_scriptProjectPath, "Main.xml");
+                string mainScriptPath = Path.Combine(_scriptProjectPath, "Main.json");
                 string mainScriptName = Path.GetFileNameWithoutExtension(mainScriptPath);
 
                 TabPage newTabPage = new TabPage(mainScriptName);
@@ -458,7 +458,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             try
             {
                 string selectedNodePath = tvProject.SelectedNode.Tag.ToString();
-                string newFilePath = Path.Combine(selectedNodePath, "New Script.xml");
+                string newFilePath = Path.Combine(selectedNodePath, "New Script.json");
                 UIListView newScriptActions = NewLstScriptActions();
                 List<ScriptVariable> newScripVariables = new List<ScriptVariable>();
                 var helloWorldCommand = new ShowMessageCommand();
@@ -479,7 +479,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     {
                         string newDirectoryPath = Path.GetDirectoryName(newFilePath);
                         string newFileNameWithoutExtension = Path.GetFileNameWithoutExtension(newFilePath);
-                        newerFilePath = Path.Combine(newDirectoryPath, $"{newFileNameWithoutExtension} ({count}).xml");
+                        newerFilePath = Path.Combine(newDirectoryPath, $"{newFileNameWithoutExtension} ({count}).json");
                         count += 1;
                     }
                     Script.SerializeScript(newScriptActions.Items, newScripVariables, newerFilePath, _scriptProject.ProjectName);
