@@ -15,8 +15,6 @@ using taskt.UI.Forms.Supplement_Forms;
 
 namespace taskt.UI.Forms.ScriptBuilder_Forms
 {
-    using System.Windows.Forms.VisualStyles;
-
     public partial class frmScriptBuilder : Form
     {
         #region ListView Events
@@ -592,8 +590,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         //debugging coloring
                         commandNameBrush = Brushes.White;
                         commandBackgroundBrush = Brushes.OrangeRed;
+                        if (uiPaneTabs.TabPages.Count == 3)
+                            LoadDebugTab(uiPaneTabs.TabPages[2]);
                         //if (uiPaneTabs.TabCount > 2)
-                            //uiPaneTabs.TabPages.RemoveAt(2);
+                        //uiPaneTabs.TabPages.RemoveAt(2);
                     }
                     else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExeucution)
                     {

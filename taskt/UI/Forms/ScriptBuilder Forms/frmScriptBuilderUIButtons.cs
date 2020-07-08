@@ -673,15 +673,15 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void stepOverToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _newEngine.uiBtnStepOver_Click(sender, e);
-            if (uiPaneTabs.TabPages.Count == 3)
+            //if (uiPaneTabs.TabPages.Count == 3)
                 LoadDebugTab(uiPaneTabs.TabPages[2]);
         }
 
         private void stepIntoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _newEngine.uiBtnStepInto_Click(sender, e);
-            if (uiPaneTabs.TabPages.Count == 3)
-                LoadDebugTab(uiPaneTabs.TabPages[2]);
+            //if (uiPaneTabs.TabPages.Count == 3)
+                //LoadDebugTab(uiPaneTabs.TabPages[2]);
         }
 
         private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
