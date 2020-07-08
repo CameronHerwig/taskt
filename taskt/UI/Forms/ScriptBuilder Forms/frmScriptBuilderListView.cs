@@ -10,11 +10,14 @@ using taskt.Core.Automation.Commands;
 using taskt.Core.Script;
 using taskt.Properties;
 using taskt.UI.CustomControls;
+using taskt.UI.CustomControls.CustomUIControls;
 using taskt.UI.DTOs;
 using taskt.UI.Forms.Supplement_Forms;
 
 namespace taskt.UI.Forms.ScriptBuilder_Forms
 {
+    using System.Windows.Forms.VisualStyles;
+
     public partial class frmScriptBuilder : Form
     {
         #region ListView Events

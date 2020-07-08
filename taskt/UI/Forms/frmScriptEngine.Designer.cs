@@ -242,8 +242,8 @@
         private System.Windows.Forms.Timer tmrNotify;
         private System.Windows.Forms.Label lblCloseTimer;
         private System.Windows.Forms.Label lblMainLogo;
-        private taskt.UI.CustomControls.UIPictureButton uiBtnCancel;
-        private taskt.UI.CustomControls.UIPictureButton uiBtnPause;
+        private taskt.UI.CustomControls.CustomUIControls.UIPictureButton uiBtnCancel;
+        private taskt.UI.CustomControls.CustomUIControls.UIPictureButton uiBtnPause;
         private System.Windows.Forms.Label lblKillProcNote;
         private System.Windows.Forms.PictureBox pbBotIcon;
         private System.Windows.Forms.Label lblAction;

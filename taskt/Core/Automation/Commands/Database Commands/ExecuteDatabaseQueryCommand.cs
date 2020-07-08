@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Xml.Serialization;
-using System.Data;
 using System.Collections.Generic;
-using taskt.UI.Forms;
-using System.Windows.Forms;
-using taskt.UI.CustomControls;
+using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
+using System.Windows.Forms;
+using System.Xml.Serialization;
 using taskt.Core.Utilities.CommonUtilities;
+using taskt.Properties;
+using taskt.UI.CustomControls;
+using taskt.UI.Forms;
 
 namespace taskt.Core.Automation.Commands
 {
@@ -247,7 +248,7 @@ namespace taskt.Core.Automation.Commands
             helperControl.ForeColor = Color.AliceBlue;
             helperControl.Font = new Font("Segoe UI Semilight", 10);
             helperControl.Name = "add_param_helper";
-            helperControl.CommandImage = UI.Images.GetUIImage("VariableCommand");
+            helperControl.CommandImage = Resources.command_database2;
             helperControl.CommandDisplay = "Add Parameter";
             helperControl.Click += (sender, e) => AddParameter(sender, e);
             QueryParametersControls.Add(helperControl);

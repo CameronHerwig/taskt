@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using taskt.Core.Utilities.CommonUtilities;
+using taskt.Properties;
 using taskt.UI.CustomControls;
 using taskt.UI.Forms;
-using taskt.Core.Utilities.CommonUtilities;
 using taskt.UI.Forms.Supplement_Forms;
 
 namespace taskt.Core.Automation.Commands
@@ -98,11 +99,11 @@ namespace taskt.Core.Automation.Commands
         {
             base.Render(editor);
 
-            CommandItemControl helperControl = new taskt.UI.CustomControls.CommandItemControl();
-            helperControl.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            CommandItemControl helperControl = new CommandItemControl();
+            helperControl.Padding = new Padding(10, 0, 0, 0);
             helperControl.ForeColor = Color.AliceBlue;
             helperControl.Font = new Font("Segoe UI Semilight", 10);
-            helperControl.CommandImage = UI.Images.GetUIImage("ExecuteDLLCommand");
+            helperControl.CommandImage = Resources.command_web;
             helperControl.CommandDisplay = "Launch HTML Builder";
             helperControl.Click += (sender, e) => ShowHTMLBuilder(sender, e, editor);
 
