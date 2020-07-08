@@ -139,7 +139,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             DialogResult result = new DialogResult();
             if (tab.Text.Contains(" *"))
             {
-                result = MessageBox.Show($"Would you like to save {tab.Name}.xml before closing this tab?",
+                result = MessageBox.Show($"Would you like to save {tab.Name}.json before closing this tab?",
                                          $"Save {tab.Name}.json", MessageBoxButtons.YesNoCancel);
 
                 if (result == DialogResult.Yes)
