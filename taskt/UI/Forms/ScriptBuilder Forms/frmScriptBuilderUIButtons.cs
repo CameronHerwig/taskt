@@ -9,6 +9,7 @@ using taskt.Core.IO;
 using taskt.Core.Script;
 using taskt.Core.Server;
 using taskt.Core.Settings;
+using taskt.Properties;
 using taskt.UI.CustomControls;
 using taskt.UI.Forms.Supplement_Forms;
 
@@ -632,14 +633,19 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
             Notify("Running Script..");
 
-            frmScriptEngine newEngine = new frmScriptEngine(ScriptFilePath, this);
+            stepIntoToolStripMenuItem.Visible = true;
+            stepOverToolStripMenuItem.Visible = true;
+            pauseToolStripMenuItem.Visible = true;
+            cancelToolStripMenuItem.Visible = true;
+
+            _newEngine = new frmScriptEngine(ScriptFilePath, this);
 
             //executionManager = new ScriptExectionManager();
             //executionManager.CurrentlyExecuting = true;
             //executionManager.ScriptName = new System.IO.FileInfo(ScriptFilePath).Name;
 
-            newEngine.CallBackForm = this;
-            newEngine.Show();
+            _newEngine.CallBackForm = this;
+            _newEngine.Show();
         }
         #endregion
 
@@ -660,6 +666,46 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void uiBtnClose_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+        }
+        #endregion
+
+        #region Debug Buttons
+        private void stepOverToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _newEngine.uiBtnStepOver_Click(sender, e);
+            if (uiPaneTabs.TabPages.Count == 3)
+                LoadDebugTab(uiPaneTabs.TabPages[2]);
+        }
+
+        private void stepIntoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _newEngine.uiBtnStepInto_Click(sender, e);
+            if (uiPaneTabs.TabPages.Count == 3)
+                LoadDebugTab(uiPaneTabs.TabPages[2]);
+        }
+
+        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _newEngine.uiBtnPause_Click(sender, e);
+            if (pauseToolStripMenuItem.Image == Resources.command_pause)
+                pauseToolStripMenuItem.Image = Resources.command_resume;
+            else
+            {
+                pauseToolStripMenuItem.Image = Resources.command_pause;
+                //When resuming, close debug tab if it's open
+                if (uiPaneTabs.TabPages.Count == 3)
+                    uiPaneTabs.TabPages.RemoveAt(2);
+            }
+        }
+
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _newEngine.uiBtnCancel_Click(sender, e);
+
+            stepIntoToolStripMenuItem.Visible = false;
+            stepOverToolStripMenuItem.Visible = false;
+            pauseToolStripMenuItem.Visible = false;
+            cancelToolStripMenuItem.Visible = false;
         }
         #endregion
         #endregion

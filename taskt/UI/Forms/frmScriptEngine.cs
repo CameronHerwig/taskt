@@ -253,6 +253,10 @@ namespace taskt.UI.Forms
                 var d = new AddStatusDelegate(AddStatus);
                 Invoke(d, new object[] { text });
             }
+            else if(text == "Pausing Before Execution"){
+
+                uiBtnPause_Click(null, null);
+            }
             else
             {
                 //update status
@@ -285,6 +289,8 @@ namespace taskt.UI.Forms
 
                 //hide and change buttons not required
                 uiBtnPause.Visible = false;
+                uiBtnStepOver.Visible = false;
+                uiBtnStepInto.Visible = false;
                 uiBtnCancel.DisplayText = "Close";
                 uiBtnCancel.Visible = true;
 
@@ -472,7 +478,7 @@ namespace taskt.UI.Forms
             Close();
         }
 
-        private void uiBtnCancel_Click(object sender, EventArgs e)
+        public void uiBtnCancel_Click(object sender, EventArgs e)
         {
             if (uiBtnCancel.DisplayText == "Close")
             {
@@ -490,7 +496,7 @@ namespace taskt.UI.Forms
             EngineInstance.CancelScript();
         }
 
-        private void uiBtnPause_Click(object sender, EventArgs e)
+        public void uiBtnPause_Click(object sender, EventArgs e)
         {
             if (uiBtnPause.DisplayText == "Pause")
             {
@@ -514,12 +520,12 @@ namespace taskt.UI.Forms
             lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
         }
 
-        private void uiBtnStepOver_Click(object sender, EventArgs e)
+        public void uiBtnStepOver_Click(object sender, EventArgs e)
         {
             EngineInstance.StepOverScript();
         }
 
-        private void uiBtnStepInto_Click(object sender, EventArgs e)
+        public void uiBtnStepInto_Click(object sender, EventArgs e)
         {
             EngineInstance.StepIntoScript();
         }

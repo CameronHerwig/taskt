@@ -36,16 +36,16 @@
             this.lblMainLogo = new System.Windows.Forms.Label();
             this.lblKillProcNote = new System.Windows.Forms.Label();
             this.lblAction = new System.Windows.Forms.Label();
+            this.uiBtnStepInto = new taskt.UI.CustomControls.UIPictureButton();
+            this.uiBtnStepOver = new taskt.UI.CustomControls.UIPictureButton();
             this.uiBtnCancel = new taskt.UI.CustomControls.UIPictureButton();
             this.uiBtnPause = new taskt.UI.CustomControls.UIPictureButton();
             this.pbBotIcon = new System.Windows.Forms.PictureBox();
-            this.uiBtnStepInto = new taskt.UI.CustomControls.UIPictureButton();
-            this.uiBtnStepOver = new taskt.UI.CustomControls.UIPictureButton();
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepInto)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepOver)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnCancel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnPause)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepInto)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepOver)).BeginInit();
             this.SuspendLayout();
             // 
             // lstSteppingCommands
@@ -117,6 +117,44 @@
             this.lblAction.Text = "Action...";
             this.lblAction.Visible = false;
             // 
+            // uiBtnStepInto
+            // 
+            this.uiBtnStepInto.BackColor = System.Drawing.Color.Transparent;
+            this.uiBtnStepInto.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.uiBtnStepInto.DisplayText = "Step Into";
+            this.uiBtnStepInto.DisplayTextBrush = System.Drawing.Color.AliceBlue;
+            this.uiBtnStepInto.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.uiBtnStepInto.Image = global::taskt.Properties.Resources.command_step_into;
+            this.uiBtnStepInto.IsMouseOver = false;
+            this.uiBtnStepInto.Location = new System.Drawing.Point(700, 1);
+            this.uiBtnStepInto.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnStepInto.Name = "uiBtnStepInto";
+            this.uiBtnStepInto.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnStepInto.TabIndex = 23;
+            this.uiBtnStepInto.TabStop = false;
+            this.uiBtnStepInto.Text = "Step Into";
+            this.uiBtnStepInto.Visible = false;
+            this.uiBtnStepInto.Click += new System.EventHandler(this.uiBtnStepInto_Click);
+            // 
+            // uiBtnStepOver
+            // 
+            this.uiBtnStepOver.BackColor = System.Drawing.Color.Transparent;
+            this.uiBtnStepOver.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.uiBtnStepOver.DisplayText = "Step Over";
+            this.uiBtnStepOver.DisplayTextBrush = System.Drawing.Color.AliceBlue;
+            this.uiBtnStepOver.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.uiBtnStepOver.Image = global::taskt.Properties.Resources.command_step_over;
+            this.uiBtnStepOver.IsMouseOver = false;
+            this.uiBtnStepOver.Location = new System.Drawing.Point(628, 1);
+            this.uiBtnStepOver.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnStepOver.Name = "uiBtnStepOver";
+            this.uiBtnStepOver.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnStepOver.TabIndex = 22;
+            this.uiBtnStepOver.TabStop = false;
+            this.uiBtnStepOver.Text = "Step Over";
+            this.uiBtnStepOver.Visible = false;
+            this.uiBtnStepOver.Click += new System.EventHandler(this.uiBtnStepOver_Click);
+            // 
             // uiBtnCancel
             // 
             this.uiBtnCancel.BackColor = System.Drawing.Color.Transparent;
@@ -124,7 +162,7 @@
             this.uiBtnCancel.DisplayText = "Cancel";
             this.uiBtnCancel.DisplayTextBrush = System.Drawing.Color.AliceBlue;
             this.uiBtnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.uiBtnCancel.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnCancel.Image")));
+            this.uiBtnCancel.Image = global::taskt.Properties.Resources.command_cancel;
             this.uiBtnCancel.IsMouseOver = false;
             this.uiBtnCancel.Location = new System.Drawing.Point(844, 2);
             this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(4);
@@ -166,44 +204,6 @@
             this.pbBotIcon.TabStop = false;
             this.pbBotIcon.Click += new System.EventHandler(this.pbBotIcon_Click);
             // 
-            // uiBtnStepInto
-            // 
-            this.uiBtnStepInto.BackColor = System.Drawing.Color.Transparent;
-            this.uiBtnStepInto.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.uiBtnStepInto.DisplayText = "Step Into";
-            this.uiBtnStepInto.DisplayTextBrush = System.Drawing.Color.AliceBlue;
-            this.uiBtnStepInto.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.uiBtnStepInto.Image = global::taskt.Properties.Resources.command_step_into;
-            this.uiBtnStepInto.IsMouseOver = false;
-            this.uiBtnStepInto.Location = new System.Drawing.Point(700, 1);
-            this.uiBtnStepInto.Margin = new System.Windows.Forms.Padding(4);
-            this.uiBtnStepInto.Name = "uiBtnStepInto";
-            this.uiBtnStepInto.Size = new System.Drawing.Size(64, 59);
-            this.uiBtnStepInto.TabIndex = 23;
-            this.uiBtnStepInto.TabStop = false;
-            this.uiBtnStepInto.Text = "Step Into";
-            this.uiBtnStepInto.Visible = false;
-            this.uiBtnStepInto.Click += new System.EventHandler(this.uiBtnStepInto_Click);
-            // 
-            // uiBtnStepOver
-            // 
-            this.uiBtnStepOver.BackColor = System.Drawing.Color.Transparent;
-            this.uiBtnStepOver.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.uiBtnStepOver.DisplayText = "Step Over";
-            this.uiBtnStepOver.DisplayTextBrush = System.Drawing.Color.AliceBlue;
-            this.uiBtnStepOver.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.uiBtnStepOver.Image = global::taskt.Properties.Resources.command_step_over;
-            this.uiBtnStepOver.IsMouseOver = false;
-            this.uiBtnStepOver.Location = new System.Drawing.Point(628, 1);
-            this.uiBtnStepOver.Margin = new System.Windows.Forms.Padding(4);
-            this.uiBtnStepOver.Name = "uiBtnStepOver";
-            this.uiBtnStepOver.Size = new System.Drawing.Size(64, 59);
-            this.uiBtnStepOver.TabIndex = 22;
-            this.uiBtnStepOver.TabStop = false;
-            this.uiBtnStepOver.Text = "Step Over";
-            this.uiBtnStepOver.Visible = false;
-            this.uiBtnStepOver.Click += new System.EventHandler(this.uiBtnStepOver_Click);
-            // 
             // frmScriptEngine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -227,11 +227,11 @@
             this.Text = "Bot Engine";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.frmProcessingStatus_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepInto)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepOver)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnCancel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnPause)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotIcon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepInto)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepOver)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -97,6 +97,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private DateTime _notificationExpires;
         private bool _isDisplaying;
         private string _notificationText;
+        private frmScriptEngine _newEngine;
         #endregion
 
         #region Form Events
@@ -527,7 +528,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             LinkLabel senderLink = (LinkLabel)sender;
             OpenFile(Folders.GetFolder(Folders.FolderType.ScriptsFolder) + senderLink.Text);
         }
-        #endregion  
+
+        #endregion
+
+        
     }
 }
 

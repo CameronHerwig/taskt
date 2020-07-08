@@ -263,7 +263,7 @@ namespace taskt.Core.Automation.Engine
 
                
                 //wait
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
             }
 
             _currentStatus = EngineStatus.Running;

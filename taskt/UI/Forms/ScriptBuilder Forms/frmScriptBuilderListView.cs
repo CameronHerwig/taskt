@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using taskt.Core;
 using taskt.Core.Automation.Commands;
 using taskt.Core.Script;
+using taskt.Properties;
 using taskt.UI.CustomControls;
 using taskt.UI.DTOs;
 using taskt.UI.Forms.Supplement_Forms;
@@ -584,11 +585,21 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 case 2:
                     //write command text
                     Brush commandNameBrush, commandBackgroundBrush;
-                    if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1))
+                    if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExeucution)
                     {
                         //debugging coloring
                         commandNameBrush = Brushes.White;
                         commandBackgroundBrush = Brushes.OrangeRed;
+                        //if (uiPaneTabs.TabCount > 2)
+                            //uiPaneTabs.TabPages.RemoveAt(2);
+                    }
+                    else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExeucution)
+                    {
+                        commandNameBrush = Brushes.White;
+                        commandBackgroundBrush = Brushes.Indigo;
+                        if (uiPaneTabs.TabCount == 2)
+                            CreateDebugTab();
+                        pauseToolStripMenuItem.Image = Resources.command_resume;
                     }
                     else if ((_currentIndex >= 0) && (e.ItemIndex == _currentIndex))
                     {
@@ -617,8 +628,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     else if ((command is AddCodeCommentCommand) || (command.IsCommented))
                     {
                         //comments and commented command coloring
-                        commandNameBrush = Brushes.ForestGreen;
-                        commandBackgroundBrush = Brushes.WhiteSmoke;
+                        commandNameBrush = Brushes.MediumSeaGreen;
+                        commandBackgroundBrush = Brushes.Honeydew;
                     }
                     else
                     {
@@ -627,7 +638,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         commandBackgroundBrush = Brushes.WhiteSmoke;
                     }
 
-                    //fille with background color
+                    //fill with background color
                     e.Graphics.FillRectangle(commandBackgroundBrush, modifiedBounds);
 
                     //get indent count
@@ -639,8 +650,18 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     //draw string
                     e.Graphics.DrawString(command.GetDisplayValue(), _selectedTabScriptActions.Font, 
                                           commandNameBrush, modifiedBounds);
-                    break;
+                    break;  
             }
+
+            if (_debugLine == 0 )
+            {
+                stepIntoToolStripMenuItem.Visible = false;
+                stepOverToolStripMenuItem.Visible = false;
+                pauseToolStripMenuItem.Visible = false;
+                cancelToolStripMenuItem.Visible = false;
+                if (uiPaneTabs.TabPages.Count == 3)
+                    uiPaneTabs.TabPages.RemoveAt(2);
+            } 
         }
 
         private void lstScriptActions_MouseMove(object sender, MouseEventArgs e)
