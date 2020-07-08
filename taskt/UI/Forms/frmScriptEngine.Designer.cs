@@ -36,10 +36,10 @@
             this.lblMainLogo = new System.Windows.Forms.Label();
             this.lblKillProcNote = new System.Windows.Forms.Label();
             this.lblAction = new System.Windows.Forms.Label();
-            this.uiBtnStepInto = new taskt.UI.CustomControls.UIPictureButton();
-            this.uiBtnStepOver = new taskt.UI.CustomControls.UIPictureButton();
-            this.uiBtnCancel = new taskt.UI.CustomControls.UIPictureButton();
-            this.uiBtnPause = new taskt.UI.CustomControls.UIPictureButton();
+            this.uiBtnStepInto = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
+            this.uiBtnStepOver = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
+            this.uiBtnCancel = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
+            this.uiBtnPause = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
             this.pbBotIcon = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepInto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnStepOver)).BeginInit();
@@ -247,7 +247,7 @@
         private System.Windows.Forms.Label lblKillProcNote;
         private System.Windows.Forms.PictureBox pbBotIcon;
         private System.Windows.Forms.Label lblAction;
-        private CustomControls.UIPictureButton uiBtnStepInto;
-        private CustomControls.UIPictureButton uiBtnStepOver;
+        private CustomControls.CustomUIControls.UIPictureButton uiBtnStepInto;
+        private CustomControls.CustomUIControls.UIPictureButton uiBtnStepOver;
     }
 }
