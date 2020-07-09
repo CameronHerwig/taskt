@@ -50,7 +50,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             {
                 DataRow[] foundVariables = variableValues.Select("Name = '" + variable.VariableName + "'");
                 if (foundVariables.Length == 0)
-                    variableValues.Rows.Add(variable.VariableName, variable.VariableValue);
+                {
+                    if (variable.VariableValue is string)
+                        variableValues.Rows.Add(variable.VariableName, variable.VariableValue);
+                    else
+                        variableValues.Rows.Add(variable.VariableName, $"[{variable.VariableValue.GetType()}]");
+                }                   
             }
             variablesGridViewHelper.DataSource = variableValues;
         }

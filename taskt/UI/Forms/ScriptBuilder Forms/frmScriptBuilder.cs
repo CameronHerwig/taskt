@@ -82,7 +82,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 {
                     try
                     {
-                        
+                        _isScriptRunning = true;
                         _selectedTabScriptActions.EnsureVisible(_debugLine - 1);
                     }
                     catch (Exception)
@@ -90,8 +90,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         //log exception?
                     }
                 }
+                else
+                    _isScriptRunning = false;
                 _selectedTabScriptActions.Invalidate();
                 //FormatCommandListView();
+                if (stepOverToolStripMenuItem.Visible)
+                    LoadDebugTab(uiPaneTabs.TabPages[2]);
             }
         }
         private List<string> _notificationList = new List<string>();
@@ -99,6 +103,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private bool _isDisplaying;
         private string _notificationText;
         private frmScriptEngine _newEngine;
+        private bool _isScriptRunning;
         #endregion
 
         #region Form Events

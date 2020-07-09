@@ -253,7 +253,7 @@ namespace taskt.UI.Forms
                 var d = new AddStatusDelegate(AddStatus);
                 Invoke(d, new object[] { text });
             }
-            else if(text == "Pausing Before Execution"){
+            else if(text == "Pausing Before Execution" && !uiBtnStepOver.Visible){
 
                 uiBtnPause_Click(null, null);
             }

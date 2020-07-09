@@ -23,6 +23,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             }
         }
 
+        private void uiScriptTabControl_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (_isScriptRunning)
+                e.Cancel = true;
+        }
+
         //TODO Finish close button rendering
         private void uiScriptTabControl_DrawItem(object sender, DrawItemEventArgs e)
         {

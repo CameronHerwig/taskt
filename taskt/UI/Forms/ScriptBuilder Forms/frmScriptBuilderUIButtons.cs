@@ -634,9 +634,11 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
             Notify("Running Script..");
 
-            stepIntoToolStripMenuItem.Visible = true;
-            stepOverToolStripMenuItem.Visible = true;
+            pauseToolStripMenuItem.Image = Resources.command_pause;
+            stepOverToolStripMenuItem.Visible = false;
+            stepIntoToolStripMenuItem.Visible = false;
             pauseToolStripMenuItem.Visible = true;
+            pauseToolStripMenuItem.Tag = "pause";
             cancelToolStripMenuItem.Visible = true;
 
             _newEngine = new frmScriptEngine(ScriptFilePath, this);
@@ -674,25 +676,31 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void stepOverToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _newEngine.uiBtnStepOver_Click(sender, e);
-            //if (uiPaneTabs.TabPages.Count == 3)
-                LoadDebugTab(uiPaneTabs.TabPages[2]);
         }
 
         private void stepIntoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _newEngine.uiBtnStepInto_Click(sender, e);
-            //if (uiPaneTabs.TabPages.Count == 3)
-                //LoadDebugTab(uiPaneTabs.TabPages[2]);
         }
 
         private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _newEngine.uiBtnPause_Click(sender, e);
-            if (pauseToolStripMenuItem.Image == Resources.command_pause)
+            if (pauseToolStripMenuItem.Tag.ToString() == "pause")
+            {
                 pauseToolStripMenuItem.Image = Resources.command_resume;
+                pauseToolStripMenuItem.Tag = "resume";
+            }
+
             else
             {
+                stepIntoToolStripMenuItem.Visible = false;
+                stepOverToolStripMenuItem.Visible = false;
+                pauseToolStripMenuItem.Visible = true;
+                cancelToolStripMenuItem.Visible = true;
                 pauseToolStripMenuItem.Image = Resources.command_pause;
+                pauseToolStripMenuItem.Tag = "pause";
+
                 //When resuming, close debug tab if it's open
                 if (uiPaneTabs.TabPages.Count == 3)
                     uiPaneTabs.TabPages.RemoveAt(2);
