@@ -15,7 +15,7 @@ namespace taskt.Core.Automation.Commands
         public string SelectionName { get; set; }
         public int DefaultPause { get; set; }
         public int LineNumber { get; set; }
-        public bool PauseBeforeExeucution { get; set; }
+        public bool PauseBeforeExecution { get; set; }
         public bool CommandEnabled { get; set; }
 
         [Attributes.PropertyAttributes.PropertyDescription("Comment Field (Optional)")]

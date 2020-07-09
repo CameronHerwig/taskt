@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
+using System.Data;
 using System.Windows.Forms;
 using taskt.Core.Script;
-using taskt.UI.CustomControls;
-using System.Data;
-using System.Diagnostics;
 
 namespace taskt.UI.Forms.ScriptBuilder_Forms
 {

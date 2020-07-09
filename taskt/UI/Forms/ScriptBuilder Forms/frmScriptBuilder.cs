@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -26,6 +27,7 @@ using taskt.Core.IO;
 using taskt.Core.Script;
 using taskt.Core.Server;
 using taskt.Core.Settings;
+using taskt.Properties;
 using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
 using taskt.UI.Forms.Supplement_Forms;
@@ -90,12 +92,34 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         //log exception?
                     }
                 }
-                else
+                else if (_debugLine == 0)
+                {
                     _isScriptRunning = false;
+                    _isScriptStepped = false;
+                    stepIntoToolStripMenuItem.Visible = false;
+                    stepOverToolStripMenuItem.Visible = false;
+                    pauseToolStripMenuItem.Visible = false;
+                    cancelToolStripMenuItem.Visible = false;
+                    if (uiPaneTabs.TabPages.Count == 3)
+                        uiPaneTabs.TabPages.RemoveAt(2);
+                }
+
                 _selectedTabScriptActions.Invalidate();
                 //FormatCommandListView();
+
                 if (stepOverToolStripMenuItem.Visible)
                     LoadDebugTab(uiPaneTabs.TabPages[2]);
+                else if (!stepOverToolStripMenuItem.Visible && _newEngine.EngineInstance._isScriptPaused)
+                {
+                    pauseToolStripMenuItem.Image = Resources.command_resume;
+                    pauseToolStripMenuItem.Tag = "resume";
+
+                }
+                else if (!stepOverToolStripMenuItem.Visible && !_newEngine.EngineInstance._isScriptPaused)
+                {
+                    pauseToolStripMenuItem.Image = Resources.command_pause;
+                    pauseToolStripMenuItem.Tag = "pause";
+                }
             }
         }
         private List<string> _notificationList = new List<string>();
@@ -103,7 +127,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private bool _isDisplaying;
         private string _notificationText;
         private frmScriptEngine _newEngine;
-        private bool _isScriptRunning;
+        public bool _isScriptRunning { get; set; }
+        public bool _isScriptPaused { get; set; }
+        public bool _isScriptStepped { get; set; }
         #endregion
 
         #region Form Events
@@ -515,19 +541,19 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         #region Link Labels
         private void lnkGitProject_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/saucepleez/taskt");
+            Process.Start("https://github.com/saucepleez/taskt");
         }
         private void lnkGitLatestReleases_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/saucepleez/taskt/releases");
+            Process.Start("https://github.com/saucepleez/taskt/releases");
         }
         private void lnkGitIssue_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/saucepleez/taskt/issues/new");
+            Process.Start("https://github.com/saucepleez/taskt/issues/new");
         }
         private void lnkGitWiki_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://wiki.taskt.net/");
+            Process.Start("https://wiki.taskt.net/");
         }
         private void NewFileLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -535,9 +561,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             OpenFile(Folders.GetFolder(Folders.FolderType.ScriptsFolder) + senderLink.Text);
         }
 
-        #endregion
-
-        
+        #endregion       
     }
 }
 

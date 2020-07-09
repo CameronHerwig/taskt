@@ -256,6 +256,8 @@ namespace taskt.UI.Forms
             else if(text == "Pausing Before Execution" && !uiBtnStepOver.Visible){
 
                 uiBtnPause_Click(null, null);
+                uiBtnStepOver.Visible = true;
+                uiBtnStepInto.Visible = true;
             }
             else
             {
@@ -500,20 +502,21 @@ namespace taskt.UI.Forms
         {
             if (uiBtnPause.DisplayText == "Pause")
             {
+                CallBackForm._isScriptRunning = false;
                 lstSteppingCommands.Items.Add("[User Requested Pause]");
                 uiBtnPause.Image = Properties.Resources.command_resume;
                 uiBtnPause.DisplayText = "Resume";
-                uiBtnStepOver.Visible = true;
-                uiBtnStepInto.Visible = true;
                 EngineInstance.PauseScript();
             }
             else
             {
+                CallBackForm._isScriptRunning = true;
                 lstSteppingCommands.Items.Add("[User Requested Resume]");
                 uiBtnPause.Image = Properties.Resources.command_pause;
                 uiBtnPause.DisplayText = "Pause";
                 uiBtnStepOver.Visible = false;
                 uiBtnStepInto.Visible = false;
+                CallBackForm._isScriptStepped = false;
                 EngineInstance.ResumeScript();
             }
 
@@ -522,11 +525,13 @@ namespace taskt.UI.Forms
 
         public void uiBtnStepOver_Click(object sender, EventArgs e)
         {
+            CallBackForm._isScriptStepped = true;
             EngineInstance.StepOverScript();
         }
 
         public void uiBtnStepInto_Click(object sender, EventArgs e)
         {
+            CallBackForm._isScriptStepped = true;
             EngineInstance.StepIntoScript();
         }
 

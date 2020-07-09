@@ -9,15 +9,12 @@ using taskt.Core;
 using taskt.Core.Automation.Commands;
 using taskt.Core.Script;
 using taskt.Properties;
-using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
 using taskt.UI.DTOs;
 using taskt.UI.Forms.Supplement_Forms;
 
 namespace taskt.UI.Forms.ScriptBuilder_Forms
 {
-    using System.Windows.Forms.VisualStyles;
-
     public partial class frmScriptBuilder : Form
     {
         #region ListView Events
@@ -588,25 +585,38 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 case 2:
                     //write command text
                     Brush commandNameBrush, commandBackgroundBrush;
-                    if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExeucution)
+                    if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExecution)
                     {
                         //debugging coloring
                         commandNameBrush = Brushes.White;
                         commandBackgroundBrush = Brushes.OrangeRed;
+                        _isScriptPaused = false;
+
+                        if (uiPaneTabs.TabCount == 3 && !_isScriptStepped)
+                        {
+                            uiPaneTabs.TabPages.RemoveAt(2);
+                            stepIntoToolStripMenuItem.Visible = false;
+                            stepOverToolStripMenuItem.Visible = false;
+                            pauseToolStripMenuItem.Image = Resources.command_pause;
+                            pauseToolStripMenuItem.Tag = "pause";
+                        }
                     }
-                    else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExeucution)
+                    else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExecution)
                     {
                         commandNameBrush = Brushes.White;
-                        commandBackgroundBrush = Brushes.Indigo;
-                        stepIntoToolStripMenuItem.Visible = true;
-                        stepOverToolStripMenuItem.Visible = true;
-                        pauseToolStripMenuItem.Visible = true;
-                        pauseToolStripMenuItem.Tag = "resume";
-                        cancelToolStripMenuItem.Visible = true;
-                        pauseToolStripMenuItem.Image = Resources.command_resume;
+                        commandBackgroundBrush = Brushes.Indigo;                     
 
-                        if (uiPaneTabs.TabCount == 2)
+                        if (uiPaneTabs.TabCount == 2 && !_isScriptPaused)
+                        {                           
                             CreateDebugTab();
+                            stepIntoToolStripMenuItem.Visible = true;
+                            stepOverToolStripMenuItem.Visible = true;
+                            pauseToolStripMenuItem.Visible = true;
+                            cancelToolStripMenuItem.Visible = true;
+                            pauseToolStripMenuItem.Image = Resources.command_resume;
+                            pauseToolStripMenuItem.Tag = "resume";
+                            _isScriptPaused = true;
+                        }
                     }
                     else if ((_currentIndex >= 0) && (e.ItemIndex == _currentIndex))
                     {
@@ -626,7 +636,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         commandNameBrush = Brushes.White;
                         commandBackgroundBrush = Brushes.DodgerBlue;
                     }
-                    else if (command.PauseBeforeExeucution)
+                    else if (command.PauseBeforeExecution)
                     {
                         //pause before execution coloring
                         commandNameBrush = Brushes.MediumPurple;
@@ -659,16 +669,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                                           commandNameBrush, modifiedBounds);
                     break;  
             }
-
-            if (_debugLine == 0 )
-            {
-                stepIntoToolStripMenuItem.Visible = false;
-                stepOverToolStripMenuItem.Visible = false;
-                pauseToolStripMenuItem.Visible = false;
-                cancelToolStripMenuItem.Visible = false;
-                if (uiPaneTabs.TabPages.Count == 3)
-                    uiPaneTabs.TabPages.RemoveAt(2);
-            } 
         }
 
         private void lstScriptActions_MouseMove(object sender, MouseEventArgs e)
@@ -739,7 +739,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             foreach (ListViewItem item in _selectedTabScriptActions.SelectedItems)
             {
                 var selectedCommand = (ScriptCommand)item.Tag;
-                selectedCommand.PauseBeforeExeucution = !selectedCommand.PauseBeforeExeucution;
+                selectedCommand.PauseBeforeExecution = !selectedCommand.PauseBeforeExecution;
             }
 
             //recolor

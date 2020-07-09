@@ -10,7 +10,6 @@ using taskt.Core.Script;
 using taskt.Core.Server;
 using taskt.Core.Settings;
 using taskt.Properties;
-using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
 using taskt.UI.Forms.Supplement_Forms;
 
@@ -676,11 +675,13 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void stepOverToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _newEngine.uiBtnStepOver_Click(sender, e);
+            _isScriptStepped = true;
         }
 
         private void stepIntoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _newEngine.uiBtnStepInto_Click(sender, e);
+            _isScriptStepped = true;
         }
 
         private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -692,7 +693,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 pauseToolStripMenuItem.Tag = "resume";
             }
 
-            else
+            else if (pauseToolStripMenuItem.Tag.ToString() == "resume")
             {
                 stepIntoToolStripMenuItem.Visible = false;
                 stepOverToolStripMenuItem.Visible = false;
@@ -704,6 +705,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 //When resuming, close debug tab if it's open
                 if (uiPaneTabs.TabPages.Count == 3)
                     uiPaneTabs.TabPages.RemoveAt(2);
+
+                _isScriptStepped = false;
             }
         }
 

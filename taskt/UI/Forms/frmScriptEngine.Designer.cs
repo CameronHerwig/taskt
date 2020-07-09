@@ -126,7 +126,7 @@
             this.uiBtnStepInto.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnStepInto.Image = global::taskt.Properties.Resources.command_step_into;
             this.uiBtnStepInto.IsMouseOver = false;
-            this.uiBtnStepInto.Location = new System.Drawing.Point(700, 1);
+            this.uiBtnStepInto.Location = new System.Drawing.Point(700, 2);
             this.uiBtnStepInto.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnStepInto.Name = "uiBtnStepInto";
             this.uiBtnStepInto.Size = new System.Drawing.Size(64, 59);
@@ -145,7 +145,7 @@
             this.uiBtnStepOver.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnStepOver.Image = global::taskt.Properties.Resources.command_step_over;
             this.uiBtnStepOver.IsMouseOver = false;
-            this.uiBtnStepOver.Location = new System.Drawing.Point(628, 1);
+            this.uiBtnStepOver.Location = new System.Drawing.Point(628, 2);
             this.uiBtnStepOver.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnStepOver.Name = "uiBtnStepOver";
             this.uiBtnStepOver.Size = new System.Drawing.Size(64, 59);
