@@ -262,7 +262,6 @@ namespace taskt.Core.Automation.Engine
                     _isScriptSteppedInto = false;
                     break;
                 }
-
                
                 //wait
                 Thread.Sleep(1000);
