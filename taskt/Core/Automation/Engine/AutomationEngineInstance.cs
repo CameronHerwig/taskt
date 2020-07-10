@@ -248,9 +248,11 @@ namespace taskt.Core.Automation.Engine
                     isFirstWait = false;
                 }
 
-                if (_isScriptSteppedInto && parentCommand is RunTaskCommand)
+                if (_isScriptSteppedInto && parentCommand.CommandName == "RunTaskCommand")
                 {
-                    ((RunTaskCommand)parentCommand).NewEngine.EngineInstance.PauseScript();
+                    ((RunTaskCommand)parentCommand).IsSteppedInto = true;
+                    //TODO: Studio Step Into
+                    //((RunTaskCommand)parentCommand).CurrentScriptBuilder = TasktEngineUI.CallBackForm;
                     _isScriptSteppedInto = false;
                     break;
                 }

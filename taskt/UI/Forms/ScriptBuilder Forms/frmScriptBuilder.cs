@@ -84,7 +84,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 {
                     try
                     {
-                        _isScriptRunning = true;
+                        IsScriptRunning = true;
                         _selectedTabScriptActions.EnsureVisible(_debugLine - 1);
                     }
                     catch (Exception)
@@ -94,8 +94,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 }
                 else if (_debugLine == 0)
                 {
-                    _isScriptRunning = false;
-                    _isScriptStepped = false;
+                    IsScriptRunning = false;
+                    IsScriptSteppedOver = false;
+                    IsScriptSteppedInto = false;
                     stepIntoToolStripMenuItem.Visible = false;
                     stepOverToolStripMenuItem.Visible = false;
                     pauseToolStripMenuItem.Visible = false;
@@ -127,9 +128,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private bool _isDisplaying;
         private string _notificationText;
         private frmScriptEngine _newEngine;
-        public bool _isScriptRunning { get; set; }
-        public bool _isScriptPaused { get; set; }
-        public bool _isScriptStepped { get; set; }
+        public bool IsScriptRunning { get; set; }
+        public bool IsScriptPaused { get; set; }
+        public bool IsScriptSteppedOver { get; set; }
+        public bool IsScriptSteppedInto { get; set; }
         #endregion
 
         #region Form Events

@@ -42,9 +42,10 @@ namespace taskt.UI.Forms
         public AutomationEngineInstance EngineInstance { get; set; }
         private List<ScriptVariable> _scriptVariableList;
         private bool _closeWhenDone = false;
-
-        #endregion
         public string Result { get; set; }
+        public bool IsNewTaskSteppedInto { get; set; }
+        #endregion
+        
         //events and methods
         #region Form Events/Methods
         public frmScriptEngine(string pathToFile, frmScriptBuilder builderForm, List<ScriptVariable> variables = null,
@@ -151,6 +152,17 @@ namespace taskt.UI.Forms
             //start running
 
             EngineInstance = new AutomationEngineInstance();
+
+            if (IsNewTaskSteppedInto)
+            {
+                EngineInstance.PauseScript();
+                uiBtnPause.Image = Properties.Resources.command_resume;
+                uiBtnPause.DisplayText = "Resume";
+                uiBtnStepOver.Visible = true;
+                uiBtnStepInto.Visible = true;
+                //CallBackForm.OpenFile(FilePath);
+            }
+
             EngineInstance.ReportProgressEvent += Engine_ReportProgress;
             EngineInstance.ScriptFinishedEvent += Engine_ScriptFinishedEvent;
             EngineInstance.LineNumberChangedEvent += EngineInstance_LineNumberChangedEvent;
@@ -502,7 +514,6 @@ namespace taskt.UI.Forms
         {
             if (uiBtnPause.DisplayText == "Pause")
             {
-                CallBackForm._isScriptRunning = false;
                 lstSteppingCommands.Items.Add("[User Requested Pause]");
                 uiBtnPause.Image = Properties.Resources.command_resume;
                 uiBtnPause.DisplayText = "Resume";
@@ -510,13 +521,16 @@ namespace taskt.UI.Forms
             }
             else
             {
-                CallBackForm._isScriptRunning = true;
                 lstSteppingCommands.Items.Add("[User Requested Resume]");
                 uiBtnPause.Image = Properties.Resources.command_pause;
                 uiBtnPause.DisplayText = "Pause";
                 uiBtnStepOver.Visible = false;
                 uiBtnStepInto.Visible = false;
-                CallBackForm._isScriptStepped = false;
+                if (CallBackForm != null)
+                {
+                    CallBackForm.IsScriptSteppedOver = false;
+                    CallBackForm.IsScriptSteppedInto = false;
+                }                
                 EngineInstance.ResumeScript();
             }
 
@@ -525,13 +539,15 @@ namespace taskt.UI.Forms
 
         public void uiBtnStepOver_Click(object sender, EventArgs e)
         {
-            CallBackForm._isScriptStepped = true;
+            if (CallBackForm != null)
+                CallBackForm.IsScriptSteppedOver = true;
             EngineInstance.StepOverScript();
         }
 
         public void uiBtnStepInto_Click(object sender, EventArgs e)
         {
-            CallBackForm._isScriptStepped = true;
+            if (CallBackForm != null)
+                CallBackForm.IsScriptSteppedInto = true;
             EngineInstance.StepIntoScript();
         }
 

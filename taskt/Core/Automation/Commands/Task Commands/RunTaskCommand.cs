@@ -13,6 +13,7 @@ using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.UI.CustomControls;
 using taskt.UI.Forms;
+using taskt.UI.Forms.ScriptBuilder_Forms;
 
 namespace taskt.Core.Automation.Commands
 {
@@ -57,6 +58,11 @@ namespace taskt.Core.Automation.Commands
 
         [XmlIgnore]
         public frmScriptEngine NewEngine { get; set; }
+
+        //TODO: Studio Step Into
+        public frmScriptBuilder CurrentScriptBuilder { get; set; }
+        public bool IsSteppedOver { get; set; }
+        public bool IsSteppedInto { get; set; }
 
         public RunTaskCommand()
         {
@@ -120,7 +126,10 @@ namespace taskt.Core.Automation.Commands
                 }
             }
 
-            NewEngine = new frmScriptEngine(startFile, null, variableList, true);
+            NewEngine = new frmScriptEngine(startFile, CurrentScriptBuilder, variableList, true);
+
+            if (IsSteppedInto)
+                NewEngine.IsNewTaskSteppedInto = true;
 
             //Core.Automation.Engine.AutomationEngineInstance currentScriptEngine = (Core.Automation.Engine.AutomationEngineInstance) sender;
             currentScriptEngine.TasktEngineUI.Invoke((Action)delegate()

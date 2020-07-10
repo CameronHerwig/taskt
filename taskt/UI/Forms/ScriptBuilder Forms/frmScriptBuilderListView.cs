@@ -590,9 +590,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         //debugging coloring
                         commandNameBrush = Brushes.White;
                         commandBackgroundBrush = Brushes.OrangeRed;
-                        _isScriptPaused = false;
+                        IsScriptPaused = false;
 
-                        if (uiPaneTabs.TabCount == 3 && !_isScriptStepped)
+                        if (uiPaneTabs.TabCount == 3 && !IsScriptSteppedOver && !IsScriptSteppedInto)
                         {
                             uiPaneTabs.TabPages.RemoveAt(2);
                             stepIntoToolStripMenuItem.Visible = false;
@@ -606,7 +606,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         commandNameBrush = Brushes.White;
                         commandBackgroundBrush = Brushes.Indigo;                     
 
-                        if (uiPaneTabs.TabCount == 2 && !_isScriptPaused)
+                        if (uiPaneTabs.TabCount == 2 && !IsScriptPaused)
                         {                           
                             CreateDebugTab();
                             stepIntoToolStripMenuItem.Visible = true;
@@ -615,7 +615,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                             cancelToolStripMenuItem.Visible = true;
                             pauseToolStripMenuItem.Image = Resources.command_resume;
                             pauseToolStripMenuItem.Tag = "resume";
-                            _isScriptPaused = true;
+                            IsScriptPaused = true;
                         }
                     }
                     else if ((_currentIndex >= 0) && (e.ItemIndex == _currentIndex))
