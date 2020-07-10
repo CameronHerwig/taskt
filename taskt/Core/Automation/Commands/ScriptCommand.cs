@@ -33,6 +33,12 @@ namespace taskt.Core.Automation.Commands
         [JsonIgnore]
         public List<Control> RenderedControls;
 
+        [JsonIgnore]
+        public bool IsSteppedInto { get; set; }
+
+        [JsonIgnore]
+        public bool IsSteppedOver { get; set; }
+
         public ScriptCommand()
         {
             DisplayForeColor = Color.SteelBlue;

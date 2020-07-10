@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using taskt.Core.Script;
 using taskt.Properties;
@@ -33,10 +34,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             {
                 DataTable variableValues = new DataTable();
                 variableValues.Columns.Add("Name");
+                variableValues.Columns.Add("Type");
                 variableValues.Columns.Add("Value");
                 variableValues.TableName = "VariableValuesDataTable" + DateTime.Now.ToString("MMddyyhhmmss");
 
                 DataGridView variablesGridViewHelper = new DataGridView();
+                variablesGridViewHelper.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
                 variablesGridViewHelper.Dock = DockStyle.Fill;
                 variablesGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 variablesGridViewHelper.AllowUserToAddRows = false;
@@ -52,10 +55,26 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     DataRow[] foundVariables = variableValues.Select("Name = '" + variable.VariableName + "'");
                     if (foundVariables.Length == 0)
                     {
-                        if (variable.VariableValue is string)
-                            variableValues.Rows.Add(variable.VariableName, variable.VariableValue);
-                        else
-                            variableValues.Rows.Add(variable.VariableName, $"[{variable.VariableValue.GetType()}]");
+                        var type = variable.VariableValue.GetType().ToString();
+                        switch (variable.VariableValue.GetType().ToString())
+                        {
+                            case "System.String":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(),
+                                    variable.VariableValue);
+                                break;
+                            case "System.Data.DataTable":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(), 
+                                    ConvertDataTableToString((DataTable)variable.VariableValue));
+                                break;
+                            case "System.Collections.Generic.List`1[System.String]":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(),
+                                    ConvertListToString((List<string>)variable.VariableValue));
+                                break;
+                            default:
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(), 
+                                    variable.VariableValue.ToString());
+                                break;
+                        }                       
                     }
                 }
                 variablesGridViewHelper.DataSource = variableValues;
@@ -115,5 +134,42 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             cancelToolStripMenuItem.Visible = false;
         }
         #endregion
+
+        public static string ConvertDataTableToString(DataTable dt)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.Append("[[");
+
+            for (int i = 0; i < dt.Columns.Count - 1; i++)
+                stringBuilder.AppendFormat("{0}, ", dt.Columns[i].ColumnName);
+
+            stringBuilder.AppendFormat("{0}]]", dt.Columns[dt.Columns.Count -1].ColumnName);
+            stringBuilder.AppendLine();
+
+            foreach (DataRow rows in dt.Rows)
+            {
+                stringBuilder.Append("[");
+
+                for(int i = 0; i<dt.Columns.Count-1; i++)
+                    stringBuilder.AppendFormat("{0}, ", rows[i]);
+
+                stringBuilder.AppendFormat("{0}]", rows[dt.Columns.Count - 1]);
+                stringBuilder.AppendLine();
+            }
+            return stringBuilder.ToString();
+        }
+
+        public static string ConvertListToString(List<string> list)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("[");
+
+            for (int i = 0; i < list.Count - 1; i++)
+                stringBuilder.AppendFormat("{0}, ", list[i]);
+
+            stringBuilder.AppendFormat("{0}]", list[list.Count - 1]);
+            return stringBuilder.ToString();
+        }
     }
 }

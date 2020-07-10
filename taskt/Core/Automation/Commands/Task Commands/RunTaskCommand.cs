@@ -62,10 +62,6 @@ namespace taskt.Core.Automation.Commands
         //TODO: Studio Step Into
         [XmlIgnore]
         public frmScriptBuilder CurrentScriptBuilder { get; set; }
-        [XmlIgnore]
-        public bool IsSteppedOver { get; set; }
-        [XmlIgnore]
-        public bool IsSteppedInto { get; set; }
 
         public RunTaskCommand()
         {
