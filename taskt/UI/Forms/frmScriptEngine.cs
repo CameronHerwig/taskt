@@ -223,6 +223,7 @@ namespace taskt.UI.Forms
                     AddStatus("Error: " + e.Error);
                     AddStatus("Script Completed With Errors!");
                     UpdateUI("debug info (error)");
+                    _closeWhenDone = false;
                     break;
                 case ScriptFinishedEventArgs.ScriptFinishedResult.Cancelled:
                     AddStatus("Script Cancelled By User");
