@@ -135,7 +135,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         }
         #endregion
 
-        public static string ConvertDataTableToString(DataTable dt)
+        public string ConvertDataTableToString(DataTable dt)
         {
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -160,7 +160,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             return stringBuilder.ToString();
         }
 
-        public static string ConvertListToString(List<string> list)
+        public string ConvertListToString(List<string> list)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("[");
