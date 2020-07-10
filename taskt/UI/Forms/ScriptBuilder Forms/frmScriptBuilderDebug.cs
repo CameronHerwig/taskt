@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 using taskt.Core.Script;
 using taskt.Properties;
@@ -41,14 +42,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 variablesGridViewHelper.AllowUserToAddRows = false;
                 variablesGridViewHelper.AllowUserToDeleteRows = false;
 
-                if (debugTab.Controls.Count == 0)
-                    debugTab.Controls.Add(variablesGridViewHelper);
-                else
-                {
+                if (debugTab.Controls.Count != 0)
                     debugTab.Controls.RemoveAt(0);
-                    debugTab.Controls.Add(variablesGridViewHelper);
-                }
-
+                debugTab.Controls.Add(variablesGridViewHelper);
 
                 List<ScriptVariable> engineVariables = _newEngine.EngineInstance.VariableList;
                 foreach (var variable in engineVariables)
@@ -98,8 +94,11 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 pauseToolStripMenuItem.Tag = "pause";
 
                 //When resuming, close debug tab if it's open
-                if (uiPaneTabs.TabPages.Count == 3)
-                    uiPaneTabs.TabPages.RemoveAt(2);
+                TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
+                                                                              .FirstOrDefault();
+
+                if (debugTab != null)
+                    uiPaneTabs.TabPages.Remove(debugTab);
 
                 IsScriptSteppedOver = false;
                 IsScriptSteppedInto = false;

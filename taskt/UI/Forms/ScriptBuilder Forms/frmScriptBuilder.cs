@@ -101,15 +101,19 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     stepOverToolStripMenuItem.Visible = false;
                     pauseToolStripMenuItem.Visible = false;
                     cancelToolStripMenuItem.Visible = false;
-                    if (uiPaneTabs.TabPages.Count == 3)
-                        uiPaneTabs.TabPages.RemoveAt(2);
+
+                    TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
+                                                                              .FirstOrDefault();
+
+                    if (debugTab != null)
+                        uiPaneTabs.TabPages.Remove(debugTab);
                 }
 
                 _selectedTabScriptActions.Invalidate();
                 //FormatCommandListView();
 
                 if (stepOverToolStripMenuItem.Visible)
-                    LoadDebugTab(uiPaneTabs.TabPages[2]);
+                    LoadDebugTab(uiPaneTabs.TabPages["DebugVariables"]);
                 else if (!stepOverToolStripMenuItem.Visible && _newEngine.EngineInstance._isScriptPaused)
                 {
                     pauseToolStripMenuItem.Image = Resources.command_resume;

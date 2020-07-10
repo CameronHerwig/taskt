@@ -592,9 +592,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         commandBackgroundBrush = Brushes.OrangeRed;
                         IsScriptPaused = false;
 
-                        if (uiPaneTabs.TabCount == 3 && !IsScriptSteppedOver && !IsScriptSteppedInto)
+                        TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
+                                                                              .FirstOrDefault();
+
+                        if (debugTab != null && !IsScriptSteppedOver && !IsScriptSteppedInto)
                         {
-                            uiPaneTabs.TabPages.RemoveAt(2);
+                            uiPaneTabs.TabPages.Remove(debugTab);
                             stepIntoToolStripMenuItem.Visible = false;
                             stepOverToolStripMenuItem.Visible = false;
                             pauseToolStripMenuItem.Image = Resources.command_pause;
@@ -604,9 +607,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExecution)
                     {
                         commandNameBrush = Brushes.White;
-                        commandBackgroundBrush = Brushes.Indigo;                     
+                        commandBackgroundBrush = Brushes.Indigo;
 
-                        if (uiPaneTabs.TabCount == 2 && !IsScriptPaused)
+                        TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
+                                                                              .FirstOrDefault();
+
+                        if (debugTab == null && !IsScriptPaused)
                         {                           
                             CreateDebugTab();
                             stepIntoToolStripMenuItem.Visible = true;
