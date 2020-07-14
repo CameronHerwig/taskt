@@ -93,7 +93,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             }
         }
 
-        //TODO: Studio Step Into
         public delegate void OpenFileDelegate(string filepath);
         public void OpenFile(string filePath)
         {
@@ -650,14 +649,14 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             pauseToolStripMenuItem.Tag = "pause";
             cancelToolStripMenuItem.Visible = true;
 
-            _newEngine = new frmScriptEngine(ScriptFilePath, this);
+            CurrentEngine = new frmScriptEngine(ScriptFilePath, this);
 
             //executionManager = new ScriptExectionManager();
             //executionManager.CurrentlyExecuting = true;
             //executionManager.ScriptName = new System.IO.FileInfo(ScriptFilePath).Name;
 
-            _newEngine.CallBackForm = this;
-            _newEngine.Show();
+            CurrentEngine.CallBackForm = this;
+            CurrentEngine.Show();
         }
         #endregion
 

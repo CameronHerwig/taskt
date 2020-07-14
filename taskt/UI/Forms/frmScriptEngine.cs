@@ -44,8 +44,10 @@ namespace taskt.UI.Forms
         private bool _closeWhenDone = false;
         public string Result { get; set; }
         public bool IsNewTaskSteppedInto { get; set; }
+        public bool IsNewTaskResumed { get; set; }
+        public bool IsNewTaskCancelled { get; set; }
         #endregion
-        
+
         //events and methods
         #region Form Events/Methods
         public frmScriptEngine(string pathToFile, frmScriptBuilder builderForm, List<ScriptVariable> variables = null,
@@ -160,7 +162,9 @@ namespace taskt.UI.Forms
                 uiBtnPause.DisplayText = "Resume";
                 uiBtnStepOver.Visible = true;
                 uiBtnStepInto.Visible = true;
-                //CallBackForm.OpenFile(FilePath);
+
+                CallBackForm.CurrentEngine = this;
+                CallBackForm.OpenFile(FilePath);
             }
 
             EngineInstance.ReportProgressEvent += Engine_ReportProgress;
@@ -320,15 +324,15 @@ namespace taskt.UI.Forms
                     Theme.BgGradientEndColor = Color.OrangeRed;
                     Invalidate();
                 }
-                else if (mainLogoText.Contains("(success)"))
+                else if (mainLogoText.Contains("(success)")) 
                 {
                     Theme.BgGradientStartColor = Color.Green;
                     Theme.BgGradientEndColor = Color.Green;
-                    Invalidate();
+                    Invalidate();                  
                 }
 
                 //reset debug line
-                if (CallBackForm != null)
+                if (CallBackForm != null && !IsNewTaskSteppedInto)
                     CallBackForm.DebugLine = 0;
 
                 //begin auto close
@@ -493,55 +497,85 @@ namespace taskt.UI.Forms
             Close();
         }
 
+        public delegate void uiBtnCancel_ClickDelegate(object sender, EventArgs e);
         public void uiBtnCancel_Click(object sender, EventArgs e)
         {
-            if (uiBtnCancel.DisplayText == "Close")
+            if (InvokeRequired)
             {
-                Close();
-                return;
-            }
-
-            uiBtnPause.Visible = false;
-            uiBtnCancel.Visible = false;
-            lblKillProcNote.Text = "Cancelling...";
-            EngineInstance.ResumeScript();
-            lstSteppingCommands.Items.Add("[User Requested Cancellation]");
-            lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
-            lblMainLogo.Text = "debug info (cancelling)";
-            EngineInstance.CancelScript();
-        }
-
-        public void uiBtnPause_Click(object sender, EventArgs e)
-        {
-            if (uiBtnPause.DisplayText == "Pause")
-            {
-                lstSteppingCommands.Items.Add("[User Requested Pause]");
-                uiBtnPause.Image = Properties.Resources.command_resume;
-                uiBtnPause.DisplayText = "Resume";
-                EngineInstance.PauseScript();
+                var d = new uiBtnCancel_ClickDelegate(uiBtnCancel_Click);
+                Invoke(d, new object[] { sender, e });
             }
             else
             {
-                lstSteppingCommands.Items.Add("[User Requested Resume]");
-                uiBtnPause.Image = Properties.Resources.command_pause;
-                uiBtnPause.DisplayText = "Pause";
-                uiBtnStepOver.Visible = false;
-                uiBtnStepInto.Visible = false;
-                if (CallBackForm != null)
+                if (uiBtnCancel.DisplayText == "Close")
                 {
-                    CallBackForm.IsScriptSteppedOver = false;
-                    CallBackForm.IsScriptSteppedInto = false;
-                }                
-                EngineInstance.ResumeScript();
-            }
+                    Close();
+                    return;
+                }
 
-            lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
+                if (IsNewTaskSteppedInto)
+                {
+                    IsNewTaskResumed = false;
+                    IsNewTaskCancelled = true;
+                }
+
+                uiBtnPause.Visible = false;
+                uiBtnCancel.Visible = false;
+                uiBtnStepInto.Visible = false;
+                uiBtnStepOver.Visible = false;
+                lblKillProcNote.Text = "Cancelling...";
+                EngineInstance.ResumeScript();
+                lstSteppingCommands.Items.Add("[User Requested Cancellation]");
+                lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
+                lblMainLogo.Text = "debug info (cancelling)";
+                EngineInstance.CancelScript();
+            }          
+        }
+
+        public delegate void uiBtnPause_ClickDelegate(object sender, EventArgs e);           
+        public void uiBtnPause_Click(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                var d = new uiBtnPause_ClickDelegate(uiBtnPause_Click);
+                Invoke(d, new object[] { sender, e });
+            }
+            else
+            {
+                if (uiBtnPause.DisplayText == "Pause")
+                {
+                    lstSteppingCommands.Items.Add("[User Requested Pause]");
+                    uiBtnPause.Image = Properties.Resources.command_resume;
+                    uiBtnPause.DisplayText = "Resume";
+                    EngineInstance.PauseScript();
+                }
+                else
+                {
+                    lstSteppingCommands.Items.Add("[User Requested Resume]");
+                    uiBtnPause.Image = Properties.Resources.command_pause;
+                    uiBtnPause.DisplayText = "Pause";
+                    uiBtnStepOver.Visible = false;
+                    uiBtnStepInto.Visible = false;
+                    if (CallBackForm != null)
+                    {
+                        CallBackForm.IsScriptSteppedOver = false;
+                        CallBackForm.IsScriptSteppedInto = false;
+                    }
+                    if (IsNewTaskSteppedInto)
+                        IsNewTaskResumed = true;
+                    EngineInstance.ResumeScript();
+                }
+
+                lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
+            }   
         }
 
         public void uiBtnStepOver_Click(object sender, EventArgs e)
         {
             if (CallBackForm != null)
                 CallBackForm.IsScriptSteppedOver = true;
+            if (IsNewTaskSteppedInto)
+                IsNewTaskResumed = false;
             EngineInstance.StepOverScript();
         }
 
@@ -549,6 +583,8 @@ namespace taskt.UI.Forms
         {
             if (CallBackForm != null)
                 CallBackForm.IsScriptSteppedInto = true;
+            if (IsNewTaskSteppedInto)
+                IsNewTaskResumed = false;
             EngineInstance.StepIntoScript();
         }
 

@@ -23,7 +23,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
         private void uiScriptTabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (IsScriptRunning)
+            if (IsScriptRunning && !IsScriptSteppedInto)
                 e.Cancel = true;
         }
 

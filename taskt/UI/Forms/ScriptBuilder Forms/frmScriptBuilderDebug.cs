@@ -21,7 +21,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             LoadDebugTab(debugTab);
         }
 
-        //TODO: Studio Step Into
         public delegate void LoadDebugTabDelegate(TabPage debugTab);
         private void LoadDebugTab(TabPage debugTab)
         {
@@ -49,7 +48,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     debugTab.Controls.RemoveAt(0);
                 debugTab.Controls.Add(variablesGridViewHelper);
 
-                List<ScriptVariable> engineVariables = _newEngine.EngineInstance.VariableList;
+                List<ScriptVariable> engineVariables = CurrentEngine.EngineInstance.VariableList;
                 foreach (var variable in engineVariables)
                 {
                     DataRow[] foundVariables = variableValues.Select("Name = '" + variable.VariableName + "'");
@@ -65,6 +64,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                             case "System.Data.DataTable":
                                 variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(), 
                                     ConvertDataTableToString((DataTable)variable.VariableValue));
+                                break;
+                            case "System.Data.DataRow":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(),
+                                    ConvertDataRowToString((DataRow)variable.VariableValue));
                                 break;
                             case "System.Collections.Generic.List`1[System.String]":
                                 variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(),
@@ -84,19 +87,19 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         #region Debug Buttons
         private void stepOverToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _newEngine.uiBtnStepOver_Click(sender, e);
+            CurrentEngine.uiBtnStepOver_Click(sender, e);
             IsScriptSteppedOver = true;
         }
 
         private void stepIntoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _newEngine.uiBtnStepInto_Click(sender, e);
+            CurrentEngine.uiBtnStepInto_Click(sender, e);
             IsScriptSteppedInto = true;
         }
 
         private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _newEngine.uiBtnPause_Click(sender, e);
+            CurrentEngine.uiBtnPause_Click(sender, e);
             if (pauseToolStripMenuItem.Tag.ToString() == "pause")
             {
                 pauseToolStripMenuItem.Image = Resources.command_resume;
@@ -126,7 +129,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
         private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _newEngine.uiBtnCancel_Click(sender, e);
+            CurrentEngine.uiBtnCancel_Click(sender, e);
 
             stepIntoToolStripMenuItem.Visible = false;
             stepOverToolStripMenuItem.Visible = false;
@@ -157,6 +160,17 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 stringBuilder.AppendFormat("{0}]", rows[dt.Columns.Count - 1]);
                 stringBuilder.AppendLine();
             }
+            return stringBuilder.ToString();
+        }
+        public string ConvertDataRowToString(DataRow row)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("[");
+
+            for (int i = 0; i < row.ItemArray.Length - 1; i++)
+                stringBuilder.AppendFormat("{0}, ", row.ItemArray[i]);
+
+            stringBuilder.AppendFormat("{0}]", row.ItemArray[row.ItemArray.Length - 1]);
             return stringBuilder.ToString();
         }
 

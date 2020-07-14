@@ -1433,7 +1433,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             // 
             // stepIntoToolStripMenuItem
             // 
-            this.stepIntoToolStripMenuItem.Enabled = false;
             this.stepIntoToolStripMenuItem.Image = global::taskt.Properties.Resources.command_step_into;
             this.stepIntoToolStripMenuItem.Name = "stepIntoToolStripMenuItem";
             this.stepIntoToolStripMenuItem.Size = new System.Drawing.Size(34, 34);

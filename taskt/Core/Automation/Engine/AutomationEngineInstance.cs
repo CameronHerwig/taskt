@@ -251,8 +251,7 @@ namespace taskt.Core.Automation.Engine
                 if (_isScriptSteppedInto && parentCommand.CommandName == "RunTaskCommand")
                 {
                     parentCommand.IsSteppedInto = true;
-                    //TODO: Studio Step Into
-                    //((RunTaskCommand)parentCommand).CurrentScriptBuilder = TasktEngineUI.CallBackForm;
+                    parentCommand.CurrentScriptBuilder = TasktEngineUI.CallBackForm;
                     _isScriptSteppedInto = false;
                     break;
                 }

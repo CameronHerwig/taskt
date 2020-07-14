@@ -114,13 +114,13 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
                 if (stepOverToolStripMenuItem.Visible)
                     LoadDebugTab(uiPaneTabs.TabPages["DebugVariables"]);
-                else if (!stepOverToolStripMenuItem.Visible && _newEngine.EngineInstance._isScriptPaused)
+                else if (!stepOverToolStripMenuItem.Visible && CurrentEngine.EngineInstance._isScriptPaused)
                 {
                     pauseToolStripMenuItem.Image = Resources.command_resume;
                     pauseToolStripMenuItem.Tag = "resume";
 
                 }
-                else if (!stepOverToolStripMenuItem.Visible && !_newEngine.EngineInstance._isScriptPaused)
+                else if (!stepOverToolStripMenuItem.Visible && !CurrentEngine.EngineInstance._isScriptPaused)
                 {
                     pauseToolStripMenuItem.Image = Resources.command_pause;
                     pauseToolStripMenuItem.Tag = "pause";
@@ -131,7 +131,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private DateTime _notificationExpires;
         private bool _isDisplaying;
         private string _notificationText;
-        private frmScriptEngine _newEngine;
+        public frmScriptEngine CurrentEngine { get; set; }
         public bool IsScriptRunning { get; set; }
         public bool IsScriptPaused { get; set; }
         public bool IsScriptSteppedOver { get; set; }

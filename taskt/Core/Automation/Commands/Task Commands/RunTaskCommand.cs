@@ -13,7 +13,6 @@ using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.UI.CustomControls;
 using taskt.UI.Forms;
-using taskt.UI.Forms.ScriptBuilder_Forms;
 
 namespace taskt.Core.Automation.Commands
 {
@@ -59,10 +58,6 @@ namespace taskt.Core.Automation.Commands
         [XmlIgnore]
         public frmScriptEngine NewEngine { get; set; }
 
-        //TODO: Studio Step Into
-        [XmlIgnore]
-        public frmScriptBuilder CurrentScriptBuilder { get; set; }
-
         public RunTaskCommand()
         {
             CommandName = "RunTaskCommand";
@@ -89,7 +84,10 @@ namespace taskt.Core.Automation.Commands
         public override void RunCommand(object sender)
         {
             AutomationEngineInstance currentScriptEngine = (AutomationEngineInstance)sender;
-            var startFile = v_taskPath.ConvertToUserVariable(sender);
+            var childTaskPath = v_taskPath.ConvertToUserVariable(sender);
+            var parentEngine = currentScriptEngine.TasktEngineUI;
+            string parentTaskPath = "";
+            int parentDebugLine = 0;
 
             //create variable list
             var variableList = new List<ScriptVariable>();
@@ -99,14 +97,12 @@ namespace taskt.Core.Automation.Commands
             {
                 var variableName = (string)rw.ItemArray[0];
                 object variableValue;
-                try
-                {
+
+                if (LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]) != null)
                     variableValue = LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]).VariableValue;
-                }
-                catch(Exception)
-                {
+                else
                     variableValue = ((string)rw.ItemArray[1]).ConvertToUserVariable(sender);
-                }
+
                 var variableReturn = (string)rw.ItemArray[2];
 
                 variableList.Add(new ScriptVariable
@@ -125,12 +121,16 @@ namespace taskt.Core.Automation.Commands
                 }
             }
 
-            NewEngine = new frmScriptEngine(startFile, CurrentScriptBuilder, variableList, true);
-
+            NewEngine = new frmScriptEngine(childTaskPath, CurrentScriptBuilder, variableList, true);
+            
             if (IsSteppedInto)
-                NewEngine.IsNewTaskSteppedInto = true;
+            {
+                parentTaskPath = currentScriptEngine.TasktEngineUI.FilePath;
+                parentDebugLine = currentScriptEngine.TasktEngineUI.CallBackForm.DebugLine;
 
-            //Core.Automation.Engine.AutomationEngineInstance currentScriptEngine = (Core.Automation.Engine.AutomationEngineInstance) sender;
+                NewEngine.IsNewTaskSteppedInto = true;
+            }
+
             currentScriptEngine.TasktEngineUI.Invoke((Action)delegate()
             {
                 currentScriptEngine.TasktEngineUI.TopMost = false;
@@ -173,6 +173,21 @@ namespace taskt.Core.Automation.Commands
             currentScriptEngine.TasktEngineUI.Invoke((Action)delegate()
             {
                 currentScriptEngine.TasktEngineUI.TopMost = true;
+                if (IsSteppedInto)
+                {
+                    currentScriptEngine.TasktEngineUI.CallBackForm.CurrentEngine = parentEngine;
+                    currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = true;
+                    currentScriptEngine.TasktEngineUI.CallBackForm.OpenFile(parentTaskPath);
+                    currentScriptEngine.TasktEngineUI.CallBackForm.DebugLine = parentDebugLine + 1;
+                    if (NewEngine.IsNewTaskResumed)
+                    {
+                        currentScriptEngine.TasktEngineUI.uiBtnPause_Click(null, null);
+
+                    }
+                    else if (NewEngine.IsNewTaskCancelled)
+                        currentScriptEngine.TasktEngineUI.uiBtnCancel_Click(null, null);
+                    currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = false;
+                }
             });
         }
 
