@@ -163,6 +163,16 @@ namespace taskt.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap action_bar_run_no_debug {
+            get {
+                object obj = ResourceManager.GetObject("action_bar_run_no_debug", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap action_bar_save {
             get {
                 object obj = ResourceManager.GetObject("action_bar_save", resourceCulture);

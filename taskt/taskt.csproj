@@ -884,6 +884,7 @@
     <None Include="Resources\command-folders.png" />
     <None Include="Resources\command-database2.png" />
     <None Include="Resources\command-password.png" />
+    <None Include="Resources\action-bar-run-no-debug.png" />
     <Content Include="Resources\IEDriverServer.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

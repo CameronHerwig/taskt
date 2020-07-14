@@ -23,8 +23,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
         private void uiScriptTabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (IsScriptRunning && !IsScriptSteppedInto)
-                e.Cancel = true;
+           // if (IsScriptRunning && !IsScriptSteppedInto)
+                //e.Cancel = true;
         }
 
         //TODO Finish close button rendering

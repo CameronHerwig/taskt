@@ -58,23 +58,23 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         switch (variable.VariableValue.GetType().ToString())
                         {
                             case "System.String":
-                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(),
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
                                     variable.VariableValue);
                                 break;
                             case "System.Data.DataTable":
-                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(), 
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName, 
                                     ConvertDataTableToString((DataTable)variable.VariableValue));
                                 break;
                             case "System.Data.DataRow":
-                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(),
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
                                     ConvertDataRowToString((DataRow)variable.VariableValue));
                                 break;
                             case "System.Collections.Generic.List`1[System.String]":
-                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(),
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
                                     ConvertListToString((List<string>)variable.VariableValue));
                                 break;
                             default:
-                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().ToString(), 
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName, 
                                     variable.VariableValue.ToString());
                                 break;
                         }                       

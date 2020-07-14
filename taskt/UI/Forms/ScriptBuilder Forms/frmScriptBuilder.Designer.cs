@@ -33,7 +33,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmScriptBuilder));
-            taskt.Core.Theme theme1 = new taskt.Core.Theme();
+            taskt.Core.Theme theme3 = new taskt.Core.Theme();
             this.cmsProjectFolderActions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiCopyFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeleteFolder = new System.Windows.Forms.ToolStripMenuItem();
@@ -130,6 +130,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.scheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAndRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runNoDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cancelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepOverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -839,9 +840,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(1293, 51);
             this.pnlMain.TabIndex = 2;
-            theme1.BgGradientEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(50)))), ((int)(((byte)(178)))));
-            theme1.BgGradientStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(136)))), ((int)(((byte)(204)))));
-            this.pnlMain.Theme = theme1;
+            theme3.BgGradientEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(50)))), ((int)(((byte)(178)))));
+            theme3.BgGradientStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(136)))), ((int)(((byte)(204)))));
+            this.pnlMain.Theme = theme3;
             // 
             // lblMainLogo
             // 
@@ -1398,12 +1399,22 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             // 
             // saveAndRunToolStripMenuItem
             // 
+            this.saveAndRunToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runNoDebugToolStripMenuItem});
             this.saveAndRunToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveAndRunToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_run;
             this.saveAndRunToolStripMenuItem.Name = "saveAndRunToolStripMenuItem";
             this.saveAndRunToolStripMenuItem.Size = new System.Drawing.Size(132, 34);
             this.saveAndRunToolStripMenuItem.Text = "Save and Run";
             this.saveAndRunToolStripMenuItem.Click += new System.EventHandler(this.saveAndRunToolStripMenuItem_Click);
+            // 
+            // runNoDebugToolStripMenuItem
+            // 
+            this.runNoDebugToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.runNoDebugToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_run_no_debug;
+            this.runNoDebugToolStripMenuItem.Name = "runNoDebugToolStripMenuItem";
+            this.runNoDebugToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.runNoDebugToolStripMenuItem.Text = "Run";
             // 
             // cancelToolStripMenuItem
             // 
@@ -1752,6 +1763,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private ToolStripMenuItem pauseToolStripMenuItem;
         private ToolStripMenuItem stepIntoToolStripMenuItem;
         private ToolStripMenuItem cancelToolStripMenuItem;
+        private ToolStripMenuItem runNoDebugToolStripMenuItem;
     }
 }
 
