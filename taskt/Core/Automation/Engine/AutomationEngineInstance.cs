@@ -222,6 +222,9 @@ namespace taskt.Core.Automation.Engine
             //get command
             ScriptCommand parentCommand = command.ScriptCommand;
 
+            if (parentCommand.CommandName == "RunTaskCommand")
+                parentCommand.CurrentScriptBuilder = TasktEngineUI.CallBackForm;
+
             //set LastCommadExecuted
             LastExecutedCommand = command.ScriptCommand;
 
@@ -233,6 +236,7 @@ namespace taskt.Core.Automation.Engine
             {
                 ReportProgress("Pausing Before Execution");
                 _isScriptPaused = true;
+                TasktEngineUI.IsHiddenTaskEngine = false;
             }
 
             //handle pause

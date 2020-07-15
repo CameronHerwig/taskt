@@ -85,9 +85,10 @@ namespace taskt.Core.Automation.Commands
         {
             AutomationEngineInstance currentScriptEngine = (AutomationEngineInstance)sender;
             var childTaskPath = v_taskPath.ConvertToUserVariable(sender);
-            var parentEngine = currentScriptEngine.TasktEngineUI;
-            string parentTaskPath = "";
-            int parentDebugLine = 0;
+
+            frmScriptEngine parentEngine = currentScriptEngine.TasktEngineUI;
+            string parentTaskPath = currentScriptEngine.TasktEngineUI.FilePath;
+            int parentDebugLine = currentScriptEngine.TasktEngineUI.DebugLineNumber;
 
             //create variable list
             var variableList = new List<ScriptVariable>();
@@ -122,13 +123,14 @@ namespace taskt.Core.Automation.Commands
             }
 
             NewEngine = new frmScriptEngine(childTaskPath, CurrentScriptBuilder, variableList, true);
-            
+            NewEngine.IsHiddenTaskEngine = true;
+
             if (IsSteppedInto)
             {
-                parentTaskPath = currentScriptEngine.TasktEngineUI.FilePath;
-                parentDebugLine = currentScriptEngine.TasktEngineUI.CallBackForm.DebugLine;
+                
 
                 NewEngine.IsNewTaskSteppedInto = true;
+                NewEngine.IsHiddenTaskEngine = false;
             }
 
             currentScriptEngine.TasktEngineUI.Invoke((Action)delegate()
@@ -173,21 +175,27 @@ namespace taskt.Core.Automation.Commands
             currentScriptEngine.TasktEngineUI.Invoke((Action)delegate()
             {
                 currentScriptEngine.TasktEngineUI.TopMost = true;
-                if (IsSteppedInto)
+                currentScriptEngine.TasktEngineUI.IsHiddenTaskEngine = true;
+
+                if ((IsSteppedInto || !NewEngine.IsHiddenTaskEngine) && !NewEngine.IsNewTaskResumed && !NewEngine.IsNewTaskCancelled)
                 {
+                    //parentEngine.IsHiddenTaskEngine = false;
                     currentScriptEngine.TasktEngineUI.CallBackForm.CurrentEngine = parentEngine;
                     currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = true;
+                    currentScriptEngine.TasktEngineUI.IsHiddenTaskEngine = false;
                     currentScriptEngine.TasktEngineUI.CallBackForm.OpenFile(parentTaskPath);
-                    currentScriptEngine.TasktEngineUI.CallBackForm.DebugLine = parentDebugLine + 1;
-                    if (NewEngine.IsNewTaskResumed)
-                    {
-                        currentScriptEngine.TasktEngineUI.uiBtnPause_Click(null, null);
-
-                    }
-                    else if (NewEngine.IsNewTaskCancelled)
-                        currentScriptEngine.TasktEngineUI.uiBtnCancel_Click(null, null);
+                    currentScriptEngine.TasktEngineUI.UpdateLineNumber(parentDebugLine + 1);//.CallBackForm.DebugLine = parentDebugLine + 1;                   
+                    currentScriptEngine.TasktEngineUI.AddStatus("Pausing Before Execution");
                     currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = false;
+
+                    //currentScriptEngine.TasktEngineUI.IsHiddenTaskEngine = false;
                 }
+
+                //if (NewEngine.IsNewTaskResumed)
+                    //currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = false;
+                //currentScriptEngine.TasktEngineUI.uiBtnPause_Click(null, null);
+                else if (NewEngine.IsNewTaskCancelled)
+                    currentScriptEngine.TasktEngineUI.uiBtnCancel_Click(null, null);
             });
         }
 

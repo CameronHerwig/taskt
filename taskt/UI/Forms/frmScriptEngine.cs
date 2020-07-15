@@ -25,6 +25,7 @@ using taskt.Core.Script;
 using taskt.UI.Forms.Supplement_Forms;
 using taskt.Core.Automation.Commands;
 using taskt.UI.Forms.ScriptBuilder_Forms;
+using taskt.UI.CustomControls.CustomUIControls;
 
 namespace taskt.UI.Forms
 {
@@ -46,6 +47,8 @@ namespace taskt.UI.Forms
         public bool IsNewTaskSteppedInto { get; set; }
         public bool IsNewTaskResumed { get; set; }
         public bool IsNewTaskCancelled { get; set; }
+        public bool IsHiddenTaskEngine { get; set; }
+        public int DebugLineNumber { get; set; }
         #endregion
 
         //events and methods
@@ -263,25 +266,37 @@ namespace taskt.UI.Forms
         /// Adds a status to the listbox for debugging and display purposes
         /// </summary>
         /// <param name="text"></param>
-        private void AddStatus(string text)
+        public void AddStatus(string text)
         {
             if (InvokeRequired)
             {
                 var d = new AddStatusDelegate(AddStatus);
                 Invoke(d, new object[] { text });
             }
-            else if(text == "Pausing Before Execution" && !uiBtnStepOver.Visible){
-
-                uiBtnPause_Click(null, null);
-                uiBtnStepOver.Visible = true;
-                uiBtnStepInto.Visible = true;
-            }
             else
             {
-                //update status
-                lblAction.Text = text + "..";
-                lstSteppingCommands.Items.Add(DateTime.Now.ToString("MM/dd/yy hh:mm:ss.fff") + " | " + text + "..");
-                lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
+                if (text == "Pausing Before Execution" && !uiBtnStepOver.Visible)
+                {
+                    
+                    uiBtnPause_Click(null, null);
+                    uiBtnStepOver.Visible = true;
+                    uiBtnStepInto.Visible = true;
+                    if (IsHiddenTaskEngine)
+                    {
+                        CallBackForm.OpenFile(FilePath);
+                        CallBackForm.CurrentEngine = this;
+                        IsNewTaskSteppedInto = true;
+                        IsHiddenTaskEngine = false;
+                        UpdateLineNumber(DebugLineNumber);
+                    }
+                }
+                else
+                {
+                    //update status
+                    lblAction.Text = text + "..";
+                    lstSteppingCommands.Items.Add(DateTime.Now.ToString("MM/dd/yy hh:mm:ss.fff") + " | " + text + "..");
+                    lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
+                }
             }
         }
 
@@ -310,8 +325,8 @@ namespace taskt.UI.Forms
                 uiBtnPause.Visible = false;
                 uiBtnStepOver.Visible = false;
                 uiBtnStepInto.Visible = false;
-                uiBtnCancel.DisplayText = "Close";
                 uiBtnCancel.Visible = true;
+                uiBtnCancel.DisplayText = "Close";
 
                 if ((!_advancedDebug) && (mainLogoText.Contains("(error)")))
                 {
@@ -330,10 +345,6 @@ namespace taskt.UI.Forms
                     Theme.BgGradientEndColor = Color.Green;
                     Invalidate();                  
                 }
-
-                //reset debug line
-                if (CallBackForm != null && !IsNewTaskSteppedInto)
-                    CallBackForm.DebugLine = 0;
 
                 //begin auto close
                 if ((_engineSettings.AutoCloseDebugWindow) || (ServerExecution))
@@ -421,16 +432,12 @@ namespace taskt.UI.Forms
                             responses.Add(checkboxCtrl.Checked.ToString());
                         }
                         else
-                        {
                             responses.Add(ctrl.Text);
-                        }
                     }
                     return responses;
                 }
                 else
-                {
                     return null;
-                }
             }
         }
 
@@ -456,9 +463,7 @@ namespace taskt.UI.Forms
                     return variables;
                 }
                 else
-                {
                     return null;
-                }
             }
         }
 
@@ -472,7 +477,9 @@ namespace taskt.UI.Forms
             }
             else
             {
-                if (CallBackForm != null)
+                DebugLineNumber = lineNumber;
+
+                if (CallBackForm != null && !IsHiddenTaskEngine)
                 {
                     CallBackForm.DebugLine = lineNumber;
                 }
@@ -509,11 +516,12 @@ namespace taskt.UI.Forms
             {
                 if (uiBtnCancel.DisplayText == "Close")
                 {
-                    Close();
+                    UpdateLineNumber(0); 
+                    Close();                   
                     return;
                 }
 
-                if (IsNewTaskSteppedInto)
+                if (IsNewTaskSteppedInto || IsHiddenTaskEngine)
                 {
                     IsNewTaskResumed = false;
                     IsNewTaskCancelled = true;
@@ -561,7 +569,7 @@ namespace taskt.UI.Forms
                         CallBackForm.IsScriptSteppedOver = false;
                         CallBackForm.IsScriptSteppedInto = false;
                     }
-                    if (IsNewTaskSteppedInto)
+                    if (IsNewTaskSteppedInto || !IsHiddenTaskEngine)
                         IsNewTaskResumed = true;
                     EngineInstance.ResumeScript();
                 }

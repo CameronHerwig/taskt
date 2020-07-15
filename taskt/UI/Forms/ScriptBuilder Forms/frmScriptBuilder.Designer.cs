@@ -33,7 +33,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmScriptBuilder));
-            taskt.Core.Theme theme3 = new taskt.Core.Theme();
+            taskt.Core.Theme theme2 = new taskt.Core.Theme();
             this.cmsProjectFolderActions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiCopyFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeleteFolder = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +74,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.uiBtnOpen = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
             this.grpRecordRun = new taskt.UI.CustomControls.CustomUIControls.UIGroupBox();
             this.uiBtnRecordSequence = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
-            this.uiBtnRunScript = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
+            this.uiBtnDebugScript = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
             this.uiBtnScheduleManagement = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
             this.grpVariable = new taskt.UI.CustomControls.CustomUIControls.UIGroupBox();
             this.uiBtnClearAll = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
@@ -129,8 +129,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAndRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.runNoDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cancelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepOverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -166,7 +165,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnOpen)).BeginInit();
             this.grpRecordRun.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnRecordSequence)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiBtnRunScript)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnDebugScript)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnScheduleManagement)).BeginInit();
             this.grpVariable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnClearAll)).BeginInit();
@@ -558,7 +557,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.uiBtnProject.DisplayText = "Project";
             this.uiBtnProject.DisplayTextBrush = System.Drawing.Color.AliceBlue;
             this.uiBtnProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.uiBtnProject.Image = global::taskt.Properties.Resources.action_bar_run;
+            this.uiBtnProject.Image = global::taskt.Properties.Resources.action_bar_project;
             this.uiBtnProject.IsMouseOver = false;
             this.uiBtnProject.Location = new System.Drawing.Point(0, 24);
             this.uiBtnProject.Margin = new System.Windows.Forms.Padding(4);
@@ -663,7 +662,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             // 
             this.grpRecordRun.BackColor = System.Drawing.Color.Transparent;
             this.grpRecordRun.Controls.Add(this.uiBtnRecordSequence);
-            this.grpRecordRun.Controls.Add(this.uiBtnRunScript);
+            this.grpRecordRun.Controls.Add(this.uiBtnDebugScript);
             this.grpRecordRun.Controls.Add(this.uiBtnScheduleManagement);
             this.grpRecordRun.Location = new System.Drawing.Point(602, 8);
             this.grpRecordRun.Margin = new System.Windows.Forms.Padding(4);
@@ -696,23 +695,23 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.uiBtnRecordSequence.Text = "Record";
             this.uiBtnRecordSequence.Click += new System.EventHandler(this.uiBtnRecordSequence_Click);
             // 
-            // uiBtnRunScript
+            // uiBtnDebugScript
             // 
-            this.uiBtnRunScript.BackColor = System.Drawing.Color.Transparent;
-            this.uiBtnRunScript.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.uiBtnRunScript.DisplayText = "Run";
-            this.uiBtnRunScript.DisplayTextBrush = System.Drawing.Color.AliceBlue;
-            this.uiBtnRunScript.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.uiBtnRunScript.Image = global::taskt.Properties.Resources.action_bar_run;
-            this.uiBtnRunScript.IsMouseOver = false;
-            this.uiBtnRunScript.Location = new System.Drawing.Point(130, 22);
-            this.uiBtnRunScript.Margin = new System.Windows.Forms.Padding(4);
-            this.uiBtnRunScript.Name = "uiBtnRunScript";
-            this.uiBtnRunScript.Size = new System.Drawing.Size(60, 62);
-            this.uiBtnRunScript.TabIndex = 12;
-            this.uiBtnRunScript.TabStop = false;
-            this.uiBtnRunScript.Text = "Run";
-            this.uiBtnRunScript.Click += new System.EventHandler(this.uiBtnRunScript_Click);
+            this.uiBtnDebugScript.BackColor = System.Drawing.Color.Transparent;
+            this.uiBtnDebugScript.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.uiBtnDebugScript.DisplayText = "Debug";
+            this.uiBtnDebugScript.DisplayTextBrush = System.Drawing.Color.AliceBlue;
+            this.uiBtnDebugScript.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.uiBtnDebugScript.Image = global::taskt.Properties.Resources.action_bar_debug;
+            this.uiBtnDebugScript.IsMouseOver = false;
+            this.uiBtnDebugScript.Location = new System.Drawing.Point(130, 22);
+            this.uiBtnDebugScript.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnDebugScript.Name = "uiBtnDebugScript";
+            this.uiBtnDebugScript.Size = new System.Drawing.Size(60, 62);
+            this.uiBtnDebugScript.TabIndex = 12;
+            this.uiBtnDebugScript.TabStop = false;
+            this.uiBtnDebugScript.Text = "Debug";
+            this.uiBtnDebugScript.Click += new System.EventHandler(this.uiBtnDebugScript_Click);
             // 
             // uiBtnScheduleManagement
             // 
@@ -840,9 +839,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(1293, 51);
             this.pnlMain.TabIndex = 2;
-            theme3.BgGradientEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(50)))), ((int)(((byte)(178)))));
-            theme3.BgGradientStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(136)))), ((int)(((byte)(204)))));
-            this.pnlMain.Theme = theme3;
+            theme2.BgGradientEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(50)))), ((int)(((byte)(178)))));
+            theme2.BgGradientStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(136)))), ((int)(((byte)(204)))));
+            this.pnlMain.Theme = theme2;
             // 
             // lblMainLogo
             // 
@@ -1205,7 +1204,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.fileActionsToolStripMenuItem,
             this.modifyToolStripMenuItem,
             this.scriptActionsToolStripMenuItem,
-            this.saveAndRunToolStripMenuItem,
+            this.runToolStripMenuItem,
+            this.debugToolStripMenuItem,
             this.cancelToolStripMenuItem,
             this.pauseToolStripMenuItem,
             this.stepOverToolStripMenuItem,
@@ -1239,9 +1239,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             // addProjectToolStripMenuItem
             // 
             this.addProjectToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.addProjectToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_run;
+            this.addProjectToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_project;
             this.addProjectToolStripMenuItem.Name = "addProjectToolStripMenuItem";
-            this.addProjectToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.addProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.addProjectToolStripMenuItem.Text = "Project Manager";
             this.addProjectToolStripMenuItem.Click += new System.EventHandler(this.addProjectToolStripMenuItem_Click);
             // 
@@ -1251,7 +1251,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.newToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.newToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_new;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.newToolStripMenuItem.Text = "New File";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -1260,7 +1260,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.openToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_open;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.openToolStripMenuItem.Text = "Open Existing File";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -1269,7 +1269,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.importFileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.importFileToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_import;
             this.importFileToolStripMenuItem.Name = "importFileToolStripMenuItem";
-            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.importFileToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.importFileToolStripMenuItem.Text = "Import File";
             this.importFileToolStripMenuItem.Click += new System.EventHandler(this.importFileToolStripMenuItem_Click);
             // 
@@ -1278,7 +1278,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.saveToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_save;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -1287,7 +1287,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.saveAsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.saveAsToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_saveas;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -1296,7 +1296,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.restartApplicationToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.restartApplicationToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_restart;
             this.restartApplicationToolStripMenuItem.Name = "restartApplicationToolStripMenuItem";
-            this.restartApplicationToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.restartApplicationToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.restartApplicationToolStripMenuItem.Text = "Restart Application";
             this.restartApplicationToolStripMenuItem.Click += new System.EventHandler(this.restartApplicationToolStripMenuItem_Click);
             // 
@@ -1305,7 +1305,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.closeApplicationToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.closeApplicationToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_close;
             this.closeApplicationToolStripMenuItem.Name = "closeApplicationToolStripMenuItem";
-            this.closeApplicationToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.closeApplicationToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.closeApplicationToolStripMenuItem.Text = "Close Application";
             this.closeApplicationToolStripMenuItem.Click += new System.EventHandler(this.closeApplicationToolStripMenuItem_Click);
             // 
@@ -1362,8 +1362,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             // 
             this.scriptActionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.recordToolStripMenuItem,
-            this.scheduleToolStripMenuItem,
-            this.runToolStripMenuItem});
+            this.scheduleToolStripMenuItem});
             this.scriptActionsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.scriptActionsToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_record;
             this.scriptActionsToolStripMenuItem.Name = "scriptActionsToolStripMenuItem";
@@ -1393,28 +1392,18 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.runToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.runToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_run;
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(68, 34);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
-            // saveAndRunToolStripMenuItem
+            // debugToolStripMenuItem
             // 
-            this.saveAndRunToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.runNoDebugToolStripMenuItem});
-            this.saveAndRunToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.saveAndRunToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_run;
-            this.saveAndRunToolStripMenuItem.Name = "saveAndRunToolStripMenuItem";
-            this.saveAndRunToolStripMenuItem.Size = new System.Drawing.Size(132, 34);
-            this.saveAndRunToolStripMenuItem.Text = "Save and Run";
-            this.saveAndRunToolStripMenuItem.Click += new System.EventHandler(this.saveAndRunToolStripMenuItem_Click);
-            // 
-            // runNoDebugToolStripMenuItem
-            // 
-            this.runNoDebugToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.runNoDebugToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_run_no_debug;
-            this.runNoDebugToolStripMenuItem.Name = "runNoDebugToolStripMenuItem";
-            this.runNoDebugToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.runNoDebugToolStripMenuItem.Text = "Run";
+            this.debugToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.debugToolStripMenuItem.Image = global::taskt.Properties.Resources.action_bar_debug;
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(88, 34);
+            this.debugToolStripMenuItem.Text = "Debug";
+            this.debugToolStripMenuItem.Click += new System.EventHandler(this.debugToolStripMenuItem_Click);
             // 
             // cancelToolStripMenuItem
             // 
@@ -1616,7 +1605,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnOpen)).EndInit();
             this.grpRecordRun.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnRecordSequence)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiBtnRunScript)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnDebugScript)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnScheduleManagement)).EndInit();
             this.grpVariable.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnClearAll)).EndInit();
@@ -1685,8 +1674,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private ToolStripMenuItem scriptActionsToolStripMenuItem;
         private ToolStripMenuItem recordToolStripMenuItem;
         private ToolStripMenuItem scheduleToolStripMenuItem;
-        private ToolStripMenuItem runToolStripMenuItem;
-        private ToolStripMenuItem saveAndRunToolStripMenuItem;
+        private ToolStripMenuItem debugToolStripMenuItem;
         private ToolStripTextBox tsSearchBox;
         private ToolStripMenuItem tsSearchButton;
         private ToolStripMenuItem tsSearchResult;
@@ -1720,7 +1708,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private CustomControls.CustomUIControls.UIPictureButton uiBtnOpen;
         private CustomControls.CustomUIControls.UIGroupBox grpRecordRun;
         private CustomControls.CustomUIControls.UIPictureButton uiBtnRecordSequence;
-        private CustomControls.CustomUIControls.UIPictureButton uiBtnRunScript;
+        private CustomControls.CustomUIControls.UIPictureButton uiBtnDebugScript;
         private CustomControls.CustomUIControls.UIPictureButton uiBtnScheduleManagement;
         private CustomControls.CustomUIControls.UIGroupBox grpVariable;
         private CustomControls.CustomUIControls.UIPictureButton uiBtnClearAll;
@@ -1737,7 +1725,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private ToolStripMenuItem tsmiPasteFolder;
         private ToolStripMenuItem tsmiMainPasteFolder;
         private ImageList imgListProjectPane;
-        private CustomControls.CustomUIControls.UITabControl uiScriptTabControl;
+        public CustomControls.CustomUIControls.UITabControl uiScriptTabControl;
         private Panel pnlCommandHelper;
         private CustomControls.CustomUIControls.UIFlowLayoutPanel flwRecentFiles;
         private Label lblFilesMissing;
@@ -1763,7 +1751,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private ToolStripMenuItem pauseToolStripMenuItem;
         private ToolStripMenuItem stepIntoToolStripMenuItem;
         private ToolStripMenuItem cancelToolStripMenuItem;
-        private ToolStripMenuItem runNoDebugToolStripMenuItem;
+        private ToolStripMenuItem runToolStripMenuItem;
     }
 }
 

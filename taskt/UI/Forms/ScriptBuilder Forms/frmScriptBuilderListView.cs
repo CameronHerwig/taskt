@@ -715,9 +715,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         {
             //warn if nothing was selected
             if (_selectedTabScriptActions.SelectedItems.Count == 0)
-            {
                 Notify("No code was selected!");
-            }
+            else
+                CreateUndoSnapshot();
 
             //get each item and set appropriately
             foreach (ListViewItem item in _selectedTabScriptActions.SelectedItems)
@@ -737,9 +737,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         {
             //warn if nothing was selected
             if (_selectedTabScriptActions.SelectedItems.Count == 0)
-            {
                 Notify("No code was selected!");
-            }
+            else
+                CreateUndoSnapshot();
 
             //get each item and set appropriately
             foreach (ListViewItem item in _selectedTabScriptActions.SelectedItems)

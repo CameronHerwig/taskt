@@ -93,6 +93,16 @@ namespace taskt.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap action_bar_debug {
+            get {
+                object obj = ResourceManager.GetObject("action_bar_debug", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap action_bar_import {
             get {
                 object obj = ResourceManager.GetObject("action-bar-import", resourceCulture);
@@ -133,6 +143,16 @@ namespace taskt.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap action_bar_project {
+            get {
+                object obj = ResourceManager.GetObject("action_bar_project", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap action_bar_record {
             get {
                 object obj = ResourceManager.GetObject("action_bar_record", resourceCulture);
@@ -156,16 +176,6 @@ namespace taskt.Properties {
         internal static System.Drawing.Bitmap action_bar_run {
             get {
                 object obj = ResourceManager.GetObject("action_bar_run", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap action_bar_run_no_debug {
-            get {
-                object obj = ResourceManager.GetObject("action_bar_run_no_debug", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

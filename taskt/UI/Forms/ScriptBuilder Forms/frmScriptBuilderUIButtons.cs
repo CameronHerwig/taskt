@@ -602,17 +602,18 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             scheduleManager.Show();
         }
 
-        private void runToolStripMenuItem_Click(object sender, EventArgs e)
+        private void debugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RunScript();
+            saveToolStripMenuItem_Click(null, null);
+            DebugScript();
         }
 
-        private void uiBtnRunScript_Click(object sender, EventArgs e)
+        private void uiBtnDebugScript_Click(object sender, EventArgs e)
         {
-            RunScript();
+            debugToolStripMenuItem_Click(null, null);
         }
 
-        private void RunScript()
+        private void DebugScript()
         {
             if (_selectedTabScriptActions.Items.Count == 0)
             {
@@ -658,13 +659,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             CurrentEngine.CallBackForm = this;
             CurrentEngine.Show();
         }
-        #endregion
 
-        #region Save And Run Tool Strip and Buttons
-        private void saveAndRunToolStripMenuItem_Click(object sender, EventArgs e)
+        private void runToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveToolStripMenuItem_Click(null, null);
-            runToolStripMenuItem_Click(null, null);
+
         }
         #endregion
 

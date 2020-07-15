@@ -23,7 +23,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
         private void uiScriptTabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-           // if (IsScriptRunning && !IsScriptSteppedInto)
+           //if (IsScriptRunning && !IsScriptSteppedInto )
                 //e.Cancel = true;
         }
 
@@ -53,11 +53,15 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
         private void uiScriptTabControl_MouseClick(object sender, MouseEventArgs e)
         {
+            if (IsScriptRunning)
+                return;
+
             if (e.Button == MouseButtons.Right)
             {
                 _lastClickPosition = Cursor.Position;
                 cmsScriptTabActions.Show(Cursor.Position);
             }
+
         //TODO Finish close button click event
         //    else
         //    {
