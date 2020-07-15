@@ -27,5 +27,10 @@ namespace taskt.UI.Forms.Supplement_Forms
         {
             DialogResult = DialogResult.Cancel;
         }
+
+        private void uiBtnCopyError_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(lblErrorMessage.Text);
+        }
     }
 }

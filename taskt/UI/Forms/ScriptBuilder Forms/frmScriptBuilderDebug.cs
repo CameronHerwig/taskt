@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using taskt.Core.Script;
 using taskt.Properties;
+using taskt.UI.Forms.Supplement_Forms;
 
 namespace taskt.UI.Forms.ScriptBuilder_Forms
 {
@@ -184,6 +185,25 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
             stringBuilder.AppendFormat("{0}]", list[list.Count - 1]);
             return stringBuilder.ToString();
+        }
+
+
+        public delegate DialogResult LoadErrorFormDelegate(string errorMessage);
+        public DialogResult LoadErrorForm(string errorMessage)
+        {
+            if (InvokeRequired)
+            {
+                var d = new LoadErrorFormDelegate(LoadErrorForm);
+                DialogResult result = (DialogResult)Invoke(d, new object[] { errorMessage });
+                return result;
+            }
+            else
+            {
+                frmError errorForm = new frmError(errorMessage);
+                errorForm.Owner = this;
+                errorForm.ShowDialog();
+                return errorForm.DialogResult;
+            }          
         }
     }
 }

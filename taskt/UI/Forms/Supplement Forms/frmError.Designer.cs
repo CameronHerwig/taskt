@@ -33,9 +33,11 @@
             this.lblErrorMessage = new System.Windows.Forms.Label();
             this.uiBtnContinue = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
             this.uiBtnEnd = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
+            this.uiBtnCopyError = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnContinue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnEnd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnCopyError)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -96,19 +98,45 @@
             this.uiBtnEnd.Text = "End";
             this.uiBtnEnd.Click += new System.EventHandler(this.uiBtnEnd_Click);
             // 
+            // uiBtnCopyError
+            // 
+            this.uiBtnCopyError.BackColor = System.Drawing.Color.Transparent;
+            this.uiBtnCopyError.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.uiBtnCopyError.DisplayText = "Copy Error";
+            this.uiBtnCopyError.DisplayTextBrush = System.Drawing.Color.White;
+            this.uiBtnCopyError.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.uiBtnCopyError.Image = global::taskt.Properties.Resources.copy;
+            this.uiBtnCopyError.IsMouseOver = false;
+            this.uiBtnCopyError.Location = new System.Drawing.Point(14, 177);
+            this.uiBtnCopyError.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
+            this.uiBtnCopyError.Name = "uiBtnCopyError";
+            this.uiBtnCopyError.Size = new System.Drawing.Size(86, 60);
+            this.uiBtnCopyError.TabIndex = 25;
+            this.uiBtnCopyError.TabStop = false;
+            this.uiBtnCopyError.Text = "Copy Error";
+            this.uiBtnCopyError.Click += new System.EventHandler(this.uiBtnCopyError_Click);
+            // 
             // frmError
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(580, 247);
+            this.Controls.Add(this.uiBtnCopyError);
             this.Controls.Add(this.uiBtnContinue);
             this.Controls.Add(this.uiBtnEnd);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmError";
-            this.Text = "frmError";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Error";
+            this.TopMost = true;
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnContinue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnEnd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiBtnCopyError)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -119,5 +147,6 @@
         private CustomControls.CustomUIControls.UIPictureButton uiBtnContinue;
         private CustomControls.CustomUIControls.UIPictureButton uiBtnEnd;
         private System.Windows.Forms.Label lblErrorMessage;
+        private CustomControls.CustomUIControls.UIPictureButton uiBtnCopyError;
     }
 }

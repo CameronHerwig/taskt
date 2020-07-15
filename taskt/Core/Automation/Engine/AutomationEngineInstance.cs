@@ -16,6 +16,9 @@ using taskt.Core.Automation.Engine.EngineEventArgs;
 using Serilog.Core;
 using taskt.Core.Settings;
 using taskt.Core.Server.Models;
+using taskt.UI.Forms.Supplement_Forms;
+using System.Windows.Forms;
+using taskt.UI.Forms.ScriptBuilder_Forms;
 
 namespace taskt.Core.Automation.Engine
 {
@@ -379,7 +382,15 @@ namespace taskt.Core.Automation.Engine
                 else
                 {
                     //start debug code here 
-                    throw ex;
+                    var error = ErrorsOccured.OrderByDescending(x => x.LineNumber).FirstOrDefault();
+                    string errorMessage = $"Source: {error.SourceFile}, Line: {error.LineNumber}, " +
+                            $"Exception Type: {error.ErrorType}, Exception Message: {error.ErrorMessage}";
+                    DialogResult result = TasktEngineUI.CallBackForm.LoadErrorForm(errorMessage);
+                    
+                    if (result == DialogResult.OK)
+                        ErrorsOccured.Clear();
+                    else
+                        throw ex;
                 }
             }
         }
