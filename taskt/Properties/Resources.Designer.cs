@@ -243,6 +243,16 @@ namespace taskt.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap command_breakpoint {
+            get {
+                object obj = ResourceManager.GetObject("command_breakpoint", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap command_camera {
             get {
                 object obj = ResourceManager.GetObject("command_camera", resourceCulture);
@@ -296,6 +306,16 @@ namespace taskt.Properties {
         internal static System.Drawing.Bitmap command_dictionary {
             get {
                 object obj = ResourceManager.GetObject("command_dictionary", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap command_disabled {
+            get {
+                object obj = ResourceManager.GetObject("command_disabled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

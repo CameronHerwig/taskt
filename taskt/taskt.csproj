@@ -886,6 +886,8 @@
     <None Include="Resources\command-password.png" />
     <None Include="Resources\action-bar-run-no-debug.png" />
     <None Include="Resources\action-bar-project.png" />
+    <None Include="Resources\command-breakpoint.png" />
+    <None Include="Resources\command-disabled.png" />
     <Content Include="Resources\IEDriverServer.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

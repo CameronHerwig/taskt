@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ADODB;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -575,12 +576,25 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         _selectedTabScriptActions.Font, Brushes.LightSlateGray, modifiedBounds);
                     break;
                 case 1:
-                    //draw command icon
-                    var img = _uiImages.Images[command.GetType().Name];
-                    if (img != null)
+                    if (command.PauseBeforeExecution)
                     {
-                        e.Graphics.DrawImage(img, modifiedBounds.Left, modifiedBounds.Top + 3);
+                        var breakPointImg = new Bitmap(Resources.command_breakpoint, new Size(16, 16));
+                        e.Graphics.DrawImage(breakPointImg, modifiedBounds.Left, modifiedBounds.Top + 3);
                     }
+                    else if (command.IsCommented)
+                    {
+                        var commentedImg = new Bitmap(Resources.command_disabled, new Size(16, 16));
+                        e.Graphics.DrawImage(commentedImg, modifiedBounds.Left, modifiedBounds.Top + 3);
+                    }
+                    else
+                    {
+                        //draw command icon
+                        var img = _uiImages.Images[command.GetType().Name];
+                        if (img != null)
+                        {
+                            e.Graphics.DrawImage(img, modifiedBounds.Left, modifiedBounds.Top + 3);
+                        }
+                    }                   
                     break;
                 case 2:
                     //write command text
@@ -589,7 +603,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     {
                         //debugging coloring
                         commandNameBrush = Brushes.White;
-                        commandBackgroundBrush = Brushes.OrangeRed;
+                        commandBackgroundBrush = Brushes.LimeGreen;
                         IsScriptPaused = false;
 
                         TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
@@ -607,7 +621,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExecution)
                     {
                         commandNameBrush = Brushes.White;
-                        commandBackgroundBrush = Brushes.Indigo;
+                        commandBackgroundBrush = Brushes.Red;
 
                         TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
                                                                               .FirstOrDefault();
@@ -645,8 +659,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     else if (command.PauseBeforeExecution)
                     {
                         //pause before execution coloring
-                        commandNameBrush = Brushes.MediumPurple;
-                        commandBackgroundBrush = Brushes.Lavender;
+                        commandNameBrush = Brushes.Red;
+                        commandBackgroundBrush = Brushes.MistyRose;
                     }
                     else if ((command is AddCodeCommentCommand) || (command.IsCommented))
                     {
