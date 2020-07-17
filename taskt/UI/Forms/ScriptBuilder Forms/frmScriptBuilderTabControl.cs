@@ -53,8 +53,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
         private void uiScriptTabControl_MouseClick(object sender, MouseEventArgs e)
         {
-            if (IsScriptRunning)
-                return;
+            //if (IsScriptRunning)
+               // return;
 
             if (e.Button == MouseButtons.Right)
             {

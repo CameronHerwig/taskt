@@ -136,6 +136,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         public bool IsScriptPaused { get; set; }
         public bool IsScriptSteppedOver { get; set; }
         public bool IsScriptSteppedInto { get; set; }
+        public bool IsUnhandledException { get; set; }
         #endregion
 
         #region Form Events

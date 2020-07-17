@@ -184,16 +184,10 @@ namespace taskt.Core.Automation.Commands
                     currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = true;
                     currentScriptEngine.TasktEngineUI.IsHiddenTaskEngine = false;
                     currentScriptEngine.TasktEngineUI.CallBackForm.OpenFile(parentTaskPath);
-                    currentScriptEngine.TasktEngineUI.UpdateLineNumber(parentDebugLine + 1);//.CallBackForm.DebugLine = parentDebugLine + 1;                   
+                    currentScriptEngine.TasktEngineUI.UpdateLineNumber(parentDebugLine + 1);                
                     currentScriptEngine.TasktEngineUI.AddStatus("Pausing Before Execution");
                     currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = false;
-
-                    //currentScriptEngine.TasktEngineUI.IsHiddenTaskEngine = false;
                 }
-
-                //if (NewEngine.IsNewTaskResumed)
-                    //currentScriptEngine.TasktEngineUI.CallBackForm.IsScriptSteppedInto = false;
-                //currentScriptEngine.TasktEngineUI.uiBtnPause_Click(null, null);
                 else if (NewEngine.IsNewTaskCancelled)
                     currentScriptEngine.TasktEngineUI.uiBtnCancel_Click(null, null);
             });

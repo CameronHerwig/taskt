@@ -1,24 +1,22 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using taskt.Core.Server;
-using taskt.Core.Utilities.CommonUtilities;
+using System.Windows.Forms;
 using taskt.Core.App;
-using taskt.UI.Forms;
-using taskt.Core.Script;
 using taskt.Core.Automation.Commands;
 using taskt.Core.Automation.Engine.EngineEventArgs;
-using Serilog.Core;
-using taskt.Core.Settings;
+using taskt.Core.Script;
+using taskt.Core.Server;
 using taskt.Core.Server.Models;
-using taskt.UI.Forms.Supplement_Forms;
-using System.Windows.Forms;
-using taskt.UI.Forms.ScriptBuilder_Forms;
+using taskt.Core.Settings;
+using taskt.Core.Utilities.CommonUtilities;
+using taskt.UI.Forms;
 
 namespace taskt.Core.Automation.Engine
 {
@@ -307,10 +305,12 @@ namespace taskt.Core.Automation.Engine
                     (parentCommand is BeginRetryCommand))
                 {
                     //run the command and pass bgw/command as this command will recursively call this method for sub commands
+                    command.IsExceptionIgnored = true;
                     parentCommand.RunCommand(this, command);
                 }
                 else if (parentCommand is SequenceCommand)
                 {
+                    command.IsExceptionIgnored = true;
                     parentCommand.RunCommand(this, command);
                 }
                 else if (parentCommand is StopCurrentTaskCommand)
@@ -365,6 +365,10 @@ namespace taskt.Core.Automation.Engine
                     });
                 }
 
+                var error = ErrorsOccured.OrderByDescending(x => x.LineNumber).FirstOrDefault();
+                string errorMessage = $"Source: {error.SourceFile}, Line: {error.LineNumber} {parentCommand.GetDisplayValue()}, " +
+                        $"Exception Type: {error.ErrorType}, Exception Message: {error.ErrorMessage}";
+
                 //error occuured so decide what user selected
                 if (ErrorHandler != null)
                 {
@@ -381,14 +385,36 @@ namespace taskt.Core.Automation.Engine
                 }
                 else
                 {
-                    //start debug code here 
-                    var error = ErrorsOccured.OrderByDescending(x => x.LineNumber).FirstOrDefault();
-                    string errorMessage = $"Source: {error.SourceFile}, Line: {error.LineNumber}, " +
-                            $"Exception Type: {error.ErrorType}, Exception Message: {error.ErrorMessage}";
-                    DialogResult result = TasktEngineUI.CallBackForm.LoadErrorForm(errorMessage);
-                    
-                    if (result == DialogResult.OK)
-                        ErrorsOccured.Clear();
+                    if (!command.IsExceptionIgnored)
+                    {
+                        //load error form if exception is not handled
+                        TasktEngineUI.CallBackForm.IsUnhandledException = true;
+                        TasktEngineUI.AddStatus("Pausing Before Execution");
+
+                        DialogResult result = TasktEngineUI.CallBackForm.LoadErrorForm(errorMessage);
+
+                        if (result == DialogResult.OK)
+                        {
+                            TasktEngineUI.CallBackForm.IsUnhandledException = false;
+                            ReportProgress("Error Occured at Line " + parentCommand.LineNumber + ":" + ex.ToString());
+                            ReportProgress("Continuing Per User Choice");
+                            ErrorsOccured.Clear();
+                            TasktEngineUI.uiBtnPause_Click(null, null);
+
+                        }
+                        else if (result == DialogResult.Abort)
+                        {
+                            TasktEngineUI.CallBackForm.IsUnhandledException = false;
+                            TasktEngineUI.uiBtnPause_Click(null, null);
+                            throw ex;
+                        }
+                        else
+                        {
+                            TasktEngineUI.CallBackForm.IsUnhandledException = false;
+                            TasktEngineUI.uiBtnPause_Click(null, null);
+                            throw ex;
+                        }
+                    }
                     else
                         throw ex;
                 }

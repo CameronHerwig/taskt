@@ -25,7 +25,6 @@ using taskt.Core.Script;
 using taskt.UI.Forms.Supplement_Forms;
 using taskt.Core.Automation.Commands;
 using taskt.UI.Forms.ScriptBuilder_Forms;
-using taskt.UI.CustomControls.CustomUIControls;
 
 namespace taskt.UI.Forms
 {
@@ -557,8 +556,8 @@ namespace taskt.UI.Forms
                     uiBtnPause.DisplayText = "Resume";
                     EngineInstance.PauseScript();
                 }
-                else
-                {
+                else if (uiBtnPause.DisplayText == "Resume")
+                {                   
                     lstSteppingCommands.Items.Add("[User Requested Resume]");
                     uiBtnPause.Image = Properties.Resources.command_pause;
                     uiBtnPause.DisplayText = "Pause";

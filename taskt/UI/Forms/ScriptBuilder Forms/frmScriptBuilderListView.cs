@@ -599,7 +599,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 case 2:
                     //write command text
                     Brush commandNameBrush, commandBackgroundBrush;
-                    if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExecution)
+                    if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExecution && !IsUnhandledException)
                     {
                         //debugging coloring
                         commandNameBrush = Brushes.White;
@@ -616,6 +616,26 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                             stepOverToolStripMenuItem.Visible = false;
                             pauseToolStripMenuItem.Image = Resources.command_pause;
                             pauseToolStripMenuItem.Tag = "pause";
+                        }
+                    }
+                    else if((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExecution && IsUnhandledException)
+                    {
+                        commandNameBrush = Brushes.Red;
+                        commandBackgroundBrush = Brushes.WhiteSmoke;
+
+                        TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
+                                                                              .FirstOrDefault();
+
+                        if (debugTab == null && !IsScriptPaused)
+                        {
+                            CreateDebugTab();
+                            stepIntoToolStripMenuItem.Visible = true;
+                            stepOverToolStripMenuItem.Visible = true;
+                            pauseToolStripMenuItem.Visible = true;
+                            cancelToolStripMenuItem.Visible = true;
+                            pauseToolStripMenuItem.Image = Resources.command_resume;
+                            pauseToolStripMenuItem.Tag = "resume";
+                            IsScriptPaused = true;
                         }
                     }
                     else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExecution)

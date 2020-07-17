@@ -18,12 +18,17 @@ namespace taskt.UI.Forms.Supplement_Forms
             lblErrorMessage.Text = errorMessage;
         }
 
-        private void uiBtnContinue_Click(object sender, EventArgs e)
+        private void uiBtnIgnore_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }
 
-        private void uiBtnEnd_Click(object sender, EventArgs e)
+        private void uiBtnContinue_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Abort;
+        }
+
+        private void uiBtnBreak_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
         }
@@ -31,6 +36,6 @@ namespace taskt.UI.Forms.Supplement_Forms
         private void uiBtnCopyError_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(lblErrorMessage.Text);
-        }
+        }       
     }
 }

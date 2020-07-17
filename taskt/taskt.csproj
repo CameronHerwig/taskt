@@ -907,6 +907,7 @@
     <None Include="Resources\command-breakpoint.png" />
     <None Include="Resources\command-disabled.png" />
     <None Include="Resources\copy.png" />
+    <None Include="Resources\command-ignore.png" />
     <Content Include="Resources\IEDriverServer.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

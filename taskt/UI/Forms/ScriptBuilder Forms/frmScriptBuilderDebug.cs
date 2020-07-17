@@ -194,8 +194,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             if (InvokeRequired)
             {
                 var d = new LoadErrorFormDelegate(LoadErrorForm);
-                DialogResult result = (DialogResult)Invoke(d, new object[] { errorMessage });
-                return result;
+                return (DialogResult)Invoke(d, new object[] { errorMessage });
             }
             else
             {
