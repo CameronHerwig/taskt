@@ -233,7 +233,7 @@ namespace taskt.Core.Automation.Engine
             LineNumberChanged(parentCommand.LineNumber);
 
             //handle pause request
-            if (parentCommand.PauseBeforeExecution)
+            if (parentCommand.PauseBeforeExecution && TasktEngineUI.IsDebugMode && !ChildScriptFailed)
             {
                 ReportProgress("Pausing Before Execution");
                 _isScriptPaused = true;
@@ -258,6 +258,8 @@ namespace taskt.Core.Automation.Engine
                     parentCommand.IsSteppedInto = true;
                     parentCommand.CurrentScriptBuilder = TasktEngineUI.CallBackForm;
                     _isScriptSteppedInto = false;
+                    TasktEngineUI.IsHiddenTaskEngine = true;
+                    
                     break;
                 }
                 else if (_isScriptSteppedOver || _isScriptSteppedInto)
@@ -385,7 +387,7 @@ namespace taskt.Core.Automation.Engine
                 }
                 else
                 {
-                    if (!command.IsExceptionIgnored)
+                    if (!command.IsExceptionIgnored && TasktEngineUI.IsDebugMode)
                     {
                         //load error form if exception is not handled
                         TasktEngineUI.CallBackForm.IsUnhandledException = true;
@@ -393,25 +395,24 @@ namespace taskt.Core.Automation.Engine
 
                         DialogResult result = TasktEngineUI.CallBackForm.LoadErrorForm(errorMessage);
 
+                        TasktEngineUI.CallBackForm.IsUnhandledException = false;
+                        ReportProgress("Error Occured at Line " + parentCommand.LineNumber + ":" + ex.ToString());
+
                         if (result == DialogResult.OK)
-                        {
-                            TasktEngineUI.CallBackForm.IsUnhandledException = false;
-                            ReportProgress("Error Occured at Line " + parentCommand.LineNumber + ":" + ex.ToString());
-                            ReportProgress("Continuing Per User Choice");
+                        {                           
+                            ReportProgress("Ignoring Per User Choice");
                             ErrorsOccured.Clear();
                             TasktEngineUI.uiBtnPause_Click(null, null);
 
                         }
                         else if (result == DialogResult.Abort)
                         {
-                            TasktEngineUI.CallBackForm.IsUnhandledException = false;
+                            ReportProgress("Continuing Per User Choice");
                             TasktEngineUI.uiBtnPause_Click(null, null);
                             throw ex;
                         }
                         else
                         {
-                            TasktEngineUI.CallBackForm.IsUnhandledException = false;
-                            TasktEngineUI.uiBtnPause_Click(null, null);
                             throw ex;
                         }
                     }

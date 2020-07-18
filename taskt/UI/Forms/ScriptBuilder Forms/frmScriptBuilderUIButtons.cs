@@ -605,7 +605,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void debugToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveToolStripMenuItem_Click(null, null);
-            DebugScript();
+            RunScript(true);
         }
 
         private void uiBtnDebugScript_Click(object sender, EventArgs e)
@@ -613,7 +613,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             debugToolStripMenuItem_Click(null, null);
         }
 
-        private void DebugScript()
+        private void RunScript(bool isDebugMode)
         {
             if (_selectedTabScriptActions.Items.Count == 0)
             {
@@ -650,7 +650,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             pauseToolStripMenuItem.Tag = "pause";
             cancelToolStripMenuItem.Visible = true;
 
-            CurrentEngine = new frmScriptEngine(ScriptFilePath, this);
+            CurrentEngine = new frmScriptEngine(ScriptFilePath, this, null, false, isDebugMode);
 
             //executionManager = new ScriptExectionManager();
             //executionManager.CurrentlyExecuting = true;
@@ -662,7 +662,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
         private void runToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            saveToolStripMenuItem_Click(null, null);
+            RunScript(false);
         }
         #endregion
 

@@ -55,7 +55,7 @@
             // 
             this.lblErrorMessage.BackColor = System.Drawing.Color.Transparent;
             this.lblErrorMessage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblErrorMessage.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblErrorMessage.Font = new System.Drawing.Font("Segoe UI Light", 10F, System.Drawing.FontStyle.Bold);
             this.lblErrorMessage.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblErrorMessage.Location = new System.Drawing.Point(0, 0);
             this.lblErrorMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -134,6 +134,7 @@
             this.uiBtnBreak.TabIndex = 26;
             this.uiBtnBreak.TabStop = false;
             this.uiBtnBreak.Text = "Break";
+            this.uiBtnBreak.Visible = false;
             this.uiBtnBreak.Click += new System.EventHandler(this.uiBtnBreak_Click);
             // 
             // frmError

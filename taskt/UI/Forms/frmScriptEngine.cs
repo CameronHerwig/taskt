@@ -48,14 +48,17 @@ namespace taskt.UI.Forms
         public bool IsNewTaskCancelled { get; set; }
         public bool IsHiddenTaskEngine { get; set; }
         public int DebugLineNumber { get; set; }
+        public bool IsDebugMode { get; set; }
         #endregion
 
         //events and methods
         #region Form Events/Methods
         public frmScriptEngine(string pathToFile, frmScriptBuilder builderForm, List<ScriptVariable> variables = null,
-            bool blnCloseWhenDone = false)
+            bool blnCloseWhenDone = false, bool isDebugMode = false)
         {
             InitializeComponent();
+
+            IsDebugMode = isDebugMode;
 
             if (variables != null)
             {
@@ -575,6 +578,31 @@ namespace taskt.UI.Forms
 
                 lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
             }   
+        }
+
+        public delegate void ResumeParentTaskDelegate();
+        public void ResumeParentTask()
+        {
+            if (InvokeRequired)
+            {
+                var d = new ResumeParentTaskDelegate(ResumeParentTask);
+                Invoke(d, new object[] { });
+            }
+            else
+            {
+                uiBtnPause.Image = Properties.Resources.command_pause;
+                uiBtnPause.DisplayText = "Pause";
+                uiBtnStepOver.Visible = false;
+                uiBtnStepInto.Visible = false;
+                if (CallBackForm != null)
+                {
+                    CallBackForm.IsScriptSteppedOver = false;
+                    CallBackForm.IsScriptSteppedInto = false;
+                }
+                if (IsNewTaskSteppedInto || !IsHiddenTaskEngine)
+                    IsNewTaskResumed = true;
+                EngineInstance.ResumeScript();
+            }
         }
 
         public void uiBtnStepOver_Click(object sender, EventArgs e)

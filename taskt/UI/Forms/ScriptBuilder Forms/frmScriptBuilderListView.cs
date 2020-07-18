@@ -621,7 +621,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     else if((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExecution && IsUnhandledException)
                     {
                         commandNameBrush = Brushes.Red;
-                        commandBackgroundBrush = Brushes.WhiteSmoke;
+                        commandBackgroundBrush = Brushes.Black;
 
                         TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
                                                                               .FirstOrDefault();
