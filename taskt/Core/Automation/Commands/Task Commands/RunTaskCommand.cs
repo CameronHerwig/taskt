@@ -181,7 +181,12 @@ namespace taskt.Core.Automation.Commands
                     parentEngine.CallBackForm.CurrentEngine = parentEngine;
                     parentEngine.CallBackForm.IsScriptSteppedInto = true;
                     parentEngine.IsHiddenTaskEngine = false;
+
+                    //toggle running flag to allow for tab selection
+                    parentEngine.CallBackForm.IsScriptRunning = false;
                     parentEngine.CallBackForm.OpenFile(parentTaskPath);
+                    parentEngine.CallBackForm.IsScriptRunning = true;
+
                     parentEngine.UpdateLineNumber(parentDebugLine + 1);
                     parentEngine.AddStatus("Pausing Before Execution");
                     parentEngine.CallBackForm.IsScriptSteppedInto = false;

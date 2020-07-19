@@ -175,7 +175,11 @@ namespace taskt.UI.Forms
                 uiBtnStepInto.Visible = true;
 
                 CallBackForm.CurrentEngine = this;
+
+                //toggle running flag to allow for tab selection
+                CallBackForm.IsScriptRunning = false;
                 CallBackForm.OpenFile(FilePath);
+                CallBackForm.IsScriptRunning = true;
             }
 
             EngineInstance.ReportProgressEvent += Engine_ReportProgress;
@@ -294,8 +298,12 @@ namespace taskt.UI.Forms
                     uiBtnStepOver.Visible = true;
                     uiBtnStepInto.Visible = true;
                     if (IsHiddenTaskEngine)
-                    {                                              
+                    {
+                        //toggle running flag to allow for tab selection
+                        CallBackForm.IsScriptRunning = false;
                         CallBackForm.OpenFile(FilePath);
+                        CallBackForm.IsScriptRunning = true;
+
                         CallBackForm.CurrentEngine = this;
                         IsNewTaskSteppedInto = true;
                         IsHiddenTaskEngine = false;
@@ -309,8 +317,12 @@ namespace taskt.UI.Forms
                     uiBtnStepInto.Visible = false;
                     if (IsHiddenTaskEngine)
                     {
-                        CallBackForm.CurrentEngine = this;
-                        CallBackForm.OpenFile(FilePath);                       
+                        //toggle running flag to allow for tab selection
+                        CallBackForm.IsScriptRunning = false;
+                        CallBackForm.OpenFile(FilePath);
+                        CallBackForm.IsScriptRunning = true;
+
+                        CallBackForm.CurrentEngine = this;                                            
                         IsNewTaskSteppedInto = true;
                         IsHiddenTaskEngine = false;
                         UpdateLineNumber(DebugLineNumber);

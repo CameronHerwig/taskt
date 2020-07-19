@@ -69,6 +69,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         //    }
         }
 
+        private void uiScriptTabControl_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (IsScriptRunning)
+                e.Cancel = true;
+        }
+
         private void tsmiCloseTab_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < uiScriptTabControl.TabCount; i++)

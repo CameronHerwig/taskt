@@ -15,7 +15,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void CreateDebugTab()
         {
             TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
-                                                                              .FirstOrDefault();
+                                                                            .FirstOrDefault();
 
             if (debugTab == null)
             {
@@ -50,9 +50,9 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 variablesGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 variablesGridViewHelper.AllowUserToAddRows = false;
                 variablesGridViewHelper.AllowUserToDeleteRows = false;
-
+                
                 if (debugTab.Controls.Count != 0)
-                    debugTab.Controls.RemoveAt(0);
+                    debugTab.Controls.RemoveAt(0);    
                 debugTab.Controls.Add(variablesGridViewHelper);
 
                 List<ScriptVariable> engineVariables = CurrentEngine.EngineInstance.VariableList;
