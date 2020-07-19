@@ -391,24 +391,24 @@ namespace taskt.Core.Automation.Engine
                     {
                         //load error form if exception is not handled
                         TasktEngineUI.CallBackForm.IsUnhandledException = true;
-                        TasktEngineUI.AddStatus("Pausing Before Execution");
+                        TasktEngineUI.AddStatus("Pausing Before Exception");
 
                         DialogResult result = TasktEngineUI.CallBackForm.LoadErrorForm(errorMessage);
-
-                        TasktEngineUI.CallBackForm.IsUnhandledException = false;
+                       
                         ReportProgress("Error Occured at Line " + parentCommand.LineNumber + ":" + ex.ToString());
+                        TasktEngineUI.CallBackForm.IsUnhandledException = false;
 
                         if (result == DialogResult.OK)
                         {                           
                             ReportProgress("Ignoring Per User Choice");
                             ErrorsOccured.Clear();
                             TasktEngineUI.uiBtnPause_Click(null, null);
-
                         }
                         else if (result == DialogResult.Abort)
                         {
                             ReportProgress("Continuing Per User Choice");
-                            TasktEngineUI.uiBtnPause_Click(null, null);
+                            TasktEngineUI.CallBackForm.RemoveDebugTab();
+                            TasktEngineUI.uiBtnPause_Click(null, null);                           
                             throw ex;
                         }
                         else

@@ -14,12 +14,18 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
     {
         private void CreateDebugTab()
         {
-            TabPage debugTab = new TabPage();
-            debugTab.Name = "DebugVariables";
-            debugTab.Text = "Variables";
-            uiPaneTabs.TabPages.Add(debugTab);
-            uiPaneTabs.SelectedTab = debugTab;
-            LoadDebugTab(debugTab);
+            TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
+                                                                              .FirstOrDefault();
+
+            if (debugTab == null)
+            {
+                debugTab = new TabPage();
+                debugTab.Name = "DebugVariables";
+                debugTab.Text = "Variables";
+                uiPaneTabs.TabPages.Add(debugTab);
+                uiPaneTabs.SelectedTab = debugTab;
+                LoadDebugTab(debugTab);
+            }           
         }
 
         public delegate void LoadDebugTabDelegate(TabPage debugTab);
@@ -82,7 +88,26 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     }
                 }
                 variablesGridViewHelper.DataSource = variableValues;
+                uiPaneTabs.SelectedTab = debugTab;
             }           
+        }
+
+        public delegate void RemoveDebugTabDelegate();
+        public void RemoveDebugTab()
+        {
+            if (InvokeRequired)
+            {
+                var d = new RemoveDebugTabDelegate(RemoveDebugTab);
+                Invoke(d, new object[] { });
+            }
+            else
+            {
+                TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
+                                                                              .FirstOrDefault();
+
+                if (debugTab != null)
+                    uiPaneTabs.TabPages.Remove(debugTab);
+            }
         }
 
         #region Debug Buttons
@@ -117,12 +142,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 pauseToolStripMenuItem.Tag = "pause";
 
                 //When resuming, close debug tab if it's open
-                TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
-                                                                              .FirstOrDefault();
-
-                if (debugTab != null)
-                    uiPaneTabs.TabPages.Remove(debugTab);
-
+                RemoveDebugTab();
                 IsScriptSteppedOver = false;
                 IsScriptSteppedInto = false;
             }

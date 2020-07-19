@@ -101,12 +101,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     stepOverToolStripMenuItem.Visible = false;
                     pauseToolStripMenuItem.Visible = false;
                     cancelToolStripMenuItem.Visible = false;
-
-                    TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
-                                                                              .FirstOrDefault();
-
-                    if (debugTab != null)
-                        uiPaneTabs.TabPages.Remove(debugTab);
+                    RemoveDebugTab();
                 }
 
                 _selectedTabScriptActions.Invalidate();

@@ -244,7 +244,12 @@ namespace taskt.UI.Forms
 
             Result = EngineInstance.TasktResult;
             AddStatus("Total Execution Time: " + e.ExecutionTime.ToString());
-
+            try
+            {
+                UpdateLineNumber(0);
+            }
+            catch(Exception) { }
+            
             if(_closeWhenDone)
             {
                 EngineInstance.TasktEngineUI.Invoke((Action)delegate () { Close(); });
@@ -278,15 +283,28 @@ namespace taskt.UI.Forms
             else
             {
                 if (text == "Pausing Before Execution" && !uiBtnStepOver.Visible)
-                {
-                    
+                {                  
                     uiBtnPause_Click(null, null);
                     uiBtnStepOver.Visible = true;
                     uiBtnStepInto.Visible = true;
                     if (IsHiddenTaskEngine)
-                    {
+                    {                                              
                         CallBackForm.OpenFile(FilePath);
                         CallBackForm.CurrentEngine = this;
+                        IsNewTaskSteppedInto = true;
+                        IsHiddenTaskEngine = false;
+                        UpdateLineNumber(DebugLineNumber);
+                    }
+                }
+                else if (text == "Pausing Before Exception")
+                {
+                    uiBtnPause_Click(null, null);
+                    uiBtnStepOver.Visible = false;
+                    uiBtnStepInto.Visible = false;
+                    if (IsHiddenTaskEngine)
+                    {
+                        CallBackForm.CurrentEngine = this;
+                        CallBackForm.OpenFile(FilePath);                       
                         IsNewTaskSteppedInto = true;
                         IsHiddenTaskEngine = false;
                         UpdateLineNumber(DebugLineNumber);
@@ -469,12 +487,12 @@ namespace taskt.UI.Forms
             }
         }
 
-        public delegate void SetLineNumber(int lineNumber);
+        public delegate void UpdateLineNumberDelegate(int lineNumber);
         public void UpdateLineNumber(int lineNumber)
         {
             if (InvokeRequired)
             {
-                var d = new SetLineNumber(UpdateLineNumber);
+                var d = new UpdateLineNumberDelegate(UpdateLineNumber);
                 Invoke(d, new object[] { lineNumber });
             }
             else

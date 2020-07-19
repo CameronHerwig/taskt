@@ -606,47 +606,34 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         commandBackgroundBrush = Brushes.LimeGreen;
                         IsScriptPaused = false;
 
-                        TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
-                                                                              .FirstOrDefault();
-
-                        if (debugTab != null && !IsScriptSteppedOver && !IsScriptSteppedInto)
+                        if (!IsScriptSteppedOver && !IsScriptSteppedInto)
                         {
-                            uiPaneTabs.TabPages.Remove(debugTab);
+                            RemoveDebugTab();
                             stepIntoToolStripMenuItem.Visible = false;
                             stepOverToolStripMenuItem.Visible = false;
                             pauseToolStripMenuItem.Image = Resources.command_pause;
                             pauseToolStripMenuItem.Tag = "pause";
                         }
                     }
-                    else if((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && !command.PauseBeforeExecution && IsUnhandledException)
+                    else if((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && IsUnhandledException)
                     {
                         commandNameBrush = Brushes.Red;
                         commandBackgroundBrush = Brushes.Black;
 
-                        TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
-                                                                              .FirstOrDefault();
-
-                        if (debugTab == null && !IsScriptPaused)
-                        {
-                            CreateDebugTab();
-                            stepIntoToolStripMenuItem.Visible = true;
-                            stepOverToolStripMenuItem.Visible = true;
-                            pauseToolStripMenuItem.Visible = true;
-                            cancelToolStripMenuItem.Visible = true;
-                            pauseToolStripMenuItem.Image = Resources.command_resume;
-                            pauseToolStripMenuItem.Tag = "resume";
-                            IsScriptPaused = true;
-                        }
+                        CreateDebugTab();
+                        stepIntoToolStripMenuItem.Visible = false;
+                        stepOverToolStripMenuItem.Visible = false;
+                        pauseToolStripMenuItem.Visible = true;
+                        cancelToolStripMenuItem.Visible = true;
+                        IsScriptPaused = true;
+                        
                     }
-                    else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExecution)
+                    else if ((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && command.PauseBeforeExecution && !IsUnhandledException)
                     {
                         commandNameBrush = Brushes.White;
                         commandBackgroundBrush = Brushes.Red;
 
-                        TabPage debugTab = uiPaneTabs.TabPages.Cast<TabPage>().Where(t => t.Name == "DebugVariables")
-                                                                              .FirstOrDefault();
-
-                        if (debugTab == null && !IsScriptPaused)
+                        if (!IsScriptPaused)
                         {                           
                             CreateDebugTab();
                             stepIntoToolStripMenuItem.Visible = true;
