@@ -110,55 +110,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             }
         }
 
-        #region Debug Buttons
-        private void stepOverToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CurrentEngine.uiBtnStepOver_Click(sender, e);
-            IsScriptSteppedOver = true;
-        }
-
-        private void stepIntoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CurrentEngine.uiBtnStepInto_Click(sender, e);
-            IsScriptSteppedInto = true;
-        }
-
-        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CurrentEngine.uiBtnPause_Click(sender, e);
-            if (pauseToolStripMenuItem.Tag.ToString() == "pause")
-            {
-                pauseToolStripMenuItem.Image = Resources.command_resume;
-                pauseToolStripMenuItem.Tag = "resume";
-            }
-
-            else if (pauseToolStripMenuItem.Tag.ToString() == "resume")
-            {
-                stepIntoToolStripMenuItem.Visible = false;
-                stepOverToolStripMenuItem.Visible = false;
-                pauseToolStripMenuItem.Visible = true;
-                cancelToolStripMenuItem.Visible = true;
-                pauseToolStripMenuItem.Image = Resources.command_pause;
-                pauseToolStripMenuItem.Tag = "pause";
-
-                //When resuming, close debug tab if it's open
-                RemoveDebugTab();
-                IsScriptSteppedOver = false;
-                IsScriptSteppedInto = false;
-            }
-        }
-
-        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CurrentEngine.uiBtnCancel_Click(sender, e);
-
-            stepIntoToolStripMenuItem.Visible = false;
-            stepOverToolStripMenuItem.Visible = false;
-            pauseToolStripMenuItem.Visible = false;
-            cancelToolStripMenuItem.Visible = false;
-        }
-        #endregion
-
         public string ConvertDataTableToString(DataTable dt)
         {
             StringBuilder stringBuilder = new StringBuilder();

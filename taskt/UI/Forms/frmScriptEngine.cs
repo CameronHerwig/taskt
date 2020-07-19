@@ -76,6 +76,12 @@ namespace taskt.UI.Forms
             //get engine settings
             _engineSettings = new ApplicationSettings().GetOrCreateApplicationSettings().EngineSettings;
 
+            if (isDebugMode)
+            {
+                _engineSettings.ShowDebugWindow = true;
+                _engineSettings.ShowAdvancedDebugOutput = true;
+            }
+
             //determine whether to show listbox or not
             _advancedDebug = _engineSettings.ShowAdvancedDebugOutput;
 
@@ -630,6 +636,11 @@ namespace taskt.UI.Forms
             if (IsNewTaskSteppedInto)
                 IsNewTaskResumed = false;
             EngineInstance.StepOverScript();
+        }
+
+        public bool IsStepOverButtonVisible()
+        {
+            return uiBtnStepOver.Visible;
         }
 
         public void uiBtnStepInto_Click(object sender, EventArgs e)

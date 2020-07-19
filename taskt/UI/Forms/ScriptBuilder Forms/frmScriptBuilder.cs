@@ -97,29 +97,14 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                     IsScriptRunning = false;
                     IsScriptSteppedOver = false;
                     IsScriptSteppedInto = false;
-                    stepIntoToolStripMenuItem.Visible = false;
-                    stepOverToolStripMenuItem.Visible = false;
-                    pauseToolStripMenuItem.Visible = false;
-                    cancelToolStripMenuItem.Visible = false;
                     RemoveDebugTab();
                 }
 
                 _selectedTabScriptActions.Invalidate();
                 //FormatCommandListView();
 
-                if (stepOverToolStripMenuItem.Visible)
+                if (CurrentEngine.IsStepOverButtonVisible())
                     LoadDebugTab(uiPaneTabs.TabPages["DebugVariables"]);
-                else if (!stepOverToolStripMenuItem.Visible && CurrentEngine.EngineInstance._isScriptPaused)
-                {
-                    pauseToolStripMenuItem.Image = Resources.command_resume;
-                    pauseToolStripMenuItem.Tag = "resume";
-
-                }
-                else if (!stepOverToolStripMenuItem.Visible && !CurrentEngine.EngineInstance._isScriptPaused)
-                {
-                    pauseToolStripMenuItem.Image = Resources.command_pause;
-                    pauseToolStripMenuItem.Tag = "pause";
-                }
             }
         }
         private List<string> _notificationList = new List<string>();

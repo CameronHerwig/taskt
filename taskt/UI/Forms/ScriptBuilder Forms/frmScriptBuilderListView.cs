@@ -609,10 +609,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         if (!IsScriptSteppedOver && !IsScriptSteppedInto)
                         {
                             RemoveDebugTab();
-                            stepIntoToolStripMenuItem.Visible = false;
-                            stepOverToolStripMenuItem.Visible = false;
-                            pauseToolStripMenuItem.Image = Resources.command_pause;
-                            pauseToolStripMenuItem.Tag = "pause";
                         }
                     }
                     else if((_debugLine > 0) && (e.ItemIndex == _debugLine - 1) && IsUnhandledException)
@@ -621,10 +617,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         commandBackgroundBrush = Brushes.Black;
 
                         CreateDebugTab();
-                        stepIntoToolStripMenuItem.Visible = false;
-                        stepOverToolStripMenuItem.Visible = false;
-                        pauseToolStripMenuItem.Visible = true;
-                        cancelToolStripMenuItem.Visible = true;
                         IsScriptPaused = true;
                         
                     }
@@ -636,12 +628,6 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                         if (!IsScriptPaused)
                         {                           
                             CreateDebugTab();
-                            stepIntoToolStripMenuItem.Visible = true;
-                            stepOverToolStripMenuItem.Visible = true;
-                            pauseToolStripMenuItem.Visible = true;
-                            cancelToolStripMenuItem.Visible = true;
-                            pauseToolStripMenuItem.Image = Resources.command_resume;
-                            pauseToolStripMenuItem.Tag = "resume";
                             IsScriptPaused = true;
                         }
                     }

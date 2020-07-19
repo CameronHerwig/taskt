@@ -640,15 +640,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             }
             uiScriptTabControl.SelectedTab = currentTab;
 
-
             Notify("Running Script..");
-
-            pauseToolStripMenuItem.Image = Resources.command_pause;
-            stepOverToolStripMenuItem.Visible = false;
-            stepIntoToolStripMenuItem.Visible = false;
-            pauseToolStripMenuItem.Visible = true;
-            pauseToolStripMenuItem.Tag = "pause";
-            cancelToolStripMenuItem.Visible = true;
 
             CurrentEngine = new frmScriptEngine(ScriptFilePath, this, null, false, isDebugMode);
 
