@@ -298,7 +298,7 @@
             this.uiBtnOpen.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOpen.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOpen.Image")));
             this.uiBtnOpen.IsMouseOver = false;
-            this.uiBtnOpen.Location = new System.Drawing.Point(4, 709);
+            this.uiBtnOpen.Location = new System.Drawing.Point(4, 864);
             this.uiBtnOpen.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnOpen.Name = "uiBtnOpen";
             this.uiBtnOpen.Size = new System.Drawing.Size(64, 59);
@@ -412,7 +412,7 @@
             this.uiSettingTabs.Margin = new System.Windows.Forms.Padding(4);
             this.uiSettingTabs.Name = "uiSettingTabs";
             this.uiSettingTabs.SelectedIndex = 0;
-            this.uiSettingTabs.Size = new System.Drawing.Size(843, 611);
+            this.uiSettingTabs.Size = new System.Drawing.Size(848, 766);
             this.uiSettingTabs.TabIndex = 25;
             // 
             // tabAppSettings
@@ -445,7 +445,7 @@
             this.tabAppSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabAppSettings.Name = "tabAppSettings";
             this.tabAppSettings.Padding = new System.Windows.Forms.Padding(4);
-            this.tabAppSettings.Size = new System.Drawing.Size(835, 570);
+            this.tabAppSettings.Size = new System.Drawing.Size(840, 725);
             this.tabAppSettings.TabIndex = 0;
             this.tabAppSettings.Text = "Application";
             // 
@@ -720,7 +720,7 @@
             this.tabDebugSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabDebugSettings.Name = "tabDebugSettings";
             this.tabDebugSettings.Padding = new System.Windows.Forms.Padding(4);
-            this.tabDebugSettings.Size = new System.Drawing.Size(835, 570);
+            this.tabDebugSettings.Size = new System.Drawing.Size(840, 648);
             this.tabDebugSettings.TabIndex = 1;
             this.tabDebugSettings.Text = "Automation Engine";
             // 
@@ -923,7 +923,7 @@
             this.tabServerSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabServerSettings.Name = "tabServerSettings";
             this.tabServerSettings.Padding = new System.Windows.Forms.Padding(4);
-            this.tabServerSettings.Size = new System.Drawing.Size(835, 570);
+            this.tabServerSettings.Size = new System.Drawing.Size(840, 648);
             this.tabServerSettings.TabIndex = 2;
             this.tabServerSettings.Text = "Server";
             // 
@@ -1121,7 +1121,7 @@
             this.tabLocalListener.Margin = new System.Windows.Forms.Padding(4);
             this.tabLocalListener.Name = "tabLocalListener";
             this.tabLocalListener.Padding = new System.Windows.Forms.Padding(4);
-            this.tabLocalListener.Size = new System.Drawing.Size(835, 570);
+            this.tabLocalListener.Size = new System.Drawing.Size(840, 648);
             this.tabLocalListener.TabIndex = 3;
             this.tabLocalListener.Text = "Local Listener";
             this.tabLocalListener.UseVisualStyleBackColor = true;
@@ -1315,7 +1315,7 @@
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 86F));
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.tlpSettings.Size = new System.Drawing.Size(851, 779);
+            this.tlpSettings.Size = new System.Drawing.Size(856, 934);
             this.tlpSettings.TabIndex = 26;
             // 
             // pnlSettings
@@ -1327,7 +1327,7 @@
             this.pnlSettings.Location = new System.Drawing.Point(0, 0);
             this.pnlSettings.Margin = new System.Windows.Forms.Padding(0);
             this.pnlSettings.Name = "pnlSettings";
-            this.pnlSettings.Size = new System.Drawing.Size(851, 86);
+            this.pnlSettings.Size = new System.Drawing.Size(856, 86);
             this.pnlSettings.TabIndex = 26;
             // 
             // tmrGetSocketStatus
@@ -1344,7 +1344,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 779);
+            this.ClientSize = new System.Drawing.Size(856, 934);
             this.Controls.Add(this.tlpSettings);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

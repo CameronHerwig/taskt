@@ -900,7 +900,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.uiPaneTabs.Margin = new System.Windows.Forms.Padding(4);
             this.uiPaneTabs.Name = "uiPaneTabs";
             this.uiPaneTabs.SelectedIndex = 0;
-            this.uiPaneTabs.Size = new System.Drawing.Size(238, 589);
+            this.uiPaneTabs.Size = new System.Drawing.Size(298, 736);
             this.uiPaneTabs.TabIndex = 26;
             // 
             // tpProject
@@ -911,7 +911,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tpProject.Location = new System.Drawing.Point(4, 32);
             this.tpProject.Name = "tpProject";
             this.tpProject.Padding = new System.Windows.Forms.Padding(3);
-            this.tpProject.Size = new System.Drawing.Size(230, 553);
+            this.tpProject.Size = new System.Drawing.Size(290, 700);
             this.tpProject.TabIndex = 5;
             this.tpProject.Text = "Project";
             this.tpProject.UseVisualStyleBackColor = true;
@@ -928,7 +928,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tvProject.Name = "tvProject";
             this.tvProject.SelectedImageIndex = 0;
             this.tvProject.ShowLines = false;
-            this.tvProject.Size = new System.Drawing.Size(224, 547);
+            this.tvProject.Size = new System.Drawing.Size(284, 694);
             this.tvProject.TabIndex = 0;
             this.tvProject.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvProject_BeforeExpand);
             this.tvProject.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProject_NodeMouseClick);
@@ -951,10 +951,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tpCommands.Controls.Add(this.tvCommands);
             this.tpCommands.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
             this.tpCommands.ForeColor = System.Drawing.Color.SteelBlue;
-            this.tpCommands.Location = new System.Drawing.Point(4, 32);
+            this.tpCommands.Location = new System.Drawing.Point(5, 40);
             this.tpCommands.Name = "tpCommands";
             this.tpCommands.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCommands.Size = new System.Drawing.Size(230, 553);
+            this.tpCommands.Size = new System.Drawing.Size(363, 875);
             this.tpCommands.TabIndex = 4;
             this.tpCommands.Text = "Commands";
             this.tpCommands.UseVisualStyleBackColor = true;
@@ -970,7 +970,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tvCommands.Margin = new System.Windows.Forms.Padding(4);
             this.tvCommands.Name = "tvCommands";
             this.tvCommands.ShowLines = false;
-            this.tvCommands.Size = new System.Drawing.Size(224, 547);
+            this.tvCommands.Size = new System.Drawing.Size(357, 869);
             this.tvCommands.TabIndex = 9;
             this.tvCommands.DoubleClick += new System.EventHandler(this.tvCommands_DoubleClick);
             this.tvCommands.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tvCommands_KeyPress);
