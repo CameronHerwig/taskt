@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Serilog.Core;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using taskt.Core.Settings;
+using taskt.Core.Utilities.CommonUtilities;
 
 namespace taskt.UI.Forms
 {
@@ -62,7 +64,8 @@ namespace taskt.UI.Forms
         {
             //build script path and execute
             var scriptFilePath = Path.Combine(_appSettings.ClientSettings.AttendedTasksFolder, cboSelectedScript.Text);
-            frmScriptEngine newEngine = new frmScriptEngine(scriptFilePath, null);
+            Logger engineLogger = new Logging().CreateLogger("Engine", Serilog.RollingInterval.Day);
+            frmScriptEngine newEngine = new frmScriptEngine(scriptFilePath, null, engineLogger);
             newEngine.Show();
         }
 

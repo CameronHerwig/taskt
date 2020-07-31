@@ -11,11 +11,13 @@
 //WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //See the License for the specific language governing permissions and
 //limitations under the License.
+using Serilog.Core;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.UI.Forms;
 using taskt.UI.Forms.ScriptBuilder_Forms;
 using taskt.UI.Forms.Supplement_Forms;
@@ -61,7 +63,9 @@ namespace taskt
                     return;
                 }
 
-                Application.Run(new frmScriptEngine(filePath, null, null, null, true));
+                //initialize Logger
+                Logger engineLogger = new Logging().CreateLogger("Engine", Serilog.RollingInterval.Day);
+                Application.Run(new frmScriptEngine(filePath, null, engineLogger));
             }
             else
             {

@@ -94,7 +94,6 @@
     <Compile Include="Data Commands\GetPDFTextCommand.cs" />
     <Compile Include="Data Commands\GetTextLengthCommand.cs" />
     <Compile Include="Data Commands\GetWordCountCommand.cs" />
-    <Compile Include="Data Commands\LogDataCommand.cs" />
     <Compile Include="Data Commands\MathCalculationCommand.cs" />
     <Compile Include="Data Commands\ModifyStringCommand.cs" />
     <Compile Include="Data Commands\ParseJSONArrayCommand.cs" />

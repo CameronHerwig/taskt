@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -15,14 +16,14 @@ using taskt.UI.CustomControls;
 namespace taskt.Commands
 {
     [Serializable]
-    [Group("Data Commands")]
+    [Group("Engine Commands")]
     [Description("This command logs text data to either an engine file or a custom file.")]
-    public class LogDataCommand : ScriptCommand
+    public class LogMessageCommand : ScriptCommand
     {
         [XmlAttribute]
         [PropertyDescription("Write Log To")]
         [InputSpecification("Specify the corresponding logging option to save logs to Engine Logs or to a custom File.")]
-        [SampleUsage("Engine Logs || Custom File Name || {vFileVariable}")]
+        [SampleUsage("Engine Logs || My Custom Logs || {vFileVariable}")]
         [Remarks("Selecting 'Engine Logs' will result in writing execution logs in the 'Engine Logs'. " +
             "The current Date and Time will be automatically appended to a local file if a custom file name is provided. " +
             "Logs are all saved in the TaskT Root Folder in the 'Logs' folder.")]
@@ -37,12 +38,27 @@ namespace taskt.Commands
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_LogText { get; set; }
 
-        public LogDataCommand()
+        [XmlAttribute]
+        [PropertyDescription("Log Type")]
+        [PropertyUISelectionOption("Debug")]
+        [PropertyUISelectionOption("Information")]
+        [PropertyUISelectionOption("Warning")]
+        [PropertyUISelectionOption("Error")]
+        [PropertyUISelectionOption("Fatal")]
+        [InputSpecification("Specify the log type.")]
+        [SampleUsage("")]
+        [Remarks("")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_LogType { get; set; }
+
+        public LogMessageCommand()
         {
-            CommandName = "LogDataCommand";
-            SelectionName = "Log Data";
+            CommandName = "LogMessageCommand";
+            SelectionName = "Log Message";
             CommandEnabled = true;
             CustomRendering = true;
+            v_LogFile = "Engine Logs";
+            v_LogType = "Information";
         }
 
         public override void RunCommand(object sender)
@@ -56,8 +72,24 @@ namespace taskt.Commands
             //determine log file
             if (v_LogFile == "Engine Logs")
             {
-                //log to the standard engine logs
-                engine.EngineLogger.Information(textToLog);
+                switch (v_LogType)
+                {
+                    case "Debug":
+                        LogLevel = LogEventLevel.Debug;
+                        break;
+                    case "Information":
+                        LogLevel = LogEventLevel.Information;
+                        break;
+                    case "Warning":
+                        LogLevel = LogEventLevel.Warning;
+                        break;
+                    case "Error":
+                        LogLevel = LogEventLevel.Error;
+                        break;
+                    case "Fatal":
+                        LogLevel = LogEventLevel.Fatal;
+                        break;
+                }
             }
             else
             {
@@ -76,23 +108,21 @@ namespace taskt.Commands
             //create standard group controls
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_LogFile", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_LogText", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_LogType", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            string logFileName;
             if (v_LogFile == "Engine Logs")
             {
-                logFileName = "taskt_Engine_Logs.txt";
+                return base.GetDisplayValue() + $" ['{v_LogType} - {v_LogText}']";
             }
             else
             {
-                logFileName = $"taskt_{v_LogFile}_Logs.txt";
-            }
-
-            return base.GetDisplayValue() + $" [Write Log '{v_LogText}' to 'taskt\\Logs\\{logFileName}']";
+                return base.GetDisplayValue() + $" ['{v_LogType} - {v_LogText}' to 'taskt\\Logs\\taskt_{v_LogFile}_Logs.txt']";
+            }          
         }
     }
 }

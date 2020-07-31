@@ -9,6 +9,7 @@ using taskt.Core.Enums;
 using taskt.Core.IO;
 using taskt.Core.Script;
 using taskt.Core.Settings;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.Server;
 using taskt.UI.CustomControls.CustomUIControls;
 using taskt.UI.Forms.Supplement_Forms;
@@ -652,7 +653,11 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
 
             Notify("Running Script..");
 
-            CurrentEngine = new frmScriptEngine(ScriptFilePath, this, null, null, false, _isDebugMode);
+            //initialize Logger
+            EngineLogger = new Logging().CreateLogger("Engine", Serilog.RollingInterval.Day);
+
+            //initialize Engine
+            CurrentEngine = new frmScriptEngine(ScriptFilePath, this, EngineLogger, null, null, false, _isDebugMode);
 
             //executionManager = new ScriptExectionManager();
             //executionManager.CurrentlyExecuting = true;
