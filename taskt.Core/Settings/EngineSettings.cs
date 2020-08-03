@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using taskt.Core.Enums;
 
 namespace taskt.Core.Settings
 {
@@ -23,6 +24,8 @@ namespace taskt.Core.Settings
         public bool AutoCloseMessagesOnServerExecution { get; set; }
         public bool AutoCloseDebugWindowOnServerExecution { get; set; }
         public bool AutoCalcVariables { get; set; }
+        public SinkType LoggingSinkType { get; set; }
+        public string LoggingFilePath { get; set; }
 
         public EngineSettings()
         {
@@ -40,6 +43,8 @@ namespace taskt.Core.Settings
             AutoCloseMessagesOnServerExecution = true;
             AutoCloseDebugWindowOnServerExecution = true;
             AutoCalcVariables = true;
+            LoggingSinkType = SinkType.File;
+            LoggingFilePath = "";
         }
     }
 }

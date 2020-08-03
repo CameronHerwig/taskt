@@ -654,7 +654,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             Notify("Running Script..");
 
             //initialize Logger
-            EngineLogger = new Logging().CreateLogger("Engine", Serilog.RollingInterval.Day);
+            EngineLogger = new Logging().CreateFileLogger(_appSettings.EngineSettings.LoggingFilePath, Serilog.RollingInterval.Day);
 
             //initialize Engine
             CurrentEngine = new frmScriptEngine(ScriptFilePath, this, EngineLogger, null, null, false, _isDebugMode);

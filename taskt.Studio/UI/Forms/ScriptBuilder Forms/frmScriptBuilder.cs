@@ -183,7 +183,8 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             HttpServerClient.InitializeScriptEngine(new frmScriptEngine());
             HttpServerClient.AssociatedBuilder = this;
 
-            Logger automationClientLogger = new Logging().CreateLogger("Automation Client", Serilog.RollingInterval.Day);
+            string loggerFilePath = Folders.GetFolder(FolderType.LogFolder) + "\\taskt Automation CLient Logs.txt";
+            Logger automationClientLogger = new Logging().CreateFileLogger(loggerFilePath, Serilog.RollingInterval.Day);
             LocalTCPClient.InitializeAutomationEngine(new AutomationEngineInstance(automationClientLogger));
             LocalTCPClient.Initialize(this, new AutomationEngineInstance(automationClientLogger));
             //Core.Sockets.SocketClient.Initialize();

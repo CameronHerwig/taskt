@@ -73,9 +73,14 @@
             this.lblRootFolder = new System.Windows.Forms.Label();
             this.txtAppFolderPath = new System.Windows.Forms.TextBox();
             this.tabDebugSettings = new System.Windows.Forms.TabPage();
+            this.txtLoggerFilePath = new System.Windows.Forms.TextBox();
+            this.lblFilePath = new System.Windows.Forms.Label();
+            this.cbxSinkType = new System.Windows.Forms.ComboBox();
+            this.lblSinkType = new System.Windows.Forms.Label();
+            this.lblLoggingSettings = new System.Windows.Forms.Label();
             this.chkAutoCalcVariables = new System.Windows.Forms.CheckBox();
             this.lblEndScriptHotKey = new System.Windows.Forms.Label();
-            this.cboCancellationKey = new System.Windows.Forms.ComboBox();
+            this.cbxCancellationKey = new System.Windows.Forms.ComboBox();
             this.chkOverrideInstances = new System.Windows.Forms.CheckBox();
             this.lblDelay = new System.Windows.Forms.Label();
             this.txtCommandDelay = new System.Windows.Forms.TextBox();
@@ -298,7 +303,7 @@
             this.uiBtnOpen.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOpen.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOpen.Image")));
             this.uiBtnOpen.IsMouseOver = false;
-            this.uiBtnOpen.Location = new System.Drawing.Point(4, 868);
+            this.uiBtnOpen.Location = new System.Drawing.Point(4, 944);
             this.uiBtnOpen.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnOpen.Name = "uiBtnOpen";
             this.uiBtnOpen.Size = new System.Drawing.Size(64, 59);
@@ -412,7 +417,7 @@
             this.uiSettingTabs.Margin = new System.Windows.Forms.Padding(4);
             this.uiSettingTabs.Name = "uiSettingTabs";
             this.uiSettingTabs.SelectedIndex = 0;
-            this.uiSettingTabs.Size = new System.Drawing.Size(843, 770);
+            this.uiSettingTabs.Size = new System.Drawing.Size(843, 846);
             this.uiSettingTabs.TabIndex = 25;
             // 
             // tabAppSettings
@@ -445,7 +450,7 @@
             this.tabAppSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabAppSettings.Name = "tabAppSettings";
             this.tabAppSettings.Padding = new System.Windows.Forms.Padding(4);
-            this.tabAppSettings.Size = new System.Drawing.Size(835, 729);
+            this.tabAppSettings.Size = new System.Drawing.Size(835, 853);
             this.tabAppSettings.TabIndex = 0;
             this.tabAppSettings.Text = "Application";
             // 
@@ -696,9 +701,14 @@
             // tabDebugSettings
             // 
             this.tabDebugSettings.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabDebugSettings.Controls.Add(this.txtLoggerFilePath);
+            this.tabDebugSettings.Controls.Add(this.lblFilePath);
+            this.tabDebugSettings.Controls.Add(this.cbxSinkType);
+            this.tabDebugSettings.Controls.Add(this.lblSinkType);
+            this.tabDebugSettings.Controls.Add(this.lblLoggingSettings);
             this.tabDebugSettings.Controls.Add(this.chkAutoCalcVariables);
             this.tabDebugSettings.Controls.Add(this.lblEndScriptHotKey);
-            this.tabDebugSettings.Controls.Add(this.cboCancellationKey);
+            this.tabDebugSettings.Controls.Add(this.cbxCancellationKey);
             this.tabDebugSettings.Controls.Add(this.chkOverrideInstances);
             this.tabDebugSettings.Controls.Add(this.lblDelay);
             this.tabDebugSettings.Controls.Add(this.txtCommandDelay);
@@ -720,9 +730,67 @@
             this.tabDebugSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabDebugSettings.Name = "tabDebugSettings";
             this.tabDebugSettings.Padding = new System.Windows.Forms.Padding(4);
-            this.tabDebugSettings.Size = new System.Drawing.Size(835, 570);
+            this.tabDebugSettings.Size = new System.Drawing.Size(835, 805);
             this.tabDebugSettings.TabIndex = 1;
             this.tabDebugSettings.Text = "Automation Engine";
+            // 
+            // txtLoggerFilePath
+            // 
+            this.txtLoggerFilePath.Location = new System.Drawing.Point(190, 636);
+            this.txtLoggerFilePath.Margin = new System.Windows.Forms.Padding(4);
+            this.txtLoggerFilePath.Name = "txtLoggerFilePath";
+            this.txtLoggerFilePath.Size = new System.Drawing.Size(573, 34);
+            this.txtLoggerFilePath.TabIndex = 43;
+            // 
+            // lblFilePath
+            // 
+            this.lblFilePath.AutoSize = true;
+            this.lblFilePath.BackColor = System.Drawing.Color.Transparent;
+            this.lblFilePath.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFilePath.ForeColor = System.Drawing.Color.SteelBlue;
+            this.lblFilePath.Location = new System.Drawing.Point(8, 642);
+            this.lblFilePath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFilePath.Name = "lblFilePath";
+            this.lblFilePath.Size = new System.Drawing.Size(86, 28);
+            this.lblFilePath.TabIndex = 42;
+            this.lblFilePath.Text = "File Path:";
+            // 
+            // cbxSinkType
+            // 
+            this.cbxSinkType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxSinkType.FormattingEnabled = true;
+            this.cbxSinkType.Location = new System.Drawing.Point(189, 591);
+            this.cbxSinkType.Margin = new System.Windows.Forms.Padding(4);
+            this.cbxSinkType.Name = "cbxSinkType";
+            this.cbxSinkType.Size = new System.Drawing.Size(204, 36);
+            this.cbxSinkType.TabIndex = 41;
+            this.cbxSinkType.SelectedIndexChanged += new System.EventHandler(this.cbxSinkType_SelectedIndexChanged);
+            // 
+            // lblSinkType
+            // 
+            this.lblSinkType.AutoSize = true;
+            this.lblSinkType.BackColor = System.Drawing.Color.Transparent;
+            this.lblSinkType.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSinkType.ForeColor = System.Drawing.Color.SteelBlue;
+            this.lblSinkType.Location = new System.Drawing.Point(8, 591);
+            this.lblSinkType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSinkType.Name = "lblSinkType";
+            this.lblSinkType.Size = new System.Drawing.Size(94, 28);
+            this.lblSinkType.TabIndex = 40;
+            this.lblSinkType.Text = "Sink Type:";
+            // 
+            // lblLoggingSettings
+            // 
+            this.lblLoggingSettings.AutoSize = true;
+            this.lblLoggingSettings.BackColor = System.Drawing.Color.Transparent;
+            this.lblLoggingSettings.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoggingSettings.ForeColor = System.Drawing.Color.SteelBlue;
+            this.lblLoggingSettings.Location = new System.Drawing.Point(8, 546);
+            this.lblLoggingSettings.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLoggingSettings.Name = "lblLoggingSettings";
+            this.lblLoggingSettings.Size = new System.Drawing.Size(204, 37);
+            this.lblLoggingSettings.TabIndex = 39;
+            this.lblLoggingSettings.Text = "Logging Settings";
             // 
             // chkAutoCalcVariables
             // 
@@ -744,22 +812,22 @@
             this.lblEndScriptHotKey.BackColor = System.Drawing.Color.Transparent;
             this.lblEndScriptHotKey.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEndScriptHotKey.ForeColor = System.Drawing.Color.SteelBlue;
-            this.lblEndScriptHotKey.Location = new System.Drawing.Point(8, 522);
+            this.lblEndScriptHotKey.Location = new System.Drawing.Point(8, 504);
             this.lblEndScriptHotKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEndScriptHotKey.Name = "lblEndScriptHotKey";
             this.lblEndScriptHotKey.Size = new System.Drawing.Size(164, 28);
             this.lblEndScriptHotKey.TabIndex = 37;
             this.lblEndScriptHotKey.Text = "End Script Hotkey:";
             // 
-            // cboCancellationKey
+            // cbxCancellationKey
             // 
-            this.cboCancellationKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboCancellationKey.FormattingEnabled = true;
-            this.cboCancellationKey.Location = new System.Drawing.Point(189, 519);
-            this.cboCancellationKey.Margin = new System.Windows.Forms.Padding(4);
-            this.cboCancellationKey.Name = "cboCancellationKey";
-            this.cboCancellationKey.Size = new System.Drawing.Size(204, 36);
-            this.cboCancellationKey.TabIndex = 36;
+            this.cbxCancellationKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxCancellationKey.FormattingEnabled = true;
+            this.cbxCancellationKey.Location = new System.Drawing.Point(189, 504);
+            this.cbxCancellationKey.Margin = new System.Windows.Forms.Padding(4);
+            this.cbxCancellationKey.Name = "cbxCancellationKey";
+            this.cbxCancellationKey.Size = new System.Drawing.Size(204, 36);
+            this.cbxCancellationKey.TabIndex = 36;
             // 
             // chkOverrideInstances
             // 
@@ -774,7 +842,7 @@
             this.chkOverrideInstances.TabIndex = 35;
             this.chkOverrideInstances.Text = "Override App Instances";
             this.chkOverrideInstances.UseVisualStyleBackColor = false;
-            this.chkOverrideInstances.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.chkOverrideInstances.CheckedChanged += new System.EventHandler(this.chkOverrideInstances_CheckedChanged);
             // 
             // lblDelay
             // 
@@ -923,7 +991,7 @@
             this.tabServerSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabServerSettings.Name = "tabServerSettings";
             this.tabServerSettings.Padding = new System.Windows.Forms.Padding(4);
-            this.tabServerSettings.Size = new System.Drawing.Size(835, 570);
+            this.tabServerSettings.Size = new System.Drawing.Size(835, 853);
             this.tabServerSettings.TabIndex = 2;
             this.tabServerSettings.Text = "Server";
             // 
@@ -1121,7 +1189,7 @@
             this.tabLocalListener.Margin = new System.Windows.Forms.Padding(4);
             this.tabLocalListener.Name = "tabLocalListener";
             this.tabLocalListener.Padding = new System.Windows.Forms.Padding(4);
-            this.tabLocalListener.Size = new System.Drawing.Size(835, 570);
+            this.tabLocalListener.Size = new System.Drawing.Size(835, 853);
             this.tabLocalListener.TabIndex = 3;
             this.tabLocalListener.Text = "Local Listener";
             this.tabLocalListener.UseVisualStyleBackColor = true;
@@ -1315,7 +1383,7 @@
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 86F));
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
-            this.tlpSettings.Size = new System.Drawing.Size(851, 938);
+            this.tlpSettings.Size = new System.Drawing.Size(851, 1014);
             this.tlpSettings.TabIndex = 26;
             // 
             // pnlSettings
@@ -1344,7 +1412,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 938);
+            this.ClientSize = new System.Drawing.Size(851, 1014);
             this.Controls.Add(this.tlpSettings);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1443,7 +1511,7 @@
         private System.Windows.Forms.Button btnTaskPublish;
         private System.Windows.Forms.CheckBox chkPreloadCommands;
         private System.Windows.Forms.CheckBox chkSlimActionBar;
-        private System.Windows.Forms.ComboBox cboCancellationKey;
+        private System.Windows.Forms.ComboBox cbxCancellationKey;
         private System.Windows.Forms.Label lblEndScriptHotKey;
         private System.Windows.Forms.TabPage tabLocalListener;
         private System.Windows.Forms.Label lblLocalListenerSettingsDesc;
@@ -1461,5 +1529,10 @@
         private System.Windows.Forms.CheckBox chkEnableWhitelist;
         private System.Windows.Forms.TextBox txtWhiteList;
         internal System.Windows.Forms.CheckBox chkAutoCalcVariables;
+        private System.Windows.Forms.ComboBox cbxSinkType;
+        private System.Windows.Forms.Label lblSinkType;
+        private System.Windows.Forms.Label lblLoggingSettings;
+        private System.Windows.Forms.TextBox txtLoggerFilePath;
+        private System.Windows.Forms.Label lblFilePath;
     }
 }

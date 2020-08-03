@@ -23,11 +23,12 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Write Log To")]
         [InputSpecification("Specify the corresponding logging option to save logs to Engine Logs or to a custom File.")]
-        [SampleUsage("Engine Logs || My Custom Logs || {vFileVariable}")]
+        [SampleUsage(@"Engine Logs || C:\MyEngineLogs.txt || {vFileVariable}")]
         [Remarks("Selecting 'Engine Logs' will result in writing execution logs in the 'Engine Logs'. " +
             "The current Date and Time will be automatically appended to a local file if a custom file name is provided. " +
             "Logs are all saved in the TaskT Root Folder in the 'Logs' folder.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowFileSelectionHelper)]
         public string v_LogFile { get; set; }
 
         [XmlAttribute]
@@ -67,7 +68,7 @@ namespace taskt.Commands
 
             //get text to log and log file name       
             var textToLog = v_LogText.ConvertToUserVariable(engine);
-            var logFile = v_LogFile.ConvertToUserVariable(engine);
+            var loggerFilePath = v_LogFile.ConvertToUserVariable(engine);
 
             //determine log file
             if (v_LogFile == "Engine Logs")
@@ -94,7 +95,7 @@ namespace taskt.Commands
             else
             {
                 //create new logger and log to custom file
-                using (var logger = new Logging().CreateLogger(logFile, RollingInterval.Infinite))
+                using (var logger = new Logging().CreateFileLogger(loggerFilePath, RollingInterval.Infinite))
                 {
                     logger.Information(textToLog);
                 }

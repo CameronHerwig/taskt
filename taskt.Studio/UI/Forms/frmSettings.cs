@@ -66,8 +66,13 @@ namespace taskt.UI.Forms
             chkOverrideInstances.DataBindings.Add("Checked", engineSettings, "OverrideExistingAppInstances", false, DataSourceUpdateMode.OnPropertyChanged);
             chkAutoCalcVariables.DataBindings.Add("Checked", engineSettings, "AutoCalcVariables", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            cboCancellationKey.DataSource = Enum.GetValues(typeof(Keys));
-            cboCancellationKey.DataBindings.Add("Text", engineSettings, "CancellationKey", false, DataSourceUpdateMode.OnPropertyChanged);
+            cbxCancellationKey.DataSource = Enum.GetValues(typeof(Keys));
+            cbxCancellationKey.DataBindings.Add("Text", engineSettings, "CancellationKey", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            SinkType loggingSinkType = engineSettings.LoggingSinkType;
+            cbxSinkType.DataSource = Enum.GetValues(typeof(SinkType));           
+            cbxSinkType.SelectedIndex = cbxSinkType.Items.IndexOf(loggingSinkType);
+            txtLoggerFilePath.DataBindings.Add("Text", engineSettings, "LoggingFilePath", false, DataSourceUpdateMode.OnPropertyChanged);
 
             var listenerSettings = newAppSettings.ListenerSettings;
             chkAutoStartListener.DataBindings.Add("Checked", listenerSettings, "StartListenerOnStartup", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -146,7 +151,7 @@ namespace taskt.UI.Forms
 
         private void uiBtnOpen_Click(object sender, EventArgs e)
         {
-            Keys key = (Keys)Enum.Parse(typeof(Keys), cboCancellationKey.Text);
+            Keys key = (Keys)Enum.Parse(typeof(Keys), cbxCancellationKey.Text);
             newAppSettings.EngineSettings.CancellationKey = key;
             newAppSettings.Save(newAppSettings);
             
@@ -365,7 +370,7 @@ namespace taskt.UI.Forms
         {
             lblVariableDisplay.Text = txtVariableStartMarker.Text + "myVariable" + txtVariableEndMarker.Text;
         }
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void chkOverrideInstances_CheckedChanged(object sender, EventArgs e)
         {
 
         }
@@ -481,5 +486,26 @@ namespace taskt.UI.Forms
             //Supplement_Forms.frmGridView frmWhitelist = new Supplement_Forms.frmGridView(newAppSettings.ListenerSettings.IPWhiteList);
             //frmWhitelist.ShowDialog();
         }
+
+        private void cbxSinkType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            newAppSettings.EngineSettings.LoggingSinkType = (SinkType)cbxSinkType.SelectedItem;
+            switch (newAppSettings.EngineSettings.LoggingSinkType)
+            {
+                case SinkType.File:
+                    LoadFileLoggingSettings();
+                    break;
+                case SinkType.HTTP:
+                    break;
+                case SinkType.SignalR:
+                    break;
+            }
+        }
+
+        private void LoadFileLoggingSettings()
+        {
+            
+        }
+
     }
 }

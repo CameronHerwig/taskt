@@ -64,7 +64,8 @@ namespace taskt
                 }
 
                 //initialize Logger
-                Logger engineLogger = new Logging().CreateLogger("Engine", Serilog.RollingInterval.Day);
+                string loggerFilePath = Path.Combine(Path.GetDirectoryName(filePath), "taskt Engine Logs.txt");
+                Logger engineLogger = new Logging().CreateFileLogger(loggerFilePath, Serilog.RollingInterval.Day);
                 Application.Run(new frmScriptEngine(filePath, null, engineLogger));
             }
             else

@@ -132,13 +132,13 @@ namespace taskt.UI.Forms
         {
             InitializeComponent();
 
-            ScriptEngineLogger = new Logging().CreateLogger("Engine", Serilog.RollingInterval.Day);
-
             //set file
             FilePath = null;
 
             //get engine settings
             _engineSettings = new ApplicationSettings().GetOrCreateApplicationSettings().EngineSettings;
+
+            ScriptEngineLogger = new Logging().CreateFileLogger(_engineSettings.LoggingFilePath, Serilog.RollingInterval.Day);
 
             //determine whether to show listbox or not
             _advancedDebug = _engineSettings.ShowAdvancedDebugOutput;
@@ -714,17 +714,17 @@ namespace taskt.UI.Forms
             if (e.Index != -1)
             {
                 SteppingCommandsItem item = lstSteppingCommands.Items[e.Index] as SteppingCommandsItem;
-              
+
                 if (item != null)
                 {
-                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) 
+                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
                     {
-                        e = new DrawItemEventArgs(e.Graphics, e.Font, e.Bounds, e.Index, 
+                        e = new DrawItemEventArgs(e.Graphics, e.Font, e.Bounds, e.Index,
                                                   e.State ^ DrawItemState.Selected,
                                                   e.ForeColor, item.Color);
 
                         e.DrawBackground();
-                        e.Graphics.DrawString(item.Text, e.Font, Brushes.White, e.Bounds);                      
+                        e.Graphics.DrawString(item.Text, e.Font, Brushes.White, e.Bounds);
                     }
                     else
                     {
@@ -733,7 +733,7 @@ namespace taskt.UI.Forms
                                               e.Bounds);
                     }
                     e.DrawFocusRectangle();
-                }                   
+                }
             }                
         }
     }

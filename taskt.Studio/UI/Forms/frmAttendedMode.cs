@@ -64,7 +64,7 @@ namespace taskt.UI.Forms
         {
             //build script path and execute
             var scriptFilePath = Path.Combine(_appSettings.ClientSettings.AttendedTasksFolder, cboSelectedScript.Text);
-            Logger engineLogger = new Logging().CreateLogger("Engine", Serilog.RollingInterval.Day);
+            Logger engineLogger = new Logging().CreateFileLogger(_appSettings.EngineSettings.LoggingFilePath, Serilog.RollingInterval.Day);
             frmScriptEngine newEngine = new frmScriptEngine(scriptFilePath, null, engineLogger);
             newEngine.Show();
         }

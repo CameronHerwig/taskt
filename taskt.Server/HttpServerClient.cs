@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using taskt.Core.Common;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
+using taskt.Core.IO;
 using taskt.Core.Model.ServerModel;
 using taskt.Core.Settings;
 using taskt.Core.Utilities.CommonUtilities;
@@ -27,7 +28,8 @@ namespace taskt.Server
 
         static HttpServerClient()
         {
-            _httpLogger = new Logging().CreateLogger("HTTP", RollingInterval.Day);
+            string loggerFilePath = Folders.GetFolder(FolderType.LogFolder) + "\\taskt HTTP Logs.txt";
+            _httpLogger = new Logging().CreateFileLogger(loggerFilePath, RollingInterval.Day);
             Initialize();
         }
 

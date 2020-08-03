@@ -7,7 +7,9 @@ using System.Net;
 using System.Text;
 using System.Windows.Forms;
 using taskt.Core.Common;
+using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
+using taskt.Core.IO;
 using taskt.Core.Model.ServerModel;
 using taskt.Core.Settings;
 using taskt.Core.Utilities.CommonUtilities;
@@ -36,7 +38,8 @@ namespace taskt.Server
 
         static SocketClient()
         {
-            SocketLogger = new Logging().CreateLogger("Socket", RollingInterval.Day);
+            string loggerFilePath = Folders.GetFolder(FolderType.LogFolder) + "\\taskt Socket Logs.txt";
+            SocketLogger = new Logging().CreateFileLogger(loggerFilePath, RollingInterval.Day);
         }
 
         /// <summary>
