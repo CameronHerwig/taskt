@@ -41,6 +41,7 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Log Type")]
+        [PropertyUISelectionOption("Verbose")]
         [PropertyUISelectionOption("Debug")]
         [PropertyUISelectionOption("Information")]
         [PropertyUISelectionOption("Warning")]
@@ -75,6 +76,9 @@ namespace taskt.Commands
             {
                 switch (v_LogType)
                 {
+                    case "Verbose":
+                        LogLevel = LogEventLevel.Verbose;
+                        break;
                     case "Debug":
                         LogLevel = LogEventLevel.Debug;
                         break;
@@ -97,7 +101,27 @@ namespace taskt.Commands
                 //create new logger and log to custom file
                 using (var logger = new Logging().CreateFileLogger(loggerFilePath, RollingInterval.Infinite))
                 {
-                    logger.Information(textToLog);
+                    switch (v_LogType)
+                    {
+                        case "Verbose":
+                            logger.Verbose(textToLog);
+                            break;
+                        case "Debug":
+                            logger.Debug(textToLog);
+                            break;
+                        case "Information":
+                            logger.Information(textToLog);
+                            break;
+                        case "Warning":
+                            logger.Warning(textToLog);
+                            break;
+                        case "Error":
+                            logger.Error(textToLog);
+                            break;
+                        case "Fatal":
+                            logger.Fatal(textToLog);
+                            break;
+                    }                  
                 }
             }
         }
@@ -117,13 +141,9 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             if (v_LogFile == "Engine Logs")
-            {
                 return base.GetDisplayValue() + $" ['{v_LogType} - {v_LogText}']";
-            }
             else
-            {
-                return base.GetDisplayValue() + $" ['{v_LogType} - {v_LogText}' to 'taskt\\Logs\\taskt_{v_LogFile}_Logs.txt']";
-            }          
+                return base.GetDisplayValue() + $" ['{v_LogType} - {v_LogText}' to '{v_LogFile}']";
         }
     }
 }

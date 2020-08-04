@@ -15,6 +15,7 @@ using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using taskt.Commands;
 using taskt.Core.Enums;
@@ -138,7 +139,23 @@ namespace taskt.UI.Forms
             //get engine settings
             _engineSettings = new ApplicationSettings().GetOrCreateApplicationSettings().EngineSettings;
 
-            ScriptEngineLogger = new Logging().CreateFileLogger(_engineSettings.LoggingFilePath, Serilog.RollingInterval.Day);
+            //initialize Logger
+            switch (_engineSettings.LoggingSinkType)
+            {
+                case SinkType.File:
+                    ScriptEngineLogger = new Logging().CreateFileLogger(_engineSettings.LoggingValue1, Serilog.RollingInterval.Day,
+                        _engineSettings.MinLogLevel);
+                    break;
+                case SinkType.HTTP:
+                    ScriptEngineLogger = new Logging().CreateHTTPLogger(_engineSettings.LoggingValue1, _engineSettings.MinLogLevel);
+                    break;
+                case SinkType.SignalR:
+                    string[] groupNames = _engineSettings.LoggingValue3.Split(',').Select(x => x.Trim()).ToArray();
+                    string[] userIDs = _engineSettings.LoggingValue4.Split(',').Select(x => x.Trim()).ToArray();
+                    ScriptEngineLogger = new Logging().CreateSignalRLogger(_engineSettings.LoggingValue1, _engineSettings.LoggingValue2,
+                        groupNames, userIDs, _engineSettings.MinLogLevel);
+                    break;
+            }
 
             //determine whether to show listbox or not
             _advancedDebug = _engineSettings.ShowAdvancedDebugOutput;

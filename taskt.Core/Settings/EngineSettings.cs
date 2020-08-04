@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog.Events;
+using System;
 using System.Windows.Forms;
 using taskt.Core.Enums;
 
@@ -25,7 +26,11 @@ namespace taskt.Core.Settings
         public bool AutoCloseDebugWindowOnServerExecution { get; set; }
         public bool AutoCalcVariables { get; set; }
         public SinkType LoggingSinkType { get; set; }
-        public string LoggingFilePath { get; set; }
+        public string LoggingValue1 { get; set; }
+        public string LoggingValue2 { get; set; }
+        public string LoggingValue3 { get; set; }
+        public string LoggingValue4 { get; set; }
+        public LogEventLevel MinLogLevel { get; set; }
 
         public EngineSettings()
         {
@@ -44,7 +49,11 @@ namespace taskt.Core.Settings
             AutoCloseDebugWindowOnServerExecution = true;
             AutoCalcVariables = true;
             LoggingSinkType = SinkType.File;
-            LoggingFilePath = "";
+            LoggingValue1 = "";
+            LoggingValue2 = "";
+            LoggingValue3 = "";
+            LoggingValue4 = "";
+            MinLogLevel = LogEventLevel.Verbose;
         }
     }
 }

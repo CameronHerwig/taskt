@@ -2,6 +2,7 @@
 using Serilog;
 using Serilog.Core;
 using System;
+using System.IO;
 using System.Net;
 using System.Timers;
 using System.Windows.Forms;
@@ -28,8 +29,8 @@ namespace taskt.Server
 
         static HttpServerClient()
         {
-            string loggerFilePath = Folders.GetFolder(FolderType.LogFolder) + "\\taskt HTTP Logs.txt";
-            _httpLogger = new Logging().CreateFileLogger(loggerFilePath, RollingInterval.Day);
+            string httpLoggerFilePath = Path.Combine(Folders.GetFolder(FolderType.LogFolder), "taskt HTTP Logs.txt");
+            _httpLogger = new Logging().CreateFileLogger(httpLoggerFilePath, RollingInterval.Day);
             Initialize();
         }
 

@@ -17,6 +17,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using taskt.Core.Enums;
+using taskt.Core.IO;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.UI.Forms;
 using taskt.UI.Forms.ScriptBuilder_Forms;
@@ -64,8 +66,8 @@ namespace taskt
                 }
 
                 //initialize Logger
-                string loggerFilePath = Path.Combine(Path.GetDirectoryName(filePath), "taskt Engine Logs.txt");
-                Logger engineLogger = new Logging().CreateFileLogger(loggerFilePath, Serilog.RollingInterval.Day);
+                string engineLoggerFilePath = Path.Combine(Folders.GetFolder(FolderType.LogFolder), "taskt Engine Logs.txt");
+                Logger engineLogger = new Logging().CreateFileLogger(engineLoggerFilePath, Serilog.RollingInterval.Day);
                 Application.Run(new frmScriptEngine(filePath, null, engineLogger));
             }
             else

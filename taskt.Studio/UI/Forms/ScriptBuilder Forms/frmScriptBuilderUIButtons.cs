@@ -654,7 +654,22 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             Notify("Running Script..");
 
             //initialize Logger
-            EngineLogger = new Logging().CreateFileLogger(_appSettings.EngineSettings.LoggingFilePath, Serilog.RollingInterval.Day);
+            switch (_appSettings.EngineSettings.LoggingSinkType)
+            {
+                case SinkType.File:
+                    EngineLogger = new Logging().CreateFileLogger(_appSettings.EngineSettings.LoggingValue1, Serilog.RollingInterval.Day,
+                        _appSettings.EngineSettings.MinLogLevel);
+                    break;
+                case SinkType.HTTP:
+                    EngineLogger = new Logging().CreateHTTPLogger(_appSettings.EngineSettings.LoggingValue1, _appSettings.EngineSettings.MinLogLevel);
+                    break;
+                case SinkType.SignalR:
+                    string[] groupNames = _appSettings.EngineSettings.LoggingValue3.Split(',').Select(x => x.Trim()).ToArray();
+                    string[] userIDs = _appSettings.EngineSettings.LoggingValue4.Split(',').Select(x => x.Trim()).ToArray();
+                    EngineLogger = new Logging().CreateSignalRLogger(_appSettings.EngineSettings.LoggingValue1, _appSettings.EngineSettings.LoggingValue2,
+                        groupNames, userIDs, _appSettings.EngineSettings.MinLogLevel);
+                    break;
+            }
 
             //initialize Engine
             CurrentEngine = new frmScriptEngine(ScriptFilePath, this, EngineLogger, null, null, false, _isDebugMode);

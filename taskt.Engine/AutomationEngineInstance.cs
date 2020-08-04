@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ using taskt.Core.Command;
 using taskt.Core.Common;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
+using taskt.Core.IO;
 using taskt.Core.Model.EngineModel;
 using taskt.Core.Model.ServerModel;
 using taskt.Core.Script;
@@ -595,6 +597,10 @@ namespace taskt.Engine
 
             switch (eventLevel)
             {
+                case LogEventLevel.Verbose:
+                    EngineLogger.Verbose(progress);
+                    args.LoggerColor = Color.Purple;
+                    break;
                 case LogEventLevel.Debug:
                     EngineLogger.Debug(progress);
                     args.LoggerColor = Color.Green;
@@ -701,9 +707,10 @@ namespace taskt.Engine
             var serializedArguments = JsonConvert.SerializeObject(args);
 
             //write execution metrics
-            if ((EngineSettings.TrackExecutionMetrics) && (FileName != null))
+            if (EngineSettings.TrackExecutionMetrics && (FileName != null))
             {
-                var summaryLogger = new Logging().CreateJsonLogger("Execution Summary", Serilog.RollingInterval.Infinite);
+                string summaryLoggerFilePath = Path.Combine(Folders.GetFolder(FolderType.LogFolder), "taskt Execution Summary Logs.txt");
+                Logger summaryLogger = new Logging().CreateJsonFileLogger(summaryLoggerFilePath, Serilog.RollingInterval.Infinite);
                 summaryLogger.Information(serializedArguments);
                 if (!TasktEngineUI.IsChildEngine)
                     summaryLogger.Dispose();

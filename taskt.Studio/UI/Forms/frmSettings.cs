@@ -11,6 +11,7 @@
 //WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //See the License for the specific language governing permissions and
 //limitations under the License.
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ using System.IO;
 using System.Windows.Forms;
 using taskt.Core.Documentation;
 using taskt.Core.Enums;
+using taskt.Core.IO;
 using taskt.Core.Metrics;
 using taskt.Core.Settings;
 using taskt.Server;
@@ -72,7 +74,15 @@ namespace taskt.UI.Forms
             SinkType loggingSinkType = engineSettings.LoggingSinkType;
             cbxSinkType.DataSource = Enum.GetValues(typeof(SinkType));           
             cbxSinkType.SelectedIndex = cbxSinkType.Items.IndexOf(loggingSinkType);
-            txtLoggerFilePath.DataBindings.Add("Text", engineSettings, "LoggingFilePath", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            LogEventLevel minLogLevel = engineSettings.MinLogLevel;
+            cbxMinLogLevel.DataSource = Enum.GetValues(typeof(LogEventLevel));
+            cbxMinLogLevel.SelectedIndex = cbxMinLogLevel.Items.IndexOf(minLogLevel);
+
+            txtLogging1.DataBindings.Add("Text", engineSettings, "LoggingValue1", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtLogging2.DataBindings.Add("Text", engineSettings, "LoggingValue2", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtLogging3.DataBindings.Add("Text", engineSettings, "LoggingValue3", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtLogging4.DataBindings.Add("Text", engineSettings, "LoggingValue4", false, DataSourceUpdateMode.OnPropertyChanged);
 
             var listenerSettings = newAppSettings.ListenerSettings;
             chkAutoStartListener.DataBindings.Add("Checked", listenerSettings, "StartListenerOnStartup", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -153,6 +163,10 @@ namespace taskt.UI.Forms
         {
             Keys key = (Keys)Enum.Parse(typeof(Keys), cbxCancellationKey.Text);
             newAppSettings.EngineSettings.CancellationKey = key;
+
+            if ((SinkType)cbxSinkType.SelectedItem == SinkType.File && string.IsNullOrEmpty(txtLogging1.Text.Trim()))
+                newAppSettings.EngineSettings.LoggingValue1 = Path.Combine(Folders.GetFolder(FolderType.LogFolder), "taskt Engine Logs.txt");
+
             newAppSettings.Save(newAppSettings);
             
             SocketClient.InitializeScriptEngine(new frmScriptEngine());
@@ -496,16 +510,85 @@ namespace taskt.UI.Forms
                     LoadFileLoggingSettings();
                     break;
                 case SinkType.HTTP:
+                    LoadHTTPLoggingSettings();
                     break;
                 case SinkType.SignalR:
+                    LoadSignalRLoggingSettings();
                     break;
             }
         }
 
         private void LoadFileLoggingSettings()
         {
-            
+            lblLogging1.Text = "File Path: ";
+            txtLogging1.Clear();
+            txtLogging1.Text = Path.Combine(Folders.GetFolder(FolderType.LogFolder), "taskt Engine Logs.txt");
+            btnFileManager.Visible = true;
+           
+            lblLogging2.Visible = false;
+            txtLogging2.Visible = false;
+            txtLogging2.Clear();
+
+            lblLogging3.Visible = false;
+            txtLogging3.Visible = false;
+            txtLogging3.Clear();
+
+            lblLogging4.Visible = false;
+            txtLogging4.Visible = false;
+            txtLogging4.Clear();
         }
 
+        private void LoadHTTPLoggingSettings()
+        {
+            lblLogging1.Text = "URI: ";
+            txtLogging1.Clear();
+            btnFileManager.Visible = false;
+
+            lblLogging2.Visible = false;
+            txtLogging2.Visible = false;
+            txtLogging2.Clear();
+
+            lblLogging3.Visible = false;
+            txtLogging3.Visible = false;
+            txtLogging3.Clear();
+
+            lblLogging4.Visible = false;
+            txtLogging4.Visible = false;
+            txtLogging4.Clear();
+        }
+
+        private void LoadSignalRLoggingSettings()
+        {
+            lblLogging1.Text = "URL: ";
+            txtLogging1.Clear();
+            btnFileManager.Visible = false;
+
+            lblLogging2.Visible = true; //Hub
+            txtLogging2.Visible = true;
+            txtLogging2.Clear();
+
+            lblLogging3.Visible = true; //Group Names
+            txtLogging3.Visible = true;
+            txtLogging3.Clear();
+
+            lblLogging4.Visible = true; //User IDs
+            txtLogging4.Visible = true;
+            txtLogging4.Clear();
+        }
+
+        private void cbxMinLogLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            newAppSettings.EngineSettings.MinLogLevel = (LogEventLevel)cbxMinLogLevel.SelectedItem;
+        }
+
+        private void btnFileManager_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                txtLogging1.Text = ofd.FileName;
+            }
+        }
     }
 }
