@@ -36,7 +36,6 @@ namespace taskt.Core.Utilities.CommonUtilities
         public Logger CreateSignalRLogger(string url, string logHub = "LogHub", string[] logGroupNames = null,
             string[] logUserIds = null, LogEventLevel minLogLevel = LogEventLevel.Verbose)
         {
-
             var levelSwitch = new LoggingLevelSwitch();
             levelSwitch.MinimumLevel = minLogLevel;
 

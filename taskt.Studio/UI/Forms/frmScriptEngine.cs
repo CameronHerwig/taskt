@@ -15,11 +15,13 @@ using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using taskt.Commands;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
+using taskt.Core.IO;
 using taskt.Core.Model.EngineModel;
 using taskt.Core.Model.ServerModel;
 using taskt.Core.Script;
@@ -143,6 +145,9 @@ namespace taskt.UI.Forms
             switch (_engineSettings.LoggingSinkType)
             {
                 case SinkType.File:
+                    if (string.IsNullOrEmpty(_engineSettings.LoggingValue1.Trim()))
+                        _engineSettings.LoggingValue1 = Path.Combine(Folders.GetFolder(FolderType.LogFolder), "taskt Engine Logs.txt");
+
                     ScriptEngineLogger = new Logging().CreateFileLogger(_engineSettings.LoggingValue1, Serilog.RollingInterval.Day,
                         _engineSettings.MinLogLevel);
                     break;
@@ -152,6 +157,7 @@ namespace taskt.UI.Forms
                 case SinkType.SignalR:
                     string[] groupNames = _engineSettings.LoggingValue3.Split(',').Select(x => x.Trim()).ToArray();
                     string[] userIDs = _engineSettings.LoggingValue4.Split(',').Select(x => x.Trim()).ToArray();
+
                     ScriptEngineLogger = new Logging().CreateSignalRLogger(_engineSettings.LoggingValue1, _engineSettings.LoggingValue2,
                         groupNames, userIDs, _engineSettings.MinLogLevel);
                     break;
@@ -624,7 +630,13 @@ namespace taskt.UI.Forms
                 uiBtnStepOver.Visible = false;
                 lblKillProcNote.Text = "Cancelling...";
                 EngineInstance.ResumeScript();
-                lstSteppingCommands.Items.Add("[User Requested Cancellation]");
+
+                SteppingCommandsItem commandsItem = new SteppingCommandsItem
+                {
+                    Text = "[User Requested Cancellation]",
+                    Color = Color.Black
+                };
+                lstSteppingCommands.Items.Add(commandsItem);
                 lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
                 lblMainLogo.Text = "debug info (cancelling)";
                 EngineInstance.CancelScript();
@@ -643,14 +655,24 @@ namespace taskt.UI.Forms
             {
                 if (uiBtnPause.DisplayText == "Pause")
                 {
-                    lstSteppingCommands.Items.Add("[User Requested Pause]");
+                    SteppingCommandsItem commandsItem = new SteppingCommandsItem
+                    {
+                        Text = "[User Requested Pause]",
+                        Color = Color.Red
+                    };
+                    lstSteppingCommands.Items.Add(commandsItem);
                     uiBtnPause.Image = Properties.Resources.command_resume;
                     uiBtnPause.DisplayText = "Resume";
                     EngineInstance.PauseScript();
                 }
                 else if (uiBtnPause.DisplayText == "Resume")
-                {                   
-                    lstSteppingCommands.Items.Add("[User Requested Resume]");
+                {
+                    SteppingCommandsItem commandsItem = new SteppingCommandsItem
+                    {
+                        Text = "[User Requested Resume]",
+                        Color = Color.Green
+                    };
+                    lstSteppingCommands.Items.Add(commandsItem);
                     uiBtnPause.Image = Properties.Resources.command_pause;
                     uiBtnPause.DisplayText = "Pause";
                     uiBtnStepOver.Visible = false;

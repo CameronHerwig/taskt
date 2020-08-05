@@ -657,7 +657,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void NewFileLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             LinkLabel senderLink = (LinkLabel)sender;
-            OpenFile(Folders.GetFolder(FolderType.ScriptsFolder) + senderLink.Text);
+            OpenFile(Path.Combine(Folders.GetFolder(FolderType.ScriptsFolder), senderLink.Text));
         }
         #endregion
 

@@ -622,6 +622,9 @@ namespace taskt.Engine
                     args.LoggerColor = Color.Black;
                     break;
             }
+
+            if (progress.StartsWith("Skipping"))
+                args.LoggerColor = Color.Green;
              
             args.ProgressUpdate = progress;
 

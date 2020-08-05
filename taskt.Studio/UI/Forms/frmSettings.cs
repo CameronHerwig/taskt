@@ -302,7 +302,7 @@ namespace taskt.UI.Forms
                             }
 
                             MessageBox.Show("Data Migration Complete", "Data Migration Complete", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
+                                MessageBoxIcon.Information);                            
                         }
                         catch (Exception ex)
                         {
@@ -312,6 +312,7 @@ namespace taskt.UI.Forms
                     }
                     //update textbox which will be updated once user selects "Ok"
                     txtAppFolderPath.Text = newRootFolder;
+                    newAppSettings.Save(newAppSettings);
                 }
             }
         }
