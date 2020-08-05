@@ -385,10 +385,6 @@ namespace taskt.UI.Forms
         {
             lblVariableDisplay.Text = txtVariableStartMarker.Text + "myVariable" + txtVariableEndMarker.Text;
         }
-        private void chkOverrideInstances_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnLaunchAttendedMode_Click(object sender, EventArgs e)
         {

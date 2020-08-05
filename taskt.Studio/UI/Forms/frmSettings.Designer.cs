@@ -965,7 +965,6 @@
             this.chkOverrideInstances.TabIndex = 35;
             this.chkOverrideInstances.Text = "Override App Instances";
             this.chkOverrideInstances.UseVisualStyleBackColor = false;
-            this.chkOverrideInstances.CheckedChanged += new System.EventHandler(this.chkOverrideInstances_CheckedChanged);
             // 
             // lblDelay
             // 
