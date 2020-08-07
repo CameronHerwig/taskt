@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -17,23 +18,32 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Image Commands")]
-    [Description("This command takes a screenshot and saves it to a location")]
-    [UsesDescription("Use this command when you want to take and save a screenshot.")]
-    [ImplementationDescription("This command implements User32 CaptureWindow to achieve automation")]
+    [Description("This command takes a screenshot and saves it to a specified location.")]
     public class TakeScreenshotCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Please Enter the Window name")]
-        [InputSpecification("Input or Type the name of the window that you want to take a screenshot of.")]
-        [SampleUsage("**Untitled - Notepad**")]
+        [PropertyDescription("Window Name")]
+        [InputSpecification("Select the name of the window that you want to take a screenshot of.")]
+        [SampleUsage("Untitled - Notepad || Current Window")]
         [Remarks("")]
         public string v_ScreenshotWindowName { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Please indicate the path to save the image")]
+        [PropertyDescription("Image Location")]
+        [InputSpecification("Enter or Select the path of the folder to save the image to.")]
+        [SampleUsage(@"C:\temp || {vFolderPath} || {ProjectPath}")]
+        [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowFileSelectionHelper)]
-        public string v_FilePath { get; set; }
+        [PropertyUIHelper(UIAdditionalHelperType.ShowFolderSelectionHelper)]
+        public string v_FolderPath { get; set; }
+
+        [XmlAttribute]
+        [PropertyDescription("Image File Name")]
+        [InputSpecification("Enter or Select the name of the image file.")]
+        [SampleUsage("myFile.png || {vFilename}")]
+        [Remarks("")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_FileName { get; set; }
 
         public TakeScreenshotCommand()
         {
@@ -41,26 +51,22 @@ namespace taskt.Commands
             SelectionName = "Take Screenshot";
             CommandEnabled = true;
             CustomRendering = true;
+            v_ScreenshotWindowName = "Current Window";
         }
 
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            string vFilePath = v_FilePath.ConvertToUserVariable(engine);
+            string vFolderPath = v_FolderPath.ConvertToUserVariable(engine);
+            string vFileName = v_FileName.ConvertToUserVariable(engine);
+            string vFilePath = Path.Combine(vFolderPath, vFileName);
+
             Bitmap image;
 
             if (v_ScreenshotWindowName == "Current Window")
-            {
-                image = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-                using (Graphics g = Graphics.FromImage(image))
-                {
-                    g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
-                }
-            }
+                image = ImageMethods.Screenshot();
             else
-            {
                 image = User32Functions.CaptureWindow(v_ScreenshotWindowName);
-            }
 
             image.Save(vFilePath);
         }
@@ -74,8 +80,8 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_ScreenshotWindowName", this, new Control[] { WindowNameControl }, editor));
             RenderedControls.Add(WindowNameControl);
 
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_FilePath", this, editor));
-
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_FolderPath", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_FileName", this, editor));
 
             return RenderedControls;
         }
@@ -83,7 +89,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Target Window: '" + v_ScreenshotWindowName + "', File Path: '" + v_FilePath + "]";
+            return base.GetDisplayValue() + $" [Target Window '{v_ScreenshotWindowName}' - Save to File Path '{v_FolderPath}\\{v_FileName}']";
         }
     }
 }

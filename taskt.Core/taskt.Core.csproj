@@ -120,6 +120,7 @@
     <Compile Include="User32\WindowHandleInfo.cs" />
     <Compile Include="Utilities\CommandUtilities\EncryptionServices.cs" />
     <Compile Include="Utilities\CommandUtilities\ImageRecognitionFingerPrint.cs" />
+    <Compile Include="Utilities\CommonUtilities\ImageMethods.cs" />
     <Compile Include="Utilities\CommonUtilities\Logging.cs" />
     <Compile Include="Utilities\CommonUtilities\StringMethods.cs" />
     <Compile Include="Utilities\CommonUtilities\VariableMethods.cs" />

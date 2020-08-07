@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using taskt.Commands;
 using taskt.Core.Attributes.PropertyAttributes;
@@ -608,7 +609,7 @@ namespace taskt.UI.CustomControls
                     var convertedImage = Common.ImageToBase64(imageCaptureForm.UserSelectedBitmap);
                     var convertedLength = convertedImage.Length;
                     targetPictureBox.EncodedImage = convertedImage;
-                    imageCaptureForm.Show();
+                    imageCaptureForm.Close();
                 }
             }
 
@@ -803,18 +804,44 @@ namespace taskt.UI.CustomControls
 
         public static void ShowAllForms()
         {
-            foreach (Form frm in Application.OpenForms)
+            foreach (Form form in Application.OpenForms)
             {
-                frm.WindowState = FormWindowState.Normal;
+                ShowForm(form);
             }
+            Thread.Sleep(1000);
+        }
+
+        public delegate void ShowFormDelegate(Form form);
+        public static void ShowForm(Form form)
+        {
+            if (form.InvokeRequired)
+            {
+                var d = new ShowFormDelegate(ShowForm);
+                form.Invoke(d, new object[] { form });
+            }
+            else
+                form.WindowState = FormWindowState.Normal;
         }
 
         public static void HideAllForms()
         {
-            foreach (Form frm in Application.OpenForms)
+            foreach (Form form in Application.OpenForms)
             {
-                frm.WindowState = FormWindowState.Minimized;
+                HideForm(form);
             }
+            Thread.Sleep(1000);
+        }
+
+        public delegate void HideFormDelegate(Form form);
+        public static void HideForm(Form form)
+        {
+            if (form.InvokeRequired)
+            {
+                var d = new HideFormDelegate(HideForm);
+                form.Invoke(d, new object[] { form });
+            }
+            else
+                form.WindowState = FormWindowState.Minimized;
         }
 
         public static List<AutomationCommand> GenerateCommandsandControls()

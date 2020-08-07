@@ -11,44 +11,45 @@ using taskt.Core.Common;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
 using taskt.Core.Utilities.CommandUtilities;
+using taskt.Core.Utilities.CommonUtilities;
+using taskt.Engine;
 using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
+using taskt.UI.Forms.Supplement_Forms;
 
 namespace taskt.Commands
 {
-
     [Serializable]
     [Group("Image Commands")]
-    [Description("This command attempts to find an existing image on screen.")]
-    [UsesDescription("Use this command when you want to attempt to locate an image on screen.  You can subsequently take actions such as move the mouse to the location or perform a click.  This command generates a fingerprint from the comparison image and searches for it in on the desktop.")]
-    [ImplementationDescription("TBD")]
+    [Description("This command attempts to find and perform an action on an existing image on screen.")]
     public class ImageRecognitionCommand : ScriptCommand
     {
-
         [XmlAttribute]
-        [PropertyDescription("Capture the search image")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowImageRecogitionHelper)]
-        [InputSpecification("Use the tool to capture an image")]
+        [PropertyDescription("Capture Search Image")]       
+        [InputSpecification("Use the tool to capture an image.")]
         [SampleUsage("")]
         [Remarks("The image will be used as the image to be found on screen.")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowImageRecogitionHelper)]
         public string v_ImageCapture { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Offset X Coordinate - Optional")]
+        [PropertyDescription("Offset X Coordinate")]
         [InputSpecification("Specify if an offset is required.")]
-        [SampleUsage("0 or 100")]
-        [Remarks("This will move the mouse X pixels to the right of the location of the image")]
-        public int v_xOffsetAdjustment { get; set; }
+        [SampleUsage("0 || 100 || {vXCoordinate}")]
+        [Remarks("This will move the mouse X pixels to the right of the location of the image. This input is optional.")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_XOffsetAdjustment { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Offset Y Coordinate - Optional")]
+        [PropertyDescription("Offset Y Coordinate")]
         [InputSpecification("Specify if an offset is required.")]
-        [SampleUsage("0 or 100")]
-        [Remarks("This will move the mouse X pixels down from the top of the location of the image")]
-        public int v_YOffsetAdjustment { get; set; }
+        [SampleUsage("0 || 100 || {vYCoordinate}")]
+        [Remarks("This will move the mouse X pixels down from the top of the location of the image. This input is optional.")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_YOffsetAdjustment { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Please indicate mouse click type if required")]
+        [PropertyDescription("Mouse Click Type")]
         [PropertyUISelectionOption("None")]
         [PropertyUISelectionOption("Left Click")]
         [PropertyUISelectionOption("Middle Click")]
@@ -61,16 +62,41 @@ namespace taskt.Commands
         [PropertyUISelectionOption("Right Up")]
         [PropertyUISelectionOption("Double Left Click")]
         [InputSpecification("Indicate the type of click required")]
-        [SampleUsage("Select from **Left Click**, **Middle Click**, **Right Click**, **Double Left Click**, **Left Down**, **Middle Down**, **Right Down**, **Left Up**, **Middle Up**, **Right Up** ")]
-        [Remarks("You can simulate custom click by using multiple mouse click commands in succession, adding **Pause Command** in between where required.")]
+        [SampleUsage("")]
+        [Remarks("You can simulate custom clicking by using multiple mouse click commands in succession, adding a **Pause Command** in between where required.")]
         public string v_MouseClick { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Timeout (seconds, 0 for unlimited search time)")]
-        [InputSpecification("Enter a timeout length if required.")]
+        [PropertyDescription("Mouse Click Position")]
+        [PropertyUISelectionOption("Center")]
+        [PropertyUISelectionOption("Top Left")]
+        [PropertyUISelectionOption("Top Middle")]
+        [PropertyUISelectionOption("Top Right")]
+        [PropertyUISelectionOption("Bottom Left")]
+        [PropertyUISelectionOption("Bottom Middle")]
+        [PropertyUISelectionOption("Bottom Right")]
+        [PropertyUISelectionOption("Middle Left")]
+        [PropertyUISelectionOption("Middle Right")]
+        [InputSpecification("Indicate the position of the click relative to the selected image.")]
         [SampleUsage("")]
+        [Remarks("")]
+        public string v_MousePosition { get; set; }
+
+        [XmlAttribute]
+        [PropertyDescription("Timeout (seconds)")]
+        [InputSpecification("Enter a timeout length if required. Use 0 for unlimited search time.")]
+        [SampleUsage("0 || 30 || ")]
         [Remarks("Search times become excessive for colors such as white. For best results, capture a large color variance on screen, not just a white block.")]
-        public double v_TimeoutSeconds { get; set; }
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_TimeoutSeconds { get; set; }
+
+        [XmlAttribute]
+        [PropertyDescription("Accuracy (0-1)")]
+        [InputSpecification("Enter a timeout length if required. Use 0 for unlimited search time.")]
+        [SampleUsage("0.8 || 1 || {vAccuracy}")]
+        [Remarks("Accuracy must be a value between 0 and 1")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_MatchAccuracy { get; set; }
 
         public bool TestMode = false;
 
@@ -81,28 +107,33 @@ namespace taskt.Commands
             CommandEnabled = true;
             CustomRendering = true;
 
-            v_xOffsetAdjustment = 0;
-            v_YOffsetAdjustment = 0;
-            v_TimeoutSeconds = 30;
+            v_XOffsetAdjustment = "0";
+            v_YOffsetAdjustment = "0";
+            v_TimeoutSeconds = "0";
+            v_MouseClick = "Left Click";
+            v_MousePosition = "Center";
+            v_MatchAccuracy = "0.8";
         }
 
         public override void RunCommand(object sender)
         {
+            var engine = (AutomationEngineInstance)sender;
             bool testMode = TestMode;
-           
+
+            int vXOffset = int.Parse(v_XOffsetAdjustment.ConvertToUserVariable(engine));
+            int vYOffset = int.Parse(v_YOffsetAdjustment.ConvertToUserVariable(engine));
+            double vTimeout = double.Parse(v_TimeoutSeconds.ConvertToUserVariable(engine));
+            double vSelectedAccuracy = double.Parse(v_MatchAccuracy.ConvertToUserVariable(engine));
+
+            if (vSelectedAccuracy < 0 || vSelectedAccuracy > 1)
+                throw new ArgumentOutOfRangeException("Accuracy is not a value between 0 and 1.");
+
             //user image to bitmap
             Bitmap userImage = new Bitmap(Common.Base64ToImage(v_ImageCapture));
 
-            //take screenshot
-            Size shotSize = Screen.PrimaryScreen.Bounds.Size;
-            Point upperScreenPoint = new Point(0, 0);
-            Point upperDestinationPoint = new Point(0, 0);
-            Bitmap desktopImage = new Bitmap(shotSize.Width, shotSize.Height);
-            Graphics graphics = Graphics.FromImage(desktopImage);
-            graphics.CopyFromScreen(upperScreenPoint, upperDestinationPoint, shotSize);
-
-            //create desktopOutput file
-            Bitmap desktopOutput = new Bitmap(desktopImage);
+            CommandControls.HideAllForms();
+            Bitmap desktopImage = ImageMethods.Screenshot();          
+            Bitmap desktopOutput = new Bitmap(desktopImage);           
 
             //get graphics for drawing on output file
             Graphics screenShotUpdate = Graphics.FromImage(desktopOutput);
@@ -112,8 +143,6 @@ namespace taskt.Commands
             int userImageMaxHeight = userImage.Height - 1;
             int desktopImageMaxWidth = desktopImage.Width - 1;
             int desktopImageMaxHeight = desktopImage.Height - 1;
-
-            //newfingerprinttechnique
 
             //create desktopOutput file
             Bitmap sampleOut = new Bitmap(userImage);
@@ -129,7 +158,7 @@ namespace taskt.Commands
 
             int iteration = 0;
             Random random = new Random();
-            while ((uniqueFingerprint.Count() < 10) && (iteration < pixelDensity))
+            while ((uniqueFingerprint.Count() < 20) && (iteration < pixelDensity))
             {
                 int x = random.Next(userImage.Width);
                 int y = random.Next(userImage.Height);
@@ -140,12 +169,11 @@ namespace taskt.Commands
                     uniqueFingerprint.Add(new ImageRecognitionFingerPrint() { PixelColor = color, XLocation = x, YLocation = y });
                     sampleUpdate.DrawRectangle(Pens.Yellow, x, y, 1, 1);
                 }
-
                 iteration++;
             }
 
             //begin search
-            DateTime timeoutDue = DateTime.Now.AddSeconds(v_TimeoutSeconds);
+            DateTime timeoutDue = DateTime.Now.AddSeconds(vTimeout);
 
             bool imageFound = false;
             //for each row on the screen
@@ -157,11 +185,12 @@ namespace taskt.Commands
                 //for each column on screen
                 for (int columnPixel = 0; columnPixel < desktopImage.Width - 1; columnPixel++)
                 {
-                    if ((v_TimeoutSeconds > 0) && (DateTime.Now > timeoutDue))
+                    if ((vTimeout > 0) && (DateTime.Now > timeoutDue))
                     {
+                        CommandControls.ShowAllForms();
                         throw new Exception("Image recognition command ran out of time searching for image");
                     }
-
+                        
                     if (columnPixel + uniqueFingerprint.First().XLocation >= desktopImage.Width)
                         continue;
 
@@ -174,7 +203,6 @@ namespace taskt.Commands
                         //compare to see if desktop pixel matches top left pixel from user image
                         if (currentPixel == uniqueFingerprint.First().PixelColor)
                         {
-
                             //look through each item in the fingerprint to see if offset pixel colors match
                             int matchCount = 0;
                             for (int item = 0; item < uniqueFingerprint.Count; item++)
@@ -201,29 +229,77 @@ namespace taskt.Commands
                                     if (testMode)
                                         screenShotUpdate.DrawRectangle(Pens.OrangeRed, columnPixel + uniqueFingerprint[item].XLocation, rowPixel + uniqueFingerprint[item].YLocation, 5, 5);
                                 }
-
                             }
 
-                            if (matchCount == uniqueFingerprint.Count())
+                            double matchAccuracy = (double)matchCount / (double)uniqueFingerprint.Count();
+
+                            if (matchAccuracy >= vSelectedAccuracy)
                             {
                                 imageFound = true;
 
-                                var topLeftX = columnPixel;
-                                var topLeftY = rowPixel;
+                                var leftX = columnPixel;
+                                var middleX = columnPixel + userImageMaxWidth / 2;
+                                var rightX = columnPixel + userImageMaxWidth;
+                                var topY = rowPixel;
+                                var middleY = rowPixel + userImageMaxHeight / 2;
+                                var bottomY = rowPixel + userImageMaxHeight;
 
                                 if (testMode)
                                 {
                                     //draw on output to demonstrate finding
-                                    var Rectangle = new Rectangle(topLeftX, topLeftY, userImageMaxWidth, userImageMaxHeight);
+                                    var Rectangle = new Rectangle(leftX, topY, userImageMaxWidth, userImageMaxHeight);
                                     Brush brush = new SolidBrush(Color.ForestGreen);
                                     screenShotUpdate.FillRectangle(brush, Rectangle);
+                                }
+
+                                int clickPositionX = 0;
+                                int clickPositionY = 0;
+
+                                switch (v_MousePosition)
+                                {
+                                    case "Center":
+                                        clickPositionX = middleX;
+                                        clickPositionY = middleY;
+                                        break;
+                                    case "Top Left":
+                                        clickPositionX = leftX;
+                                        clickPositionY = topY;
+                                        break;
+                                    case "Top Middle":
+                                        clickPositionX = middleX;
+                                        clickPositionY = topY;
+                                        break;
+                                    case "Top Right":
+                                        clickPositionX = rightX;
+                                        clickPositionY = topY;
+                                        break;
+                                    case "Bottom Left":
+                                        clickPositionX = leftX;
+                                        clickPositionY = bottomY;
+                                        break;
+                                    case "Bottom Middle":
+                                        clickPositionX = middleX;
+                                        clickPositionY = bottomY;
+                                        break;
+                                    case "Bottom Right":
+                                        clickPositionX = rightX;
+                                        clickPositionY = bottomY;
+                                        break;
+                                    case "Middle Left":
+                                        clickPositionX = leftX;
+                                        clickPositionY = middleX;
+                                        break;
+                                    case "Middle Right":
+                                        clickPositionX = rightX;
+                                        clickPositionY = middleY;
+                                        break;
                                 }
 
                                 //move mouse to position
                                 var mouseMove = new SendMouseMoveCommand
                                 {
-                                    v_XMousePosition = (topLeftX + (v_xOffsetAdjustment)).ToString(),
-                                    v_YMousePosition = (topLeftY + (v_xOffsetAdjustment)).ToString(),
+                                    v_XMousePosition = (clickPositionX + vXOffset).ToString(),
+                                    v_YMousePosition = (clickPositionY + vYOffset).ToString(),
                                     v_MouseClick = v_MouseClick
                                 };
 
@@ -233,7 +309,6 @@ namespace taskt.Commands
 
                         if (imageFound)
                             break;
-
                     }
                     catch (Exception)
                     {
@@ -247,14 +322,7 @@ namespace taskt.Commands
 
             if (testMode)
             {
-                //screenShotUpdate.FillRectangle(Brushes.White, 5, 20, 275, 105);
-                //screenShotUpdate.DrawString("Blue = Matching Point", new Font("Arial", 12, FontStyle.Bold), Brushes.SteelBlue, 5, 20);
-                // screenShotUpdate.DrawString("OrangeRed = Mismatched Point", new Font("Arial", 12, FontStyle.Bold), Brushes.SteelBlue, 5, 60);
-                // screenShotUpdate.DrawString("Green Rectangle = Match Area", new Font("Arial", 12, FontStyle.Bold), Brushes.SteelBlue, 5, 100);
-
-                //screenShotUpdate.DrawImage(sampleOut, desktopOutput.Width - sampleOut.Width, 0);
-
-                UI.Forms.Supplement_Forms.frmImageCapture captureOutput = new UI.Forms.Supplement_Forms.frmImageCapture();
+                frmImageCapture captureOutput = new frmImageCapture();
                 captureOutput.pbTaggedImage.Image = sampleOut;
                 captureOutput.pbSearchResult.Image = desktopOutput;
                 captureOutput.Show();
@@ -262,22 +330,17 @@ namespace taskt.Commands
                 //captureOutput.WindowState = FormWindowState.Maximized;
             }
 
-            graphics.Dispose();
             userImage.Dispose();
             desktopImage.Dispose();
             screenShotUpdate.Dispose();
+            CommandControls.ShowAllForms();
 
             if (!imageFound)
-            {
                 throw new Exception("Specified image was not found in window!");
-            }
-
-
         }
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
-
 
             UIPictureBox imageCapture = new UIPictureBox();
             imageCapture.Width = 200;
@@ -288,18 +351,22 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_ImageCapture", this, new Control[] { imageCapture }, editor));
             RenderedControls.Add(imageCapture);
 
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_xOffsetAdjustment", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_XOffsetAdjustment", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_YOffsetAdjustment", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_MouseClick", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_MousePosition", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_TimeoutSeconds", this, editor));
-
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_MatchAccuracy", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Find On Screen]";
+            if (v_MouseClick == "None")
+                return base.GetDisplayValue() + $" [Find Image on Screen - Accuracy '{v_MatchAccuracy}']";
+            else
+                return base.GetDisplayValue() + $" [Find and {v_MouseClick} in {v_MousePosition} of Image on Screen - Accuracy '{v_MatchAccuracy}']";
         }
     }
 }
