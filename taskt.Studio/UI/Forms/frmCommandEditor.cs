@@ -119,7 +119,7 @@ namespace taskt.UI.Forms
                     {
                         var typedControl = (UIPictureBox)c;
 
-                        var cmd = (ImageRecognitionCommand)SelectedCommand;
+                        var cmd = (SurfaceAutomationCommand)SelectedCommand;
 
                         if (!string.IsNullOrEmpty(cmd.v_ImageCapture))
                         {
@@ -225,7 +225,7 @@ namespace taskt.UI.Forms
                 if (ctrl is UIPictureBox)
                 {
                     var typedControl = (UIPictureBox)ctrl;
-                    var cmd = (ImageRecognitionCommand)SelectedCommand;
+                    var cmd = (SurfaceAutomationCommand)SelectedCommand;
                     cmd.v_ImageCapture = typedControl.EncodedImage;
                 }
             }

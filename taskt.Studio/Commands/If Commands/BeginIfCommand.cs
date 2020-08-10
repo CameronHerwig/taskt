@@ -89,6 +89,7 @@ namespace taskt.Commands
             _ifGridViewHelper.AllowUserToAddRows = true;
             _ifGridViewHelper.AllowUserToDeleteRows = true;
             _ifGridViewHelper.Size = new Size(400, 250);
+            _ifGridViewHelper.ColumnHeadersHeight = 30;
             _ifGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _ifGridViewHelper.DataBindings.Add("DataSource", this, "v_IfActionParameterTable", false, DataSourceUpdateMode.OnPropertyChanged);
             _ifGridViewHelper.AllowUserToAddRows = false;

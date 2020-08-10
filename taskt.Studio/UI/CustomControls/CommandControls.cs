@@ -310,6 +310,7 @@ namespace taskt.UI.CustomControls
                         testRun.CommandImage = Resources.command_camera;
                         testRun.CommandDisplay = "Run Image Recognition Test";
                         testRun.ForeColor = Color.AliceBlue;
+                        testRun.Font = new Font("Segoe UI Semilight", 10);
                         testRun.Tag = targetControls.FirstOrDefault();
                         testRun.Click += (sender, e) => RunImageCapture(sender, e);
                         controlList.Add(testRun);
@@ -385,6 +386,7 @@ namespace taskt.UI.CustomControls
             gridView.AllowUserToAddRows = true;
             gridView.AllowUserToDeleteRows = true;
             gridView.Size = new Size(400, 250);
+            gridView.ColumnHeadersHeight = 30;
             gridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             gridView.DataBindings.Add("DataSource", sourceCommand, dataSourceName, false, DataSourceUpdateMode.OnPropertyChanged);
             gridView.AllowUserToResizeRows = false;
@@ -641,10 +643,10 @@ namespace taskt.UI.CustomControls
             try
             {
                 //run image recognition
-                ImageRecognitionCommand imageRecognitionCommand = new ImageRecognitionCommand();
-                imageRecognitionCommand.v_ImageCapture = imageSource;
-                imageRecognitionCommand.TestMode = true;
-                imageRecognitionCommand.RunCommand(null);
+                SurfaceAutomationCommand surfaceAutomationCommand = new SurfaceAutomationCommand();
+                surfaceAutomationCommand.v_ImageCapture = imageSource;
+                surfaceAutomationCommand.TestMode = true;
+                surfaceAutomationCommand.RunCommand(null);
             }
             catch (Exception ex)
             {

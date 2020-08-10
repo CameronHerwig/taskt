@@ -80,6 +80,7 @@ namespace taskt.Commands
             _assignmentsGridViewHelper.AllowUserToAddRows = true;
             _assignmentsGridViewHelper.AllowUserToDeleteRows = true;
             _assignmentsGridViewHelper.Size = new Size(400, 250);
+            _assignmentsGridViewHelper.ColumnHeadersHeight = 30;
             _assignmentsGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _assignmentsGridViewHelper.DataSource = v_VariableAssignments;
             _assignmentsGridViewHelper.Hide();

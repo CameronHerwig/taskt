@@ -58,6 +58,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 DataGridView variablesGridViewHelper = new DataGridView();
                 variablesGridViewHelper.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
                 variablesGridViewHelper.Dock = DockStyle.Fill;
+                variablesGridViewHelper.ColumnHeadersHeight = 30;
                 variablesGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 variablesGridViewHelper.AllowUserToAddRows = false;
                 variablesGridViewHelper.AllowUserToDeleteRows = false;
@@ -78,6 +79,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                             case "System.String":
                                 variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
                                     variable.VariableValue);
+                                break;
+                            case "System.Security.SecureString":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
+                                    "*Secure String*");
                                 break;
                             case "System.Data.DataTable":
                                 variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName, 

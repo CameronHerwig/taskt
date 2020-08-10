@@ -91,6 +91,7 @@ namespace taskt.Commands
             _loopGridViewHelper.AllowUserToAddRows = true;
             _loopGridViewHelper.AllowUserToDeleteRows = true;
             _loopGridViewHelper.Size = new Size(400, 250);
+            _loopGridViewHelper.ColumnHeadersHeight = 30;
             _loopGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _loopGridViewHelper.DataBindings.Add("DataSource", this, "v_LoopActionParameterTable", false, DataSourceUpdateMode.OnPropertyChanged);
             _loopGridViewHelper.AllowUserToAddRows = false;

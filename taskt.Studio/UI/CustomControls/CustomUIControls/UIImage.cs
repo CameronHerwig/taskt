@@ -140,7 +140,7 @@ namespace taskt.UI.CustomControls.CustomUIControls
             uiImages.Add("ElseCommand", Resources.command_else);
             uiImages.Add("TakeScreenshotCommand", Resources.command_camera);
             uiImages.Add("PerformOCRCommand", Resources.command_camera);
-            uiImages.Add("ImageRecognitionCommand", Resources.command_camera);
+            uiImages.Add("SurfaceAutomationCommand", Resources.command_camera);
             uiImages.Add("GetHTMLSourceCommand", Resources.command_web);
             uiImages.Add("QueryHTMLSourceCommand", Resources.command_search);
             uiImages.Add("LoopCollectionCommand", Resources.command_startloop);
@@ -195,14 +195,14 @@ namespace taskt.UI.CustomControls.CustomUIControls
         {
             Dictionary<string, Image> imageIcons = UIImageDictionary();
             ImageList uiImages = new ImageList();
-            uiImages.ImageSize = new Size(16, 16);
+            uiImages.ImageSize = new Size(20, 20);
 
             foreach (var icon in imageIcons)
             {
                 //var someImage = icon.Value;
 
                 //using (Image src = icon.Value)
-                //using (Bitmap dst = new Bitmap(16, 16))
+                //using (Bitmap dst = new Bitmap(20, 20))
                 //using (Graphics g = Graphics.FromImage(dst))
                 //{
                 //    g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -219,14 +219,14 @@ namespace taskt.UI.CustomControls.CustomUIControls
         {
             using (Image oldImage = image)
             {
-                using (Bitmap newImage = new Bitmap(16, 16, PixelFormat.Format32bppRgb))
+                using (Bitmap newImage = new Bitmap(20, 20, PixelFormat.Format32bppRgb))
                 {
                     using (Graphics canvas = Graphics.FromImage(newImage))
                     {
                         canvas.SmoothingMode = SmoothingMode.AntiAlias;
                         canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
                         canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                        canvas.DrawImage(oldImage, new Rectangle(new Point(0, 0), new Size(16, 16)));
+                        canvas.DrawImage(oldImage, new Rectangle(new Point(0, 0), new Size(20, 20)));
                         return newImage;
                     }
                 }
