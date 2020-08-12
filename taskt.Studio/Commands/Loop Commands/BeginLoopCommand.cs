@@ -1020,7 +1020,7 @@ namespace taskt.Commands
 
                 SurfaceAutomationCommand surfaceACommand = new SurfaceAutomationCommand();
                 var element = surfaceACommand.FindImageElement(capturedImage, accuracy);
-
+                CommandControls.ShowAllForms();
                 if (element != null)
                     loopResult = true;
                 else

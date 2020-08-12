@@ -21,6 +21,7 @@ using taskt.Engine;
 using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
 using taskt.UI.Forms.Supplement_Forms;
+using WindowsInput;
 
 namespace taskt.Commands
 {
@@ -31,9 +32,11 @@ namespace taskt.Commands
     {
         [XmlAttribute]
         [PropertyDescription("Capture Search Image")]
-        [InputSpecification("Use the tool to capture an image.")]
+        [InputSpecification("Use the tool to capture an image that will be located on screen during execution.")]
         [SampleUsage("")]
-        [Remarks("The image will be used as the image to be found on screen.")]
+        [Remarks("Images with larger color variance will be found more quickly than those with a lot of white space. \n" +
+                 "For images that are primarily white space, tagging color to the top-left corner of the image and setting \n" +
+                 "the relative click position will produce faster results.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowImageRecogitionHelper)]
         public string v_ImageCapture { get; set; }
 
@@ -52,7 +55,7 @@ namespace taskt.Commands
         [XmlElement]
         [PropertyDescription("Additional Parameters")]
         [InputSpecification("Additional Parameters will be required based on the action settings selected.")]
-        [SampleUsage("data || {vData} || *Variable Name*: vNewVariable")]
+        [SampleUsage("data || {vData}")]
         [Remarks("Additional Parameters range from adding offset coordinates to specifying a variable to apply element text to.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public DataTable v_ImageActionParameterTable { get; set; }
@@ -233,7 +236,9 @@ namespace taskt.Commands
                         };
                         setTextMouseMove.RunCommand(sender);
 
-                        SendKeys.SendWait(textToSet);
+                        var simulator = new InputSimulator();
+                        simulator.Keyboard.TextEntry(textToSet);
+                        Thread.Sleep(100);
                         break;
 
                     case "Set Secure Text":
@@ -268,7 +273,9 @@ namespace taskt.Commands
                         };
                         setSecureTextMouseMove.RunCommand(sender);
 
-                        SendKeys.SendWait(secureString);
+                        var simulator2 = new InputSimulator();
+                        simulator2.Keyboard.TextEntry(secureString);
+                        Thread.Sleep(100);
                         break;
 
                     case "Check If Image Exists":
@@ -285,11 +292,13 @@ namespace taskt.Commands
                             "False".StoreInUserVariable(engine, outputVariable);
                         break;
                     default:
-                        break;
+                        break;                       
                 }
+                CommandControls.ShowAllForms();
             }
             catch (Exception ex)
             {
+                CommandControls.ShowAllForms();
                 if (element == null)
                     throw new Exception("Specified image was not found in window!");
                 else
@@ -431,16 +440,16 @@ namespace taskt.Commands
                             {
                                 //draw on output to demonstrate finding
                                 var Rectangle = new Rectangle(x, y, smallBmp.Width - 1, smallBmp.Height - 1);
-                                Pen brush = new Pen(Color.Red);
-                                bigTestGraphics.DrawRectangle(brush, Rectangle);
+                                Pen pen = new Pen(Color.Red);
+                                pen.Width = 5.0F;
+                                bigTestGraphics.DrawRectangle(pen, Rectangle);
 
                                 frmImageCapture captureOutput = new frmImageCapture();
                                 captureOutput.pbTaggedImage.Image = smallTestBmp;
-                                captureOutput.pbSearchResult.Image = bigTestBmp;
+                                captureOutput.pbSearchResult.Image = bigTestBmp;                               
                                 captureOutput.TopMost = true;
-                                captureOutput.Show();                              
+                                captureOutput.Show();
                             }
-
                             break;
                         }
                         //If no match found, we restore the pointers and continue.
@@ -452,7 +461,8 @@ namespace taskt.Commands
                         }
                     }
 
-                    if (matchFound) break;
+                    if (matchFound) 
+                        break;
 
                     pBig += bigOffset;
                 }
@@ -461,7 +471,6 @@ namespace taskt.Commands
             bigBmp.UnlockBits(bigData);
             smallBmp.UnlockBits(smallData);
             bigTestGraphics.Dispose();
-            CommandControls.ShowAllForms();
             return element;
         }
         private void ImageAction_SelectionChangeCommitted(object sender, EventArgs e)
