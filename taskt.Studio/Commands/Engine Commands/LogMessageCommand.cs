@@ -50,7 +50,6 @@ namespace taskt.Commands
         [InputSpecification("Specify the log type.")]
         [SampleUsage("")]
         [Remarks("")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_LogType { get; set; }
 
         public LogMessageCommand()
