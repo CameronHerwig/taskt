@@ -40,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>taskt_logo_alt.ico</ApplicationIcon>
@@ -78,10 +80,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -205,6 +209,7 @@
     <Compile Include="Commands\Engine Commands\ShowEngineContextCommand.cs" />
     <Compile Include="Commands\Engine Commands\StopwatchCommand.cs" />
     <Compile Include="Commands\Engine Commands\UploadBotStoreDataCommand.cs" />
+    <Compile Include="Commands\Image Commands\CaptureImageCommand.cs" />
     <Compile Include="Commands\Image Commands\SurfaceAutomationCommand.cs" />
     <Compile Include="Commands\Input Commands\InputCommand.cs" />
     <Compile Include="Commands\Error Handling Commands\BeginRetryCommand.cs" />

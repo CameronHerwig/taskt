@@ -40,6 +40,7 @@ namespace taskt.Commands
         [PropertyUISelectionOption("Folder Exists")]
         [PropertyUISelectionOption("Web Element Exists")]
         [PropertyUISelectionOption("GUI Element Exists")]
+        [PropertyUISelectionOption("Image Element Exists")]
         [PropertyUISelectionOption("Error Occured")]
         [PropertyUISelectionOption("Error Did Not Occur")]
         [InputSpecification("Select the necessary condition type.")]
@@ -231,8 +232,10 @@ namespace taskt.Commands
                                                where rw.Field<string>("Parameter Name") == "True When"
                                                select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-
-                    return "If " + v_IfActionType + " [File: " + filePath + "]";
+                    if (fileCompareType == "It Does Not Exist")
+                        return "If File Does Not Exist [File: " + filePath + "]";
+                    else
+                        return "If File Exists [File: " + filePath + "]";
 
                 case "Folder Exists":
 
@@ -241,11 +244,13 @@ namespace taskt.Commands
                                           select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
                     string folderCompareType = ((from rw in v_IfActionParameterTable.AsEnumerable()
-                                                 where rw.Field<string>("Parameter Name") == "True When"
-                                                 select rw.Field<string>("Parameter Value")).FirstOrDefault());
+                                               where rw.Field<string>("Parameter Name") == "True When"
+                                               select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-
-                    return "If " + v_IfActionType + " [Folder: " + folderPath + "]";
+                    if (folderCompareType == "It Does Not Exist")
+                        return "If Folder Does Not [Folder: " + folderPath + "]";
+                    else
+                        return "If Folder Exists [Folder: " + folderPath + "]";
 
                 case "Web Element Exists":
 
@@ -258,8 +263,14 @@ namespace taskt.Commands
                                             where rw.Field<string>("Parameter Name") == "Element Search Method"
                                             select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
+                    string webElementCompareType = ((from rw in v_IfActionParameterTable.AsEnumerable()
+                                                 where rw.Field<string>("Parameter Name") == "True When"
+                                                 select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                    return "If Web Element Exists [" + searchMethod + ": " + parameterName + "]";
+                    if (webElementCompareType == "It Does Not Exist")
+                        return "If Web Element Does Not Exist [" + searchMethod + ": " + parameterName + "]";
+                    else
+                        return "If Web Element Exists [" + searchMethod + ": " + parameterName + "]";
 
                 case "GUI Element Exists":
 
@@ -272,11 +283,26 @@ namespace taskt.Commands
                                              where rw.Field<string>("Parameter Name") == "Element Search Parameter"
                                              select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                    return "If GUI Element Exists [Find " + guiSearch + " Element In " + guiWindowName + "]";
+                    string guiElementCompareType = ((from rw in v_IfActionParameterTable.AsEnumerable()
+                                                     where rw.Field<string>("Parameter Name") == "True When"
+                                                     select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
+                    if (guiElementCompareType == "It Does Not Exist")
+                        return "If GUI Element Does Not Exist [Find " + guiSearch + " Element In " + guiWindowName + "]";
+                    else
+                        return "If GUI Element Exists [Find " + guiSearch + " Element In " + guiWindowName + "]";
+
+                case "Image Element Exists":
+                    string imageCompareType = (from rw in v_IfActionParameterTable.AsEnumerable()
+                                               where rw.Field<string>("Parameter Name") == "True When"
+                                               select rw.Field<string>("Parameter Value")).FirstOrDefault();
+
+                    if (imageCompareType == "It Does Not Exist")
+                        return "If Image Does Not Exist on Screen";
+                    else
+                        return "If Image Exists on Screen";
                 default:
-
-                    return "If .... ";
+                    return "If ...";
             }
         }
 
@@ -600,12 +626,10 @@ namespace taskt.Commands
                     existCheck = true;
                 }
 
-
                 if (Directory.Exists(folderName) == existCheck)
                 {
                     ifResult = true;
                 }
-
             }
             else if (v_IfActionType == "Web Element Exists")
             {
@@ -621,12 +645,19 @@ namespace taskt.Commands
                                         where rw.Field<string>("Parameter Name") == "Element Search Method"
                                         select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
+                string trueWhenElementExists = (from rw in v_IfActionParameterTable.AsEnumerable()
+                                                where rw.Field<string>("Parameter Name") == "True When"
+                                                select rw.Field<string>("Parameter Value")).FirstOrDefault();
+
 
                 SeleniumElementActionCommand newElementActionCommand = new SeleniumElementActionCommand();
                 newElementActionCommand.v_SeleniumSearchType = searchMethod;
                 newElementActionCommand.v_InstanceName = instanceName.ConvertToUserVariable(engine);
                 bool elementExists = newElementActionCommand.ElementExists(sender, searchMethod, parameterName);
                 ifResult = elementExists;
+
+                if (trueWhenElementExists == "It Does Not Exist")
+                    ifResult = !ifResult;
             }
             else if (v_IfActionType == "GUI Element Exists")
             {
@@ -642,6 +673,9 @@ namespace taskt.Commands
                                                where rw.Field<string>("Parameter Name") == "Element Search Method"
                                                select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
 
+                string trueWhenElementExists = (from rw in v_IfActionParameterTable.AsEnumerable()
+                                              where rw.Field<string>("Parameter Name") == "True When"
+                                              select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
                 UIAutomationCommand newUIACommand = new UIAutomationCommand();
                 newUIACommand.v_WindowName = windowName;
@@ -649,13 +683,54 @@ namespace taskt.Commands
                 var handle = newUIACommand.SearchForGUIElement(sender, windowName);
 
                 if (handle is null)
-                {
                     ifResult = false;
-                }
                 else
-                {
                     ifResult = true;
+
+                if (trueWhenElementExists == "It Does Not Exist")
+                    ifResult = !ifResult;
+            }
+            else if (v_IfActionType == "Image Element Exists")
+            {
+                string imageName = (from rw in v_IfActionParameterTable.AsEnumerable()
+                                    where rw.Field<string>("Parameter Name") == "Captured Image"
+                                    select rw.Field<string>("Parameter Value")).FirstOrDefault();
+                double accuracy;
+                try
+                {
+                    accuracy = double.Parse((from rw in v_IfActionParameterTable.AsEnumerable()
+                                        where rw.Field<string>("Parameter Name") == "Accuracy (0-1)"
+                                        select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                    if (accuracy > 1 || accuracy < 0)
+                        throw new ArgumentOutOfRangeException("Accuracy value is out of range (0-1)");
                 }
+                catch (Exception)
+                {
+                    throw new InvalidDataException("Accuracy value is invalid");
+                }
+
+                string trueWhenImageExists = (from rw in v_IfActionParameterTable.AsEnumerable()
+                                              where rw.Field<string>("Parameter Name") == "True When"
+                                              select rw.Field<string>("Parameter Value")).FirstOrDefault();
+
+                var imageVariable = VariableMethods.LookupVariable(engine, imageName);
+
+                Bitmap capturedImage;
+                if (imageVariable != null && imageVariable.VariableValue is Bitmap)
+                    capturedImage = (Bitmap)imageVariable.VariableValue;
+                else
+                    throw new ArgumentException("Provided Argument is not a 'Bitmap' Image");
+
+                SurfaceAutomationCommand surfaceACommand = new SurfaceAutomationCommand();
+                var element = surfaceACommand.FindImageElement(capturedImage, accuracy);
+
+                if (element != null)
+                    ifResult = true;
+                else
+                    ifResult = false;
+
+                if (trueWhenImageExists == "It Does Not Exist")
+                    ifResult = !ifResult;
             }
             else
             {
@@ -845,8 +920,16 @@ namespace taskt.Commands
                         actionParameters.Rows.Add("Selenium Instance Name", "default");
                         actionParameters.Rows.Add("Element Search Method", "");
                         actionParameters.Rows.Add("Element Search Parameter", "");
+                        actionParameters.Rows.Add("True When", "");
                         ifActionParameterBox.DataSource = actionParameters;
                     }
+
+                    comparisonComboBox = new DataGridViewComboBoxCell();
+                    comparisonComboBox.Items.Add("It Does Exist");
+                    comparisonComboBox.Items.Add("It Does Not Exist");
+
+                    //assign cell as a combobox
+                    ifActionParameterBox.Rows[3].Cells[1] = comparisonComboBox;
 
                     comparisonComboBox = new DataGridViewComboBoxCell();
                     comparisonComboBox.Items.Add("Find Element By XPath");
@@ -868,8 +951,16 @@ namespace taskt.Commands
                         actionParameters.Rows.Add("Window Name", "Current Window");
                         actionParameters.Rows.Add("Element Search Method", "");
                         actionParameters.Rows.Add("Element Search Parameter", "");
+                        actionParameters.Rows.Add("True When", "");
                         ifActionParameterBox.DataSource = actionParameters;
                     }
+
+                    comparisonComboBox = new DataGridViewComboBoxCell();
+                    comparisonComboBox.Items.Add("It Does Exist");
+                    comparisonComboBox.Items.Add("It Does Not Exist");
+
+                    //assign cell as a combobox
+                    ifActionParameterBox.Rows[3].Cells[1] = comparisonComboBox;
 
                     var parameterName = new DataGridViewComboBoxCell();
                     parameterName.Items.Add("AcceleratorKey");
@@ -898,6 +989,24 @@ namespace taskt.Commands
 
                     _recorderControl.Show();
 
+                    break;
+                case "Image Element Exists":
+                    ifActionParameterBox.Visible = true;
+
+                    if (sender != null)
+                    {
+                        actionParameters.Rows.Add("Captured Image", "");
+                        actionParameters.Rows.Add("Accuracy (0-1)", "0.8");
+                        actionParameters.Rows.Add("True When", "");
+                        ifActionParameterBox.DataSource = actionParameters;
+                    }
+
+                    comparisonComboBox = new DataGridViewComboBoxCell();
+                    comparisonComboBox.Items.Add("It Does Exist");
+                    comparisonComboBox.Items.Add("It Does Not Exist");
+
+                    //assign cell as a combobox
+                    ifActionParameterBox.Rows[2].Cells[1] = comparisonComboBox;
                     break;
                 default:
                     break;

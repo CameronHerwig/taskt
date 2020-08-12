@@ -141,6 +141,7 @@ namespace taskt.UI.CustomControls.CustomUIControls
             uiImages.Add("TakeScreenshotCommand", Resources.command_camera);
             uiImages.Add("PerformOCRCommand", Resources.command_camera);
             uiImages.Add("SurfaceAutomationCommand", Resources.command_camera);
+            uiImages.Add("CaptureImageCommand", Resources.command_camera);
             uiImages.Add("GetHTMLSourceCommand", Resources.command_web);
             uiImages.Add("QueryHTMLSourceCommand", Resources.command_search);
             uiImages.Add("LoopCollectionCommand", Resources.command_startloop);

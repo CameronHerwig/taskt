@@ -609,7 +609,6 @@ namespace taskt.UI.CustomControls
                     UIPictureBox targetPictureBox = (UIPictureBox)inputBox.Tag;
                     targetPictureBox.Image = imageCaptureForm.UserSelectedBitmap;
                     var convertedImage = Common.ImageToBase64(imageCaptureForm.UserSelectedBitmap);
-                    var convertedLength = convertedImage.Length;
                     targetPictureBox.EncodedImage = convertedImage;
                     imageCaptureForm.Close();
                 }

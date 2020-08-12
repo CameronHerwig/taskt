@@ -119,11 +119,18 @@ namespace taskt.UI.Forms
                     {
                         var typedControl = (UIPictureBox)c;
 
-                        var cmd = (SurfaceAutomationCommand)SelectedCommand;
-
-                        if (!string.IsNullOrEmpty(cmd.v_ImageCapture))
+                        dynamic cmd;
+                        if (SelectedCommand.CommandName == "SurfaceAutomationCommand")
                         {
-                            typedControl.Image = Common.Base64ToImage(cmd.v_ImageCapture);
+                            cmd = (SurfaceAutomationCommand)SelectedCommand;
+                            if (!string.IsNullOrEmpty(cmd.v_ImageCapture))
+                                typedControl.Image = Common.Base64ToImage(cmd.v_ImageCapture);
+                        }
+                        else if (SelectedCommand.CommandName == "CaptureImageCommand")
+                        {
+                            cmd = (CaptureImageCommand)SelectedCommand;
+                            if (!string.IsNullOrEmpty(cmd.v_ImageCapture))
+                                typedControl.Image = Common.Base64ToImage(cmd.v_ImageCapture);
                         }
                     }
                 }
@@ -225,8 +232,17 @@ namespace taskt.UI.Forms
                 if (ctrl is UIPictureBox)
                 {
                     var typedControl = (UIPictureBox)ctrl;
-                    var cmd = (SurfaceAutomationCommand)SelectedCommand;
-                    cmd.v_ImageCapture = typedControl.EncodedImage;
+                    dynamic cmd;
+                    if (SelectedCommand.CommandName == "SurfaceAutomationCommand")
+                    {
+                        cmd = (SurfaceAutomationCommand)SelectedCommand;
+                        cmd.v_ImageCapture = typedControl.EncodedImage;
+                    }
+                    else if (SelectedCommand.CommandName == "CaptureImageCommand")
+                    {
+                        cmd = (CaptureImageCommand)SelectedCommand;
+                        cmd.v_ImageCapture = typedControl.EncodedImage;
+                    }
                 }
             }
             DialogResult = DialogResult.OK;

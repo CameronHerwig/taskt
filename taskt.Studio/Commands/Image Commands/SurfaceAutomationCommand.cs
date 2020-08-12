@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Security;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -55,18 +58,10 @@ namespace taskt.Commands
         public DataTable v_ImageActionParameterTable { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Timeout (seconds)")]
-        [InputSpecification("Enter a timeout length if required. Use 0 for unlimited search time.")]
-        [SampleUsage("0 || 30 || ")]
-        [Remarks("Search times become excessive for colors such as white. For best results, capture a large color variance on screen, not just a white block.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public string v_TimeoutSeconds { get; set; }
-
-        [XmlAttribute]
         [PropertyDescription("Accuracy (0-1)")]
-        [InputSpecification("Enter a timeout length if required. Use 0 for unlimited search time.")]
+        [InputSpecification("Enter a value between 0 and 1 to set the match Accuracy. Set to 1 for a perfect match.")]
         [SampleUsage("0.8 || 1 || {vAccuracy}")]
-        [Remarks("Accuracy must be a value between 0 and 1")]
+        [Remarks("Accuracy must be a value between 0 and 1.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_MatchAccuracy { get; set; }
 
@@ -91,7 +86,6 @@ namespace taskt.Commands
             CommandEnabled = true;
             CustomRendering = true;
            
-            v_TimeoutSeconds = "0";
             v_MatchAccuracy = "0.8";
 
             v_ImageActionParameterTable = new DataTable
@@ -117,313 +111,192 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             bool testMode = TestMode;
-
-            double vTimeout = double.Parse(v_TimeoutSeconds.ConvertToUserVariable(engine));
-            double vSelectedAccuracy = double.Parse(v_MatchAccuracy.ConvertToUserVariable(engine));
-
-            if (vSelectedAccuracy < 0 || vSelectedAccuracy > 1)
-                throw new ArgumentOutOfRangeException("Accuracy is not a value between 0 and 1.");
-
             //user image to bitmap
             Bitmap userImage = new Bitmap(Common.Base64ToImage(v_ImageCapture));
-
-            CommandControls.HideAllForms();
-            Bitmap desktopImage = ImageMethods.Screenshot();
-            Bitmap desktopOutput = new Bitmap(desktopImage);
-
-            //get graphics for drawing on output file
-            Graphics screenShotUpdate = Graphics.FromImage(desktopOutput);
-
-            //declare maximum boundaries
-            int userImageMaxWidth = userImage.Width - 1;
-            int userImageMaxHeight = userImage.Height - 1;
-            int desktopImageMaxWidth = desktopImage.Width - 1;
-            int desktopImageMaxHeight = desktopImage.Height - 1;
-
-            //create desktopOutput file
-            Bitmap sampleOut = new Bitmap(userImage);
-
-            //get graphics for drawing on output file
-            Graphics sampleUpdate = Graphics.FromImage(sampleOut);
-
-            List<ImageRecognitionFingerPrint> uniqueFingerprint = new List<ImageRecognitionFingerPrint>();
-            Color lastcolor = Color.Transparent;
-
-            //create fingerprint
-            var pixelDensity = (userImage.Width * userImage.Height);
-
-            int iteration = 0;
-            Random random = new Random();
-            while ((uniqueFingerprint.Count() < 20) && (iteration < pixelDensity))
+            double accuracy;
+            try
             {
-                int x = random.Next(userImage.Width);
-                int y = random.Next(userImage.Height);
-                Color color = sampleOut.GetPixel(x, y);
-
-                if ((lastcolor != color) && (!uniqueFingerprint.Any(f => f.XLocation == x && f.YLocation == y)))
-                {
-                    uniqueFingerprint.Add(new ImageRecognitionFingerPrint() { PixelColor = color, XLocation = x, YLocation = y });
-                    sampleUpdate.DrawRectangle(Pens.Yellow, x, y, 1, 1);
-                }
-                iteration++;
+                accuracy = double.Parse(v_MatchAccuracy.ConvertToUserVariable(engine));
+                if (accuracy > 1 || accuracy < 0)
+                    throw new ArgumentOutOfRangeException("Accuracy value is out of range (0-1)");
             }
-
-            //begin search
-            DateTime timeoutDue = DateTime.Now.AddSeconds(vTimeout);
-
-            bool imageFound = false;
-            //for each row on the screen
-            for (int rowPixel = 0; rowPixel < desktopImage.Height - 1; rowPixel++)
+            catch (Exception)
             {
-                if (rowPixel + uniqueFingerprint.First().YLocation >= desktopImage.Height)
-                    continue;
+                throw new InvalidDataException("Accuracy value is invalid");
+            }           
 
-                //for each column on screen
-                for (int columnPixel = 0; columnPixel < desktopImage.Width - 1; columnPixel++)
+            if (testMode)
+            {
+                FindImageElement(userImage, accuracy);
+                return;
+            }
+                
+            dynamic element = null;
+            if (v_ImageAction == "Wait For Image To Exist")
+            {
+                var timeoutText = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                   where rw.Field<string>("Parameter Name") == "Timeout (Seconds)"
+                                   select rw.Field<string>("Parameter Value")).FirstOrDefault();
+
+                timeoutText = timeoutText.ConvertToUserVariable(engine);
+                int timeOut = Convert.ToInt32(timeoutText);
+                var timeToEnd = DateTime.Now.AddSeconds(timeOut);
+
+                while (timeToEnd >= DateTime.Now)
                 {
-                    if ((vTimeout > 0) && (DateTime.Now > timeoutDue))
-                    {
-                        CommandControls.ShowAllForms();
-                        throw new Exception("Image recognition command ran out of time searching for image");
-                    }
-
-                    if (columnPixel + uniqueFingerprint.First().XLocation >= desktopImage.Width)
-                        continue;
-
                     try
                     {
-                        //get the current pixel from current row and column
-                        // userImageFingerPrint.First() for now will always be from top left (0,0)
-                        var currentPixel = desktopImage.GetPixel(columnPixel + uniqueFingerprint.First().XLocation, rowPixel + uniqueFingerprint.First().YLocation);
+                        element = FindImageElement(userImage, accuracy);
 
-                        //compare to see if desktop pixel matches top left pixel from user image
-                        if (currentPixel == uniqueFingerprint.First().PixelColor)
-                        {
-                            //look through each item in the fingerprint to see if offset pixel colors match
-                            int matchCount = 0;
-                            for (int item = 0; item < uniqueFingerprint.Count; item++)
-                            {
-                                //find pixel color from offset X,Y relative to current position of row and column
-                                currentPixel = desktopImage.GetPixel(columnPixel + uniqueFingerprint[item].XLocation, rowPixel + uniqueFingerprint[item].YLocation);
-
-                                //if color matches
-                                if (uniqueFingerprint[item].PixelColor == currentPixel)
-                                {
-                                    matchCount++;
-
-                                    //draw on output to demonstrate finding
-                                    if (testMode)
-                                        screenShotUpdate.DrawRectangle(Pens.Blue, columnPixel + uniqueFingerprint[item].XLocation, rowPixel + uniqueFingerprint[item].YLocation, 5, 5);
-                                }
-                                else
-                                {
-                                    //mismatch in the pixel series, not a series of matching coordinate
-                                    //?add threshold %?
-                                    imageFound = false;
-
-                                    //draw on output to demonstrate finding
-                                    if (testMode)
-                                        screenShotUpdate.DrawRectangle(Pens.OrangeRed, columnPixel + uniqueFingerprint[item].XLocation, rowPixel + uniqueFingerprint[item].YLocation, 5, 5);
-                                }
-                            }
-
-                            double matchAccuracy = (double)matchCount / (double)uniqueFingerprint.Count();
-
-                            if (matchAccuracy >= vSelectedAccuracy)
-                            {
-                                imageFound = true;
-
-                                var leftX = columnPixel;
-                                var middleX = columnPixel + userImageMaxWidth / 2;
-                                var rightX = columnPixel + userImageMaxWidth;
-                                var topY = rowPixel;
-                                var middleY = rowPixel + userImageMaxHeight / 2;
-                                var bottomY = rowPixel + userImageMaxHeight;
-
-                                if (testMode)
-                                {
-                                    //draw on output to demonstrate finding
-                                    var Rectangle = new Rectangle(leftX, topY, userImageMaxWidth, userImageMaxHeight);
-                                    Brush brush = new SolidBrush(Color.ForestGreen);
-                                    screenShotUpdate.FillRectangle(brush, Rectangle);
-                                }
-
-                                switch (v_ImageAction)
-                                {
-                                    case "Click Image":
-                                        string clickType = (from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                             where rw.Field<string>("Parameter Name") == "Click Type"
-                                                             select rw.Field<string>("Parameter Value")).FirstOrDefault();
-                                        string clickPosition = (from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                            where rw.Field<string>("Parameter Name") == "Click Position"
-                                                            select rw.Field<string>("Parameter Value")).FirstOrDefault();
-                                        int xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                                           where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                                           select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
-
-                                        int yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                                           where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                                           select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
-
-                                        int clickPositionX = 0;
-                                        int clickPositionY = 0;
-                                        switch (clickPosition)
-                                        {
-                                            case "Center":
-                                                clickPositionX = middleX;
-                                                clickPositionY = middleY;
-                                                break;
-                                            case "Top Left":
-                                                clickPositionX = leftX;
-                                                clickPositionY = topY;
-                                                break;
-                                            case "Top Middle":
-                                                clickPositionX = middleX;
-                                                clickPositionY = topY;
-                                                break;
-                                            case "Top Right":
-                                                clickPositionX = rightX;
-                                                clickPositionY = topY;
-                                                break;
-                                            case "Bottom Left":
-                                                clickPositionX = leftX;
-                                                clickPositionY = bottomY;
-                                                break;
-                                            case "Bottom Middle":
-                                                clickPositionX = middleX;
-                                                clickPositionY = bottomY;
-                                                break;
-                                            case "Bottom Right":
-                                                clickPositionX = rightX;
-                                                clickPositionY = bottomY;
-                                                break;
-                                            case "Middle Left":
-                                                clickPositionX = leftX;
-                                                clickPositionY = middleX;
-                                                break;
-                                            case "Middle Right":
-                                                clickPositionX = rightX;
-                                                clickPositionY = middleY;
-                                                break;
-                                        }
-                                        //move mouse to position
-                                        var mouseMove = new SendMouseMoveCommand
-                                        {
-                                            v_XMousePosition = (clickPositionX + xAdjust).ToString(),
-                                            v_YMousePosition = (clickPositionY + yAdjust).ToString(),
-                                            v_MouseClick = clickType
-                                        };
-
-                                        mouseMove.RunCommand(sender);
-                                        break;
-                                    case "Set Text":
-                                        string textToSet = (from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                            where rw.Field<string>("Parameter Name") == "Text To Set"
-                                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
-
-                                        string encryptedData = (from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                                where rw.Field<string>("Parameter Name") == "Encrypted Text"
-                                                                select rw.Field<string>("Parameter Value")).FirstOrDefault();
-
-                                        if (encryptedData == "Encrypted")
-                                            textToSet = EncryptionServices.DecryptString(textToSet, "TASKT");
-
-                                        //move mouse to position and set text
-                                        var setTextMouseMove = new SendMouseMoveCommand
-                                        {
-                                            v_XMousePosition = (middleX).ToString(),
-                                            v_YMousePosition = (middleY).ToString(),
-                                            v_MouseClick = "Left Click"
-                                        };
-                                        setTextMouseMove.RunCommand(sender);
-
-                                        SendKeys.SendWait(textToSet);
-                                        break;
-                                    case "Set Secure Text":
-                                        var secureString = (from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                            where rw.Field<string>("Parameter Name") == "Secure String Variable"
-                                                            select rw.Field<string>("Parameter Value")).FirstOrDefault();
-
-                                        var secureStrVariable = VariableMethods.LookupVariable(engine, secureString);
-
-                                        if (secureStrVariable.VariableValue is SecureString)
-                                            secureString = ((SecureString)secureStrVariable.VariableValue).ConvertSecureStringToString();
-                                        else
-                                            throw new ArgumentException("Provided Argument is not a 'Secure String'");
-
-                                        //move mouse to position and set text
-                                        var setSecureTextMouseMove = new SendMouseMoveCommand
-                                        {
-                                            v_XMousePosition = (middleX).ToString(),
-                                            v_YMousePosition = (middleY).ToString(),
-                                            v_MouseClick = "Left Click"
-                                        };
-                                        setSecureTextMouseMove.RunCommand(sender);
-
-                                        SendKeys.SendWait(secureString);
-                                        break;
-
-                                    case "Check If Image Exists":
-                                        var outputVariable = (from rw in v_ImageActionParameterTable.AsEnumerable()
-                                                               where rw.Field<string>("Parameter Name") == "Output Variable Name"
-                                                               select rw.Field<string>("Parameter Value")).FirstOrDefault();
-
-                                        //remove brackets from variable
-                                        outputVariable = outputVariable.Replace("{", "").Replace("}", "");
-                                        imageFound.ToString().StoreInUserVariable(engine, outputVariable);
-                                        break;
-                                    case "Wait For Image To Exist":
-                                    default:
-                                        break;
-                                       
-                                }
-                            }
-                        }
-
-                        if (imageFound)
+                        if (element == null)
+                            throw new Exception("Image Element Not Found");
+                        else
                             break;
                     }
                     catch (Exception)
                     {
-                        //continue
+                        engine.ReportProgress("Element Not Yet Found... " + (timeToEnd - DateTime.Now).Seconds + "s remain");
+                        Thread.Sleep(1000);
                     }
                 }
 
-                if (imageFound)
-                    break;
+                if (element == null)
+                    throw new Exception("Image Element Not Found");
+
+                return;
             }
+            else
+                element = FindImageElement(userImage, accuracy);
 
-            if (testMode)
+            try
             {
-                frmImageCapture captureOutput = new frmImageCapture();
-                captureOutput.pbTaggedImage.Image = sampleOut;
-                captureOutput.pbSearchResult.Image = desktopOutput;
-                captureOutput.Show();
-                captureOutput.TopMost = true;
-                //captureOutput.WindowState = FormWindowState.Maximized;
-            }
-
-            userImage.Dispose();
-            desktopImage.Dispose();
-            screenShotUpdate.Dispose();
-            CommandControls.ShowAllForms();
-
-            if (!imageFound)
-            {
-                if (v_ImageAction == "Check If Image Exists")
+                string clickPosition;
+                int xAdjust;
+                int yAdjust;
+                switch (v_ImageAction)
                 {
-                    var outputVariable = (from rw in v_ImageActionParameterTable.AsEnumerable()
-                                          where rw.Field<string>("Parameter Name") == "Output Variable Name"
-                                          select rw.Field<string>("Parameter Value")).FirstOrDefault();
+                    case "Click Image":
+                        string clickType = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                            where rw.Field<string>("Parameter Name") == "Click Type"
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault();
+                        clickPosition = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                where rw.Field<string>("Parameter Name") == "Click Position"
+                                                select rw.Field<string>("Parameter Value")).FirstOrDefault();
+                        xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                       where rw.Field<string>("Parameter Name") == "X Adjustment"
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                        yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                       where rw.Field<string>("Parameter Name") == "Y Adjustment"
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
 
-                    //remove brackets from variable
-                    outputVariable = outputVariable.Replace("{", "").Replace("}", "");
-                    imageFound.ToString().StoreInUserVariable(engine, outputVariable);
+                        Point clickPositionPoint = GetClickPosition(clickPosition, element); 
+
+                        //move mouse to position
+                        var mouseMove = new SendMouseMoveCommand
+                        {
+                            v_XMousePosition = (clickPositionPoint.X + xAdjust).ToString(),
+                            v_YMousePosition = (clickPositionPoint.Y + yAdjust).ToString(),
+                            v_MouseClick = clickType
+                        };
+
+                        mouseMove.RunCommand(sender);
+                        break;
+
+                    case "Set Text":
+                        string textToSet = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                            where rw.Field<string>("Parameter Name") == "Text To Set"
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
+                        clickPosition = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                         where rw.Field<string>("Parameter Name") == "Click Position"
+                                         select rw.Field<string>("Parameter Value")).FirstOrDefault();
+                        xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                   where rw.Field<string>("Parameter Name") == "X Adjustment"
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                        yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                   where rw.Field<string>("Parameter Name") == "Y Adjustment"
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                        string encryptedData = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                where rw.Field<string>("Parameter Name") == "Encrypted Text"
+                                                select rw.Field<string>("Parameter Value")).FirstOrDefault();
+
+                        if (encryptedData == "Encrypted")
+                            textToSet = EncryptionServices.DecryptString(textToSet, "TASKT");
+
+                        Point setTextPositionPoint = GetClickPosition(clickPosition, element);
+
+                        //move mouse to position and set text
+                        var setTextMouseMove = new SendMouseMoveCommand
+                        {
+                            v_XMousePosition = (setTextPositionPoint.X + xAdjust).ToString(),
+                            v_YMousePosition = (setTextPositionPoint.Y + yAdjust).ToString(),
+                            v_MouseClick = "Left Click"
+                        };
+                        setTextMouseMove.RunCommand(sender);
+
+                        SendKeys.SendWait(textToSet);
+                        break;
+
+                    case "Set Secure Text":
+                        var secureString = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                            where rw.Field<string>("Parameter Name") == "Secure String Variable"
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault();
+                        clickPosition = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                         where rw.Field<string>("Parameter Name") == "Click Position"
+                                         select rw.Field<string>("Parameter Value")).FirstOrDefault();
+                        xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                   where rw.Field<string>("Parameter Name") == "X Adjustment"
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                        yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
+                                                   where rw.Field<string>("Parameter Name") == "Y Adjustment"
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+
+                        var secureStrVariable = VariableMethods.LookupVariable(engine, secureString);
+
+                        if (secureStrVariable.VariableValue is SecureString)
+                            secureString = ((SecureString)secureStrVariable.VariableValue).ConvertSecureStringToString();
+                        else
+                            throw new ArgumentException("Provided Argument is not a 'Secure String'");
+
+                        Point setSecureTextPositionPoint = GetClickPosition(clickPosition, element);
+
+                        //move mouse to position and set text
+                        var setSecureTextMouseMove = new SendMouseMoveCommand
+                        {
+                            v_XMousePosition = (setSecureTextPositionPoint.X + xAdjust).ToString(),
+                            v_YMousePosition = (setSecureTextPositionPoint.Y + yAdjust).ToString(),
+                            v_MouseClick = "Left Click"
+                        };
+                        setSecureTextMouseMove.RunCommand(sender);
+
+                        SendKeys.SendWait(secureString);
+                        break;
+
+                    case "Check If Image Exists":
+                        var outputVariable = (from rw in v_ImageActionParameterTable.AsEnumerable()
+                                              where rw.Field<string>("Parameter Name") == "Output Bool Variable Name"
+                                              select rw.Field<string>("Parameter Value")).FirstOrDefault();
+
+                        //remove brackets from variable
+                        outputVariable = outputVariable.Replace("{", "").Replace("}", "");
+
+                        if (element != null)
+                            "True".StoreInUserVariable(engine, outputVariable);
+                        else
+                            "False".StoreInUserVariable(engine, outputVariable);
+                        break;
+                    default:
+                        break;
                 }
-                else                       
-                    throw new Exception("Specified image was not found in window!");
             }
-        }
+            catch (Exception ex)
+            {
+                if (element == null)
+                    throw new Exception("Specified image was not found in window!");
+                else
+                    throw ex;
+            }                
+        }   
+
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
@@ -449,7 +322,6 @@ namespace taskt.Commands
             _imageParameterControls.Add(_imageGridViewHelper);
             RenderedControls.AddRange(_imageParameterControls);
 
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_TimeoutSeconds", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_MatchAccuracy", this, editor));
 
             return RenderedControls;
@@ -460,13 +332,156 @@ namespace taskt.Commands
             return base.GetDisplayValue() + $" [{v_ImageAction} on Screen - Accuracy '{v_MatchAccuracy}']";
         }
 
-        public void ImageAction_SelectionChangeCommitted(object sender, EventArgs e)
+        public ImageElement FindImageElement(Bitmap smallBmp, double accuracy)
+        {
+            CommandControls.HideAllForms();
+            bool testMode = TestMode;
+            dynamic element = null;
+            double tolerance = 1.0 - accuracy;
+
+            Bitmap bigBmp = ImageMethods.Screenshot();
+
+            Bitmap smallTestBmp = new Bitmap(smallBmp);
+
+            Bitmap bigTestBmp = new Bitmap(bigBmp);
+            Graphics bigTestGraphics = Graphics.FromImage(bigTestBmp);
+
+            BitmapData smallData =
+              smallBmp.LockBits(new Rectangle(0, 0, smallBmp.Width, smallBmp.Height),
+                       ImageLockMode.ReadOnly,
+                       PixelFormat.Format24bppRgb);
+            BitmapData bigData =
+              bigBmp.LockBits(new Rectangle(0, 0, bigBmp.Width, bigBmp.Height),
+                       ImageLockMode.ReadOnly,
+                       PixelFormat.Format24bppRgb);
+
+            int smallStride = smallData.Stride;
+            int bigStride = bigData.Stride;
+
+            int bigWidth = bigBmp.Width;
+            int bigHeight = bigBmp.Height - smallBmp.Height + 1;
+            int smallWidth = smallBmp.Width * 3;
+            int smallHeight = smallBmp.Height;
+
+            int margin = Convert.ToInt32(255.0 * tolerance);
+
+            unsafe
+            {
+                byte* pSmall = (byte*)(void*)smallData.Scan0;
+                byte* pBig = (byte*)(void*)bigData.Scan0;
+
+                int smallOffset = smallStride - smallBmp.Width * 3;
+                int bigOffset = bigStride - bigBmp.Width * 3;
+
+                bool matchFound = true;
+
+                for (int y = 0; y < bigHeight; y++)
+                {
+                    for (int x = 0; x < bigWidth; x++)
+                    {
+                        byte* pBigBackup = pBig;
+                        byte* pSmallBackup = pSmall;
+
+                        //Look for the small picture.
+                        for (int i = 0; i < smallHeight; i++)
+                        {
+                            int j = 0;
+                            matchFound = true;
+                            for (j = 0; j < smallWidth; j++)
+                            {
+                                //With tolerance: pSmall value should be between margins.
+                                int inf = pBig[0] - margin;
+                                int sup = pBig[0] + margin;
+                                if (sup < pSmall[0] || inf > pSmall[0])
+                                {
+                                    matchFound = false;
+                                    break;
+                                }
+
+                                pBig++;
+                                pSmall++;
+                            }
+
+                            if (!matchFound) 
+                                break;
+
+                            //We restore the pointers.
+                            pSmall = pSmallBackup;
+                            pBig = pBigBackup;
+
+                            //Next rows of the small and big pictures.
+                            pSmall += smallStride * (1 + i);
+                            pBig += bigStride * (1 + i);
+                        }
+
+                        //If match found, we return.
+                        if (matchFound)
+                        {
+                            element = new ImageElement
+                            {
+                                LeftX = x,
+                                MiddleX = x + smallBmp.Width / 2,
+                                RightX = x + smallBmp.Width,
+                                TopY = y,
+                                MiddleY = y + smallBmp.Height / 2,
+                                BottomY = y + smallBmp.Height
+                            };
+
+                            if (testMode)
+                            {
+                                //draw on output to demonstrate finding
+                                var Rectangle = new Rectangle(x, y, smallBmp.Width - 1, smallBmp.Height - 1);
+                                Pen brush = new Pen(Color.Red);
+                                bigTestGraphics.DrawRectangle(brush, Rectangle);
+
+                                frmImageCapture captureOutput = new frmImageCapture();
+                                captureOutput.pbTaggedImage.Image = smallTestBmp;
+                                captureOutput.pbSearchResult.Image = bigTestBmp;
+                                captureOutput.TopMost = true;
+                                captureOutput.Show();                              
+                            }
+
+                            break;
+                        }
+                        //If no match found, we restore the pointers and continue.
+                        else
+                        {
+                            pBig = pBigBackup;
+                            pSmall = pSmallBackup;
+                            pBig += 3;
+                        }
+                    }
+
+                    if (matchFound) break;
+
+                    pBig += bigOffset;
+                }
+            }
+
+            bigBmp.UnlockBits(bigData);
+            smallBmp.UnlockBits(smallData);
+            bigTestGraphics.Dispose();
+            CommandControls.ShowAllForms();
+            return element;
+        }
+        private void ImageAction_SelectionChangeCommitted(object sender, EventArgs e)
         {
             SurfaceAutomationCommand cmd = this;
             DataTable actionParameters = cmd.v_ImageActionParameterTable;
 
             if (sender != null)
                 actionParameters.Rows.Clear();
+
+            DataGridViewComboBoxCell mouseClickPositionBox = new DataGridViewComboBoxCell();
+            mouseClickPositionBox.Items.Add("Center");
+            mouseClickPositionBox.Items.Add("Top Left");
+            mouseClickPositionBox.Items.Add("Top Middle");
+            mouseClickPositionBox.Items.Add("Top Right");
+            mouseClickPositionBox.Items.Add("Bottom Left");
+            mouseClickPositionBox.Items.Add("Bottom Middle");
+            mouseClickPositionBox.Items.Add("Bottom Right");
+            mouseClickPositionBox.Items.Add("Middle Left");
+            mouseClickPositionBox.Items.Add("Middle Right");
 
             switch (_imageActionDropdown.SelectedItem)
             {
@@ -486,33 +501,19 @@ namespace taskt.Commands
                     mouseClickTypeBox.Items.Add("Right Up");
                     mouseClickTypeBox.Items.Add("Double Left Click");
 
-                    DataGridViewComboBoxCell mouseClickPositionBox = new DataGridViewComboBoxCell();
-                    mouseClickPositionBox.Items.Add("Center");
-                    mouseClickPositionBox.Items.Add("Top Left");
-                    mouseClickPositionBox.Items.Add("Top Middle");
-                    mouseClickPositionBox.Items.Add("Top Right");
-                    mouseClickPositionBox.Items.Add("Bottom Left");
-                    mouseClickPositionBox.Items.Add("Bottom Middle");
-                    mouseClickPositionBox.Items.Add("Bottom Right");
-                    mouseClickPositionBox.Items.Add("Middle Left");
-                    mouseClickPositionBox.Items.Add("Middle Right");
-
                     if (sender != null)
                     {
                         actionParameters.Rows.Add("Click Type", "");
                         actionParameters.Rows.Add("Click Position", "");
                         actionParameters.Rows.Add("X Adjustment", 0);
                         actionParameters.Rows.Add("Y Adjustment", 0);
-                    }
 
-                    if (sender != null)
-                    {
                         _imageGridViewHelper.Rows[0].Cells[1].Value = "Left Click";
                         _imageGridViewHelper.Rows[1].Cells[1].Value = "Center";
+                        _imageGridViewHelper.Rows[0].Cells[1] = mouseClickTypeBox;
+                        _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
                     }
-
-                    _imageGridViewHelper.Rows[0].Cells[1] = mouseClickTypeBox;
-                    _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
+                  
                     break;
 
                 case "Set Text":
@@ -522,18 +523,24 @@ namespace taskt.Commands
                     if (sender != null)
                     {
                         actionParameters.Rows.Add("Text To Set");
+                        actionParameters.Rows.Add("Click Position", "");
+                        actionParameters.Rows.Add("X Adjustment", 0);
+                        actionParameters.Rows.Add("Y Adjustment", 0);
                         actionParameters.Rows.Add("Encrypted Text");
                         actionParameters.Rows.Add("Optional - Click to Encrypt 'Text To Set'");
+
+                        _imageGridViewHelper.Rows[1].Cells[1].Value = "Center";
+                        _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
 
                         DataGridViewComboBoxCell encryptedBox = new DataGridViewComboBoxCell();
                         encryptedBox.Items.Add("Not Encrypted");
                         encryptedBox.Items.Add("Encrypted");
-                        _imageGridViewHelper.Rows[1].Cells[1] = encryptedBox;
-                        _imageGridViewHelper.Rows[1].Cells[1].Value = "Not Encrypted";
+                        _imageGridViewHelper.Rows[4].Cells[1] = encryptedBox;
+                        _imageGridViewHelper.Rows[4].Cells[1].Value = "Not Encrypted";
 
                         var buttonCell = new DataGridViewButtonCell();
-                        _imageGridViewHelper.Rows[2].Cells[1] = buttonCell;
-                        _imageGridViewHelper.Rows[2].Cells[1].Value = "Encrypt Text";
+                        _imageGridViewHelper.Rows[5].Cells[1] = buttonCell;
+                        _imageGridViewHelper.Rows[5].Cells[1].Value = "Encrypt Text";
                         _imageGridViewHelper.CellContentClick += ImageGridViewHelper_CellContentClick;
                     }
                     break;
@@ -543,8 +550,15 @@ namespace taskt.Commands
                         ctrl.Show();
 
                     if (sender != null)
+                    {
                         actionParameters.Rows.Add("Secure String Variable");
-                    
+                        actionParameters.Rows.Add("Click Position", "");
+                        actionParameters.Rows.Add("X Adjustment", 0);
+                        actionParameters.Rows.Add("Y Adjustment", 0);
+
+                        _imageGridViewHelper.Rows[1].Cells[1].Value = "Center";
+                        _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
+                    }
                     break;
 
                 case "Check If Image Exists":
@@ -552,12 +566,15 @@ namespace taskt.Commands
                         ctrl.Show();
 
                     if (sender != null)
-                        actionParameters.Rows.Add("Output Variable Name", "");
+                        actionParameters.Rows.Add("Output Bool Variable Name", "");
                     break;
 
                  case "Wait For Image To Exist":
                     foreach (var ctrl in _imageParameterControls)
-                        ctrl.Hide();
+                        ctrl.Show();
+
+                    if (sender != null)
+                        actionParameters.Rows.Add("Timeout (Seconds)", 30);
                     break;
 
                 default:
@@ -586,6 +603,52 @@ namespace taskt.Commands
                     _imageGridViewHelper.Rows[2].Cells[1].Value = "Encrypted";
                 }
             }
+        }
+
+        private Point GetClickPosition(string clickPosition, ImageElement element)
+        {
+            int clickPositionX = 0;
+            int clickPositionY = 0;
+            switch (clickPosition)
+            {
+                case "Center":
+                    clickPositionX = element.MiddleX;
+                    clickPositionY = element.MiddleY;
+                    break;
+                case "Top Left":
+                    clickPositionX = element.LeftX;
+                    clickPositionY = element.TopY;
+                    break;
+                case "Top Middle":
+                    clickPositionX = element.MiddleX;
+                    clickPositionY = element.TopY;
+                    break;
+                case "Top Right":
+                    clickPositionX = element.RightX;
+                    clickPositionY = element.TopY;
+                    break;
+                case "Bottom Left":
+                    clickPositionX = element.LeftX;
+                    clickPositionY = element.BottomY;
+                    break;
+                case "Bottom Middle":
+                    clickPositionX = element.MiddleX;
+                    clickPositionY = element.BottomY;
+                    break;
+                case "Bottom Right":
+                    clickPositionX = element.RightX;
+                    clickPositionY = element.BottomY;
+                    break;
+                case "Middle Left":
+                    clickPositionX = element.LeftX;
+                    clickPositionY = element.MiddleX;
+                    break;
+                case "Middle Right":
+                    clickPositionX = element.RightX;
+                    clickPositionY = element.MiddleY;
+                    break;
+            }
+            return new Point(clickPositionX, clickPositionY);
         }
     }
 }
