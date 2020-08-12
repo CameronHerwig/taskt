@@ -161,6 +161,9 @@ namespace taskt.UI.CustomControls
 
             inputBox.Name = parameterName;
             inputBox.KeyDown += InputBox_KeyDown;
+
+            if (parameterName == "v_Comment")
+                inputBox.Margin = new Padding(0, 0, 0, 20);
             return inputBox;
         }
 
@@ -178,9 +181,9 @@ namespace taskt.UI.CustomControls
             checkBox.DataBindings.Add("Checked", parent, parameterName, false, DataSourceUpdateMode.OnPropertyChanged);
             checkBox.Name = parameterName;
             checkBox.AutoSize = true;
-            checkBox.Size = new Size(15, 14);
+            checkBox.Size = new Size(20, 20);
             checkBox.UseVisualStyleBackColor = true;
-
+            checkBox.Margin = new Padding(0, 8, 0, 0);
             return checkBox;
         }
 
@@ -369,9 +372,9 @@ namespace taskt.UI.CustomControls
                         helperControl.CommandDisplay = "Add New Loop Statement";
                         break;
 
-                        //default:
-                        //    MessageBox.Show("Command Helper does not exist for: " + attrib.additionalHelper.ToString());
-                        //    break;
+                    //default:
+                    //    MessageBox.Show("Command Helper does not exist for: " + attrib.additionalHelper.ToString());
+                    //    break;
                 }
 
                 controlList.Add(helperControl);

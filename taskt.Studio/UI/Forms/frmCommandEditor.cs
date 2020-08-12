@@ -25,6 +25,7 @@ using taskt.Core.Infrastructure;
 using taskt.Core.Script;
 using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
+using taskt.UI.Forms.ScriptBuilder_Forms;
 
 namespace taskt.UI.Forms
 {
@@ -185,9 +186,9 @@ namespace taskt.UI.Forms
 
             //add each control
             foreach (var ctrl in userSelectedCommand.UIControls)
-            {
                 flw_InputVariables.Controls.Add(ctrl);
-            }
+
+            OnResize(EventArgs.Empty);          
         }
 
         private void CopyPropertiesTo(object fromObject, object toObject)

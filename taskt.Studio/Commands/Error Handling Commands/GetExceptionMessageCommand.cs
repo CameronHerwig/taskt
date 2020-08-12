@@ -49,9 +49,7 @@ namespace taskt.Commands
         {
             base.Render(editor);
 
-            RenderedControls.AddRange(
-                CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor)
-                );
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }

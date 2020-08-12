@@ -267,7 +267,7 @@ namespace taskt.Commands
 
         private void PassParametersCheckbox_CheckedChanged(object sender, EventArgs e, List<ScriptVariable> variables, List<ScriptElement> elements)
         {
-            AutomationEngineInstance currentScriptEngine = new AutomationEngineInstance(((frmScriptBuilder)CurrentScriptBuilder).EngineLogger);
+            AutomationEngineInstance currentScriptEngine = new AutomationEngineInstance(null);
             currentScriptEngine.VariableList.AddRange(variables);
             currentScriptEngine.ElementList.AddRange(elements);
             var startFile = v_taskPath.ConvertToUserVariable(currentScriptEngine);
@@ -284,10 +284,7 @@ namespace taskt.Commands
                 {
                     DataRow[] foundVariables  = v_VariableAssignments.Select("VariableName = '" + variable.VariableName + "'");
                     if (foundVariables.Length == 0)
-                    {
                         v_VariableAssignments.Rows.Add(variable.VariableName, variable.VariableValue);
-
-                    }
                 }
                 _assignmentsGridViewHelper.DataSource = v_VariableAssignments;
 

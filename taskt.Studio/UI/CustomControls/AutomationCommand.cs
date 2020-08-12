@@ -30,43 +30,31 @@ namespace taskt.UI.CustomControls
             {
                 var renderedControls = Command.Render(editorForm);
 
-                if (renderedControls.Count == 0)
+                foreach (var ctrl in renderedControls)
                 {
-                    var label = new Label();
-                    label.ForeColor = Color.Red;
-                    label.AutoSize = true;
-                    label.Font = new Font("Segoe UI", 18, FontStyle.Bold);
-                    label.Text = "No Controls are defined for rendering!  "
-                        + "If you intend to override with custom controls, "
-                        + "you must handle the Render() method of this command!  "
-                        + "If you do not wish to override with your own custom controls "
-                        + "then set 'CustomRendering' to False.";
-                    UIControls.Add(label);
+                    UIControls.Add(ctrl);
                 }
-                else
+
+                //generate Private Checkbox (Control) if user did not add it
+                var checkBoxControlExists = renderedControls.Any(f => f.Name == "v_IsPrivate");
+
+                if (!checkBoxControlExists)
                 {
-                    foreach (var ctrl in renderedControls)
-                    {
-                        UIControls.Add(ctrl);
-                    }
+                    FlowLayoutPanel flpCheckBox = new FlowLayoutPanel();
+                    flpCheckBox.Height = 30;
+                    flpCheckBox.FlowDirection = FlowDirection.LeftToRight;
+                    flpCheckBox.Controls.Add(CommandControls.CreateCheckBoxFor("v_IsPrivate", Command));
+                    flpCheckBox.Controls.Add(CommandControls.CreateDefaultLabelFor("v_IsPrivate", Command));
+                    UIControls.Add(flpCheckBox);
+                }
 
-                    //generate Private Checkbox (Control) if user did not add it
-                    var checkBoxControlExists = renderedControls.Any(f => f.Name == "v_IsPrivate");
+                //generate comment command if user did not generate it
+                var commentControlExists = renderedControls.Any(f => f.Name == "v_Comment");
 
-                    if (!checkBoxControlExists)
-                    {
-                        UIControls.Add(CommandControls.CreateDefaultLabelFor("v_IsPrivate", Command));
-                        UIControls.Add(CommandControls.CreateCheckBoxFor("v_IsPrivate", Command));
-                    }
-
-                    //generate comment command if user did not generate it
-                    var commentControlExists = renderedControls.Any(f => f.Name == "v_Comment");
-
-                    if (!commentControlExists)
-                    {
-                        UIControls.Add(CommandControls.CreateDefaultLabelFor("v_Comment", Command));
-                        UIControls.Add(CommandControls.CreateDefaultInputFor("v_Comment", Command, 100, 300));
-                    }
+                if (!commentControlExists)
+                {
+                    UIControls.Add(CommandControls.CreateDefaultLabelFor("v_Comment", Command));
+                    UIControls.Add(CommandControls.CreateDefaultInputFor("v_Comment", Command, 100, 300));
                 }
             }
             else

@@ -75,6 +75,5 @@ namespace taskt.Commands
         {
             return base.GetDisplayValue() + $" [Capture Image on Screen - Store Image in '{v_OutputUserVariableName}']";
         }
-    }
-    
+    } 
 }

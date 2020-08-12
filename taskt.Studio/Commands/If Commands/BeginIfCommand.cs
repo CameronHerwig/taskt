@@ -100,6 +100,7 @@ namespace taskt.Commands
             _recorderControl = new CommandItemControl();
             _recorderControl.Padding = new Padding(10, 0, 0, 0);
             _recorderControl.ForeColor = Color.AliceBlue;
+            _recorderControl.Font = new Font("Segoe UI Semilight", 10);
             _recorderControl.Name = "guirecorder_helper";
             _recorderControl.CommandImage = Resources.command_camera;
             _recorderControl.CommandDisplay = "Element Recorder";
