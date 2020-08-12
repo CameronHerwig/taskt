@@ -22,9 +22,11 @@ namespace taskt.Commands
     {
         [XmlAttribute]
         [PropertyDescription("Capture Search Image")]
-        [InputSpecification("Use the tool to capture an image.")]
+        [InputSpecification("Use the tool to capture an image that will be located on screen during execution.")]
         [SampleUsage("")]
-        [Remarks("The image will be used as the image to be found on screen.")]
+        [Remarks("Images with larger color variance will be found more quickly than those with a lot of white space. \n" +
+                 "For images that are primarily white space, tagging color to the top-left corner of the image and setting \n" +
+                 "the relative click position will produce faster results.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowImageRecogitionHelper)]
         public string v_ImageCapture { get; set; }
 

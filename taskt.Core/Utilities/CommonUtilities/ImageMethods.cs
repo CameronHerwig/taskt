@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace taskt.Core.Utilities.CommonUtilities
@@ -18,26 +16,6 @@ namespace taskt.Core.Utilities.CommonUtilities
             g.CopyFromScreen(0, 0, 0, 0, size);
 
             return bmpScreenshot;
-        }
-
-        [DllImport("gdi32.dll")]
-        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-        private enum DeviceCap
-        {
-            VERTRES = 10,
-            DESKTOPVERTRES = 117,
-        }
-
-        private static double GetScalingFactor()
-        {
-            Graphics g = Graphics.FromHwnd(IntPtr.Zero);
-            IntPtr desktop = g.GetHdc();
-            int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
-            int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
-
-            double ScreenScalingFactor = (double)PhysicalScreenHeight / (double)LogicalScreenHeight;
-
-            return ScreenScalingFactor; // 1.25 = 125%
         }
     }
 }

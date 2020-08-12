@@ -809,9 +809,8 @@ namespace taskt.UI.CustomControls
         public static void ShowAllForms()
         {
             foreach (Form form in Application.OpenForms)
-            {
                 ShowForm(form);
-            }
+
             Thread.Sleep(1000);
         }
 
@@ -830,9 +829,8 @@ namespace taskt.UI.CustomControls
         public static void HideAllForms()
         {
             foreach (Form form in Application.OpenForms)
-            {
                 HideForm(form);
-            }
+
             Thread.Sleep(1000);
         }
 
