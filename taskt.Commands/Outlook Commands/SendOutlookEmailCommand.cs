@@ -17,7 +17,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Outlook Commands")]
-    [Description("This command sends emails with attachments in Outlook.")]
+    [Description("This command sends an email with optional attachment(s) in Outlook.")]
 
     public class SendOutlookEmailCommand : ScriptCommand
     {
@@ -40,7 +40,7 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Email Body")]
         [InputSpecification("Enter text to be used as the email body.")]
-        [SampleUsage("Dear John, ... || {vBody}")]
+        [SampleUsage("Everything ran ok at {DateTime.Now} || {vBody}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_Body { get; set; }

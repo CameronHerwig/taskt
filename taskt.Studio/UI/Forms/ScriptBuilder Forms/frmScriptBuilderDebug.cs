@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Outlook;
+using MimeKit;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -91,6 +92,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                                 variableValues.Rows.Add(variable.VariableName, "Microsoft.Office.Interop.Outlook.MailItem",
                                     ConvertMailItemToString((MailItem)variable.VariableValue));
                                 break;
+                            case "MimeKit.MimeMessage":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
+                                    ConvertMimeMessageToString((MimeMessage)variable.VariableValue));
+                                break;
                             case "OpenQA.Selenium.Remote.RemoteWebElement":
                                 variableValues.Rows.Add(variable.VariableName, "OpenQA.Selenium.IWebElement",
                                     ConvertIWebElementToString((IWebElement)variable.VariableValue));
@@ -98,6 +103,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                             case "System.Collections.Generic.List`1[System.String]":
                             case "System.Collections.Generic.List`1[System.Data.DataTable]":
                             case "System.Collections.Generic.List`1[Microsoft.Office.Interop.Outlook.MailItem]":
+                            case "System.Collections.Generic.List`1[MimeKit.MimeMessage]":
                             case "System.Collections.Generic.List`1[OpenQA.Selenium.IWebElement]":
                                 variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
                                     ConvertListToString(variable.VariableValue));
@@ -176,13 +182,42 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                                   $"Sent On: {mail.SentOn}, \n" +
                                   $"Unread: {mail.UnRead}, \n" +
                                   $"Attachments({mail.Attachments.Count})");
+            
             if (mail.Attachments.Count > 0)
             {
                 stringBuilder.Append(" [");
                 foreach(Attachment attachment in mail.Attachments)
-                {
                     stringBuilder.Append($"{attachment.FileName}, ");
-                }
+
+                //trim final comma
+                stringBuilder.Length = stringBuilder.Length - 2;
+                stringBuilder.Append("]");
+            }
+
+            stringBuilder.Append("]");
+
+            return stringBuilder.ToString();
+        }
+
+        public string ConvertMimeMessageToString(MimeMessage message)
+        {
+            int attachmentCount = 0;
+            foreach (var attachment in message.Attachments)
+                attachmentCount += 1;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append($"[Subject: {message.Subject}, \n" +
+                                  $"Sender: {message.From}, \n" +
+                                  $"Sent On: {message.Date}, \n" +
+                                  $"Attachments({attachmentCount})");
+            
+            if (attachmentCount > 0)
+            {
+                stringBuilder.Append(" [");
+                foreach (var attachment in message.Attachments)
+                    stringBuilder.Append($"{attachment.ContentDisposition?.FileName}, " ??
+                                         "attached-message.eml, ");
+
                 //trim final comma
                 stringBuilder.Length = stringBuilder.Length - 2;
                 stringBuilder.Append("]");
@@ -220,7 +255,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 for (int i = 0; i < stringList.Count - 1; i++)
                     stringBuilder.AppendFormat("{0}, ", stringList[i]);
 
-                stringBuilder.AppendFormat("{0}]", stringList[stringList.Count - 1]);
+                if (stringList.Count > 0)
+                    stringBuilder.AppendFormat("{0}]", stringList[stringList.Count - 1]);
+                else
+                    stringBuilder.Length = stringBuilder.Length - 3;
             }
             else if (type == typeof(DataTable))
             {
@@ -230,7 +268,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 for (int i = 0; i < dataTableList.Count - 1; i++)
                     stringBuilder.AppendFormat("{0}, \n", ConvertDataTableToString(dataTableList[i]));
 
-                stringBuilder.AppendFormat("{0}]", ConvertDataTableToString(dataTableList[dataTableList.Count - 1]));
+                if (dataTableList.Count > 0)
+                    stringBuilder.AppendFormat("{0}]", ConvertDataTableToString(dataTableList[dataTableList.Count - 1]));
+                else
+                    stringBuilder.Length = stringBuilder.Length - 3;
             }
             else if (type == typeof(MailItem))
             {
@@ -240,7 +281,23 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 for (int i = 0; i < mailItemList.Count - 1; i++)
                     stringBuilder.AppendFormat("{0}, \n", ConvertMailItemToString(mailItemList[i]));
 
-                stringBuilder.AppendFormat("{0}]", ConvertMailItemToString(mailItemList[mailItemList.Count - 1]));
+                if (mailItemList.Count > 0)
+                    stringBuilder.AppendFormat("{0}]", ConvertMailItemToString(mailItemList[mailItemList.Count - 1]));
+                else
+                    stringBuilder.Length = stringBuilder.Length - 3;
+            }
+            else if (type == typeof(MimeMessage))
+            {
+                List<MimeMessage> mimeMessageList = (List<MimeMessage>)list;
+                stringBuilder.Append($"Count({mimeMessageList.Count}) \n[");
+
+                for (int i = 0; i < mimeMessageList.Count - 1; i++)
+                    stringBuilder.AppendFormat("{0}, \n", ConvertMimeMessageToString(mimeMessageList[i]));
+
+                if (mimeMessageList.Count > 0)
+                    stringBuilder.AppendFormat("{0}]", ConvertMimeMessageToString(mimeMessageList[mimeMessageList.Count - 1]));
+                else
+                    stringBuilder.Length = stringBuilder.Length - 3;
             }
             else if (type == typeof(IWebElement))
             {
@@ -250,7 +307,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 for (int i = 0; i < elementList.Count - 1; i++)
                     stringBuilder.AppendFormat("{0}, \n", ConvertIWebElementToString(elementList[i]));
 
-                stringBuilder.AppendFormat("{0}]", ConvertIWebElementToString(elementList[elementList.Count - 1]));
+                if (elementList.Count > 0)
+                    stringBuilder.AppendFormat("{0}]", ConvertIWebElementToString(elementList[elementList.Count - 1]));
+                else
+                    stringBuilder.Length = stringBuilder.Length - 3;
             }
 
             return stringBuilder.ToString();

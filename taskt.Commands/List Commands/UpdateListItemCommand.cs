@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Outlook;
+using MimeKit;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -89,6 +90,16 @@ namespace taskt.Commands
                         throw new Exception("Invalid List Item type, please provide valid List Item type.");
                     ((List<MailItem>)vListVariable.VariableValue)[vListIndex] = mailItem;
                 }
+                else if (vListVariable.VariableValue is List<MimeMessage>)
+                {
+                    MimeMessage mimeMessage;
+                    ScriptVariable mimeMessageVariable = VariableMethods.LookupVariable(engine, v_ListItem.Trim());
+                    if (mimeMessageVariable != null && mimeMessageVariable.VariableValue is MimeMessage)
+                        mimeMessage = (MimeMessage)mimeMessageVariable.VariableValue;
+                    else
+                        throw new Exception("Invalid List Item type, please provide valid List Item type.");
+                    ((List<MimeMessage>)vListVariable.VariableValue)[vListIndex] = mimeMessage;
+                }
                 else if (vListVariable.VariableValue is List<IWebElement>)
                 {
                     IWebElement webElement;
@@ -100,14 +111,10 @@ namespace taskt.Commands
                     ((List<IWebElement>)vListVariable.VariableValue)[vListIndex] = webElement;
                 }
                 else
-                {
                     throw new Exception("Complex Variable List Type<T> Not Supported");
-                }
             }
             else
-            {
                 throw new Exception("Attempted to write data to a variable, but the variable was not found. Enclose variables within braces, ex. {vVariable}");
-            }
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
