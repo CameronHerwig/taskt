@@ -300,7 +300,7 @@ namespace taskt.UI.CustomControls
                         helperControl.Click += (sender, e) => ShowFolderSelector(sender, e, (frmCommandEditor)editor);
                         break;
 
-                    case UIAdditionalHelperType.ShowImageRecogitionHelper:
+                    case UIAdditionalHelperType.ShowImageCaptureHelper:
                         //show file selector
                         helperControl.CommandImage = Resources.command_camera;
                         helperControl.CommandDisplay = "Capture Reference Image";
