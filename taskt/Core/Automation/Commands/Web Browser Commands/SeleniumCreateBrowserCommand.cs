@@ -92,6 +92,8 @@ namespace taskt.Core.Automation.Commands
             {
                 ChromeOptions options = new ChromeOptions();
 
+                options.AddUserProfilePreference("download.prompt_for_download", true);
+
                 if (!string.IsNullOrEmpty(v_SeleniumOptions))
                 {
                     var convertedOptions = v_SeleniumOptions.ConvertToUserVariable(sender);
