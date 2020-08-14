@@ -2,13 +2,10 @@
 using MailKit.Net.Imap;
 using MailKit.Search;
 using MimeKit;
-using MimeKit.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Security.Authentication;
 using System.Threading;
 using System.Windows.Forms;
@@ -73,8 +70,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Filter")]
         [InputSpecification("Enter a valid Outlook filter string.")]
-        [SampleUsage("[Subject] = 'Hello' || [Subject] = 'Hello' and [SenderName] = 'Jane Doe' || {vFilter} || None")]
-        [Remarks("*Warning* Using 'None' as the Filter will return every MailItem in the selected Mail Folder.")]
+        [SampleUsage("Hello World || myRobot@company.com || {vFilter} || None")]
+        [Remarks("*Warning* Using 'None' as the Filter will return every MimeMessage in the selected Mail Folder.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_IMAPFilter { get; set; }
 
@@ -97,7 +94,7 @@ namespace taskt.Commands
         public string v_IMAPMarkAsRead { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Save MailItems and Attachments")]
+        [PropertyDescription("Save MimeMessages and Attachments")]
         [PropertyUISelectionOption("Yes")]
         [PropertyUISelectionOption("No")]
         [InputSpecification("Specify whether to save the email attachments to a local directory.")]
@@ -106,10 +103,10 @@ namespace taskt.Commands
         public string v_IMAPSaveMessagesAndAttachments { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Output MailItem Directory")]
+        [PropertyDescription("Output MimeMessage Directory")]
         [InputSpecification("Enter or Select the path of the directory to store the messages in.")]
         [SampleUsage(@"C:\temp\myfolder || {vFolderPath} || {ProjectPath}\myFolder")]
-        [Remarks("This input is optional and will only be used if *Save MailItems and Attachments* is set to **Yes**.")]
+        [Remarks("This input is optional and will only be used if *Save MimeMessages and Attachments* is set to **Yes**.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         [PropertyUIHelper(UIAdditionalHelperType.ShowFolderSelectionHelper)]
         public string v_IMAPMessageDirectory { get; set; }
@@ -118,7 +115,7 @@ namespace taskt.Commands
         [PropertyDescription("Output Attachment Directory")]
         [InputSpecification("Enter or Select the path to the directory to store the attachments in.")]
         [SampleUsage(@"C:\temp\myfolder\attachments || {vFolderPath} || {ProjectPath}\myFolder\attachments")]
-        [Remarks("This input is optional and will only be used if *Save MailItems and Attachments* is set to **Yes**.")]
+        [Remarks("This input is optional and will only be used if *Save MimeMessages and Attachments* is set to **Yes**.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         [PropertyUIHelper(UIAdditionalHelperType.ShowFolderSelectionHelper)]
         public string v_IMAPAttachmentDirectory { get; set; }
@@ -175,8 +172,6 @@ namespace taskt.Commands
                 {
                     client.Connect(vIMAPHost, int.Parse(vIMAPPort), true, cancel.Token);
 
-                    // If you want to disable an authentication mechanism,
-                    // you can do so by removing the mechanism like this:
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate(vIMAPUserName, vIMAPPassword, cancel.Token);
 
@@ -189,7 +184,9 @@ namespace taskt.Commands
                         throw new Exception("Source Folder not found");
 
                     SearchQuery query;
-                    if (!string.IsNullOrEmpty(vIMAPFilter))
+                    if (vIMAPFilter.ToLower() == "none")
+                        query = SearchQuery.All;
+                    else if (!string.IsNullOrEmpty(vIMAPFilter.Trim()))
                     {
                         query = SearchQuery.MessageContains(vIMAPFilter)
                             .Or(SearchQuery.SubjectContains(vIMAPFilter))
@@ -198,9 +195,9 @@ namespace taskt.Commands
                             .Or(SearchQuery.BodyContains(vIMAPFilter))
                             .Or(SearchQuery.CcContains(vIMAPFilter))
                             .Or(SearchQuery.ToContains(vIMAPFilter));
-                    }
-                    else
-                        query = SearchQuery.All;
+                    }                   
+                    else 
+                        throw new NullReferenceException("Filter not specified");
 
                     if (v_IMAPGetUnreadOnly == "Yes")
                         query = query.And(SearchQuery.NotSeen);
@@ -218,7 +215,8 @@ namespace taskt.Commands
 
                         if (v_IMAPSaveMessagesAndAttachments == "Yes")                       
                             ProcessEmail(message, vIMAPMessageDirectory, vIMAPAttachmentDirectory);
-                        
+
+                        message.MessageId = $"{vIMAPSourceFolder}#{uid}";
                         outMail.Add(message);
 
                     }
@@ -257,7 +255,7 @@ namespace taskt.Commands
             return base.GetDisplayValue() + $" [From '{v_IMAPSourceFolder}' - Filter by '{v_IMAPFilter}' - Store MimeMessage List in '{v_OutputUserVariableName}']";
         }
 
-        private IMailFolder FindFolder(IMailFolder toplevel, string name)
+        public static IMailFolder FindFolder(IMailFolder toplevel, string name)
         {
             var subfolders = toplevel.GetSubfolders().ToList();
 

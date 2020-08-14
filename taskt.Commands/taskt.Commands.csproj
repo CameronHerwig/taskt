@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Email Commands\GetIMAPEmailsCommand.cs" />
+    <Compile Include="Email Commands\MoveCopyIMAPEmailCommand.cs" />
     <Compile Include="Email Commands\SendSMTPEmailCommand.cs" />
     <Compile Include="List Commands\AddListItemCommand.cs" />
     <Compile Include="Data Commands\DateCalculationCommand.cs" />
