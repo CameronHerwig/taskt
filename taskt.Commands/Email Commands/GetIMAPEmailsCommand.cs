@@ -169,7 +169,7 @@ namespace taskt.Commands
             using (var client = new ImapClient())
             {
                 client.ServerCertificateValidationCallback = (sndr, certificate, chain, sslPolicyErrors) => true;
-                client.SslProtocols = SslProtocols.Tls12;
+                client.SslProtocols = SslProtocols.None;
 
                 using (var cancel = new CancellationTokenSource())
                 {

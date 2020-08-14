@@ -117,8 +117,10 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             //bypass ssl validation if requested
             if (v_SSLValidation.ConvertToUserVariable(engine) == "Bypass SSL Validation")
+            {
                 ServicePointManager.ServerCertificateValidationCallback = (sndr, certificate, chain, sslPolicyErrors) => true;
-
+            }
+                
             try
             {
                 string vSMTPHost = v_SMTPHost.ConvertToUserVariable(engine);
@@ -133,8 +135,10 @@ namespace taskt.Commands
 
                 var client = new SmtpClient(vSMTPHost, int.Parse(vSMTPPort))
                 {
-                    Credentials = new NetworkCredential(vSMTPUserName, vSMTPPassword),
-                    EnableSsl = true
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(vSMTPUserName, vSMTPPassword)                  
                 };
 
                 var splitRecipients = vSMTPRecipients.Split(';');
