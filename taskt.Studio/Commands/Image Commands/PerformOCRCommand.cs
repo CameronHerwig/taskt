@@ -17,7 +17,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Image Commands")]
-    [Description("This command converts an image file into text for parsing.")]
+    [Description("This command extracts text from an image file.")]
     public class PerformOCRCommand : ScriptCommand
     {
         [XmlAttribute]
