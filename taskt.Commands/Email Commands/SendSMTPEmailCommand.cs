@@ -35,7 +35,7 @@ namespace taskt.Commands
         [SampleUsage("587 || {vPort}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public int v_SMTPPort { get; set; }
+        public string v_SMTPPort { get; set; }
 
         [XmlAttribute]
         [PropertyDescription("Username")]
@@ -124,7 +124,7 @@ namespace taskt.Commands
             try
             {
                 string vSMTPHost = v_SMTPHost.ConvertToUserVariable(engine);
-                string vSMTPPort = v_SMTPPort.ToString().ConvertToUserVariable(engine);
+                string vSMTPPort = v_SMTPPort.ConvertToUserVariable(engine);
                 string vSMTPUserName = v_SMTPUserName.ConvertToUserVariable(engine);
                 string vSMTPPassword = v_SMTPPassword.ConvertToUserVariable(engine);
                 string vSMTPFromEmail = v_SMTPFromEmail.ConvertToUserVariable(engine);

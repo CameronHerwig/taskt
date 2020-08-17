@@ -23,7 +23,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Email Commands")]
-    [Description("This command sends an email with optional attachment(s) using SMTP protocol.")]
+    [Description("This command sends an email with optional attachment(s) using IMAP protocol.")]
 
     public class GetIMAPEmailsCommand : ScriptCommand
     {
@@ -37,15 +37,15 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Port")]
-        [InputSpecification("Define the port number that should be used when contacting the SMTP service.")]
+        [InputSpecification("Define the port number that should be used when contacting the IMAP service.")]
         [SampleUsage("993 || {vPort}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public int v_IMAPPort { get; set; }
+        public string v_IMAPPort { get; set; }
 
         [XmlAttribute]
         [PropertyDescription("Username")]
-        [InputSpecification("Define the username to use when contacting the SMTP service.")]
+        [InputSpecification("Define the username to use when contacting the IMAP service.")]
         [SampleUsage("myRobot || {vUsername}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
@@ -53,7 +53,7 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Password")]
-        [InputSpecification("Define the password to use when contacting the SMTP service.")]
+        [InputSpecification("Define the password to use when contacting the IMAP service.")]
         [SampleUsage("password || {vPassword}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
@@ -69,7 +69,7 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Filter")]
-        [InputSpecification("Enter a valid Outlook filter string.")]
+        [InputSpecification("Enter a valid filter string.")]
         [SampleUsage("Hello World || myRobot@company.com || {vFilter} || None")]
         [Remarks("*Warning* Using 'None' as the Filter will return every MimeMessage in the selected Mail Folder.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
@@ -155,7 +155,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             string vIMAPHost = v_IMAPHost.ConvertToUserVariable(engine);
-            string vIMAPPort = v_IMAPPort.ToString().ConvertToUserVariable(engine);
+            string vIMAPPort = v_IMAPPort.ConvertToUserVariable(engine);
             string vIMAPUserName = v_IMAPUserName.ConvertToUserVariable(engine);
             string vIMAPPassword = v_IMAPPassword.ConvertToUserVariable(engine);
             string vIMAPSourceFolder = v_IMAPSourceFolder.ConvertToUserVariable(engine);

@@ -123,6 +123,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Email Commands\DeleteIMAPEmailCommand.cs" />
     <Compile Include="Email Commands\GetIMAPEmailsCommand.cs" />
     <Compile Include="Email Commands\MoveCopyIMAPEmailCommand.cs" />
     <Compile Include="Email Commands\SendSMTPEmailCommand.cs" />

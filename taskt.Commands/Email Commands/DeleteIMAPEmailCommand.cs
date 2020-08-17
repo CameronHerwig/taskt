@@ -21,13 +21,13 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Email Commands")]
-    [Description("This command moves or copies selected emails using IMAP protocol.")]
+    [Description("This command deletes selected emails using IMAP protocol.")]
 
-    public class MoveCopyIMAPEmailCommand : ScriptCommand
+    public class DeleteIMAPEmailCommand : ScriptCommand
     {
         [XmlAttribute]
         [PropertyDescription("MimeMessage")]
-        [InputSpecification("Enter the MimeMessage to move or copy.")]
+        [InputSpecification("Enter the MimeMessage to delete.")]
         [SampleUsage("{vMimeMessage}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
@@ -66,39 +66,21 @@ namespace taskt.Commands
         public string v_IMAPPassword { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Destination Mail Folder Name")]
-        [InputSpecification("Enter the name of the mail folder the emails are being moved/copied to.")]
-        [SampleUsage("New Folder || {vFolderName}")]
-        [Remarks("")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public string v_IMAPDestinationFolder { get; set; }
-
-        [XmlAttribute]
-        [PropertyDescription("Mail Operation")]
-        [PropertyUISelectionOption("Move MimeMessage")]
-        [PropertyUISelectionOption("Copy MimeMessage")]
-        [InputSpecification("Specify whether to move or copy the selected emails.")]
-        [SampleUsage("")]
-        [Remarks("Moving will remove the emails from the original folder while copying will not.")]
-        public string v_IMAPOperationType { get; set; }
-
-        [XmlAttribute]
-        [PropertyDescription("Unread Only")]
+        [PropertyDescription("Delete Read Emails Only")]
         [PropertyUISelectionOption("Yes")]
         [PropertyUISelectionOption("No")]
-        [InputSpecification("Specify whether to move/copy unread email messages only.")]
+        [InputSpecification("Specify whether to delete read email messages only.")]
         [SampleUsage("")]
         [Remarks("")]
-        public string v_IMAPMoveCopyUnreadOnly { get; set; }
+        public string v_IMAPDeleteReadOnly { get; set; }
 
-        public MoveCopyIMAPEmailCommand()
+        public DeleteIMAPEmailCommand()
         {
-            CommandName = "MoveCopyIMAPEmailCommand";
-            SelectionName = "Move/Copy IMAP Email";
+            CommandName = "DeleteIMAPEmailCommand";
+            SelectionName = "Delete IMAP Email";
             CommandEnabled = true;
             CustomRendering = true;
-            v_IMAPOperationType = "Move MimeMessage";
-            v_IMAPMoveCopyUnreadOnly = "Yes";
+            v_IMAPDeleteReadOnly = "Yes";
         }
 
         public override void RunCommand(object sender)
@@ -109,7 +91,6 @@ namespace taskt.Commands
             string vIMAPPort = v_IMAPPort.ConvertToUserVariable(engine);
             string vIMAPUserName = v_IMAPUserName.ConvertToUserVariable(engine);
             string vIMAPPassword = v_IMAPPassword.ConvertToUserVariable(engine);
-            var vIMAPDestinationFolder = v_IMAPDestinationFolder.ConvertToUserVariable(engine);
 
             using (var client = new ImapClient())
             {
@@ -130,43 +111,26 @@ namespace taskt.Commands
 
                     IMailFolder toplevel = client.GetFolder(client.PersonalNamespaces[0]);
                     IMailFolder foundSourceFolder = GetIMAPEmailsCommand.FindFolder(toplevel, messageFolder);
-                    IMailFolder foundDestinationFolder = GetIMAPEmailsCommand.FindFolder(toplevel, vIMAPDestinationFolder);
 
                     if (foundSourceFolder != null)
                         foundSourceFolder.Open(FolderAccess.ReadWrite, cancel.Token);
                     else
                         throw new Exception("Source Folder not found");
 
-                    if (foundDestinationFolder == null)
-                        throw new Exception("Destination Folder not found");
-
                     var messageSummary = foundSourceFolder.Fetch(new[] { messageId }, MessageSummaryItems.Flags);
 
-                    if (v_IMAPOperationType == "Move MimeMessage")
+                    if (v_IMAPDeleteReadOnly == "Yes")
                     {
-                        if (v_IMAPMoveCopyUnreadOnly == "Yes")
-                        {
-                            if (!messageSummary[0].Flags.Value.HasFlag(MessageFlags.Seen))
-                                foundSourceFolder.MoveTo(messageId, foundDestinationFolder, cancel.Token);
-                        }
-                        else
-                            foundSourceFolder.MoveTo(messageId, foundDestinationFolder, cancel.Token);
+                        if (messageSummary[0].Flags.Value.HasFlag(MessageFlags.Seen))
+                            foundSourceFolder.AddFlags(messageId, MessageFlags.Deleted, true, cancel.Token);
                     }
-                    else if (v_IMAPOperationType == "Copy MimeMessage")
-                    {
-                        if (v_IMAPMoveCopyUnreadOnly == "Yes")
-                        {
-                            if (!messageSummary[0].Flags.Value.HasFlag(MessageFlags.Seen))
-                                foundSourceFolder.CopyTo(messageId, foundDestinationFolder, cancel.Token);
-                        }
-                        else
-                            foundSourceFolder.CopyTo(messageId, foundDestinationFolder, cancel.Token);
-                    }
+                    else
+                        foundSourceFolder.AddFlags(messageId, MessageFlags.Deleted, true, cancel.Token);
 
                     client.Disconnect(true, cancel.Token);
                     client.ServerCertificateValidationCallback = null;
                 }
-            } 
+            }
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -178,16 +142,14 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_IMAPPort", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_IMAPUserName", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_IMAPPassword", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_IMAPDestinationFolder", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_IMAPOperationType", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_IMAPMoveCopyUnreadOnly", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_IMAPDeleteReadOnly", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + $" [{v_IMAPOperationType} '{v_IMAPMimeMessage}' to '{v_IMAPDestinationFolder}']";
+            return base.GetDisplayValue() + $" [MimeMessage '{v_IMAPMimeMessage}']";
         }
     }
 }
