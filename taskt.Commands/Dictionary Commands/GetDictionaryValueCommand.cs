@@ -58,13 +58,13 @@ namespace taskt.Commands
             //Retrieve Dictionary by name
             var engine = (AutomationEngineInstance)sender;
             var vKey = v_Key.ConvertToUserVariable(engine);
-            var dictionaryVariable = LookupVariable(engine);
+            var dictionaryVariable = VariableMethods.LookupVariable(engine, v_InputDictionary);
 
             //Declare local dictionary and assign output
             Dictionary<string,string> dict = (Dictionary<string,string>)dictionaryVariable.VariableValue;
             var dictValue = dict[vKey].ConvertToUserVariable(engine);
 
-            engine.AddVariable(v_OutputUserVariableName, dictValue);
+            dictValue.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
         
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -81,26 +81,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [From '{v_InputDictionary}' for Key '{v_Key}' - Store Value in '{v_OutputUserVariableName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_InputDictionary).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) && 
-                (v_InputDictionary.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)) && 
-                (v_InputDictionary.EndsWith(sendingInstance.EngineSettings.VariableEndMarker)))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_InputDictionary
-                    .Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                    .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }        
     }
 }

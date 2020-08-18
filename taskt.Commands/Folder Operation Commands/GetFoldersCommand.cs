@@ -54,7 +54,7 @@ namespace taskt.Commands
             //Get Subdirectories List
             var directoriesList = Directory.GetDirectories(sourceFolder).ToList();
 
-            engine.AddVariable(v_OutputUserVariableName, directoriesList);
+            directoriesList.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

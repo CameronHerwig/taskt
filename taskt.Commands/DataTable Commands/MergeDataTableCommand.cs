@@ -10,6 +10,7 @@ using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
 using taskt.Core.Script;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
 
@@ -69,8 +70,8 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             // Get Variable Objects
-            var v_SourceDTVariable = LookupVariable(engine, v_SourceDataTable);
-            var v_DestinationDTVariable = LookupVariable(engine, v_DestinationDataTable);
+            var v_SourceDTVariable = VariableMethods.LookupVariable(engine, v_SourceDataTable);
+            var v_DestinationDTVariable = VariableMethods.LookupVariable(engine, v_DestinationDataTable);
 
             // (Null Check)
             if (v_SourceDTVariable is null)
@@ -130,24 +131,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Merge Source '{v_SourceDataTable}' Into Destination '{v_DestinationDataTable}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance, string v_VariableName)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_VariableName).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_VariableName.StartsWith(sendingInstance.EngineSettings.VariableStartMarker) 
-                                         && v_VariableName.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_VariableName.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                        .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

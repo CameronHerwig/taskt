@@ -178,7 +178,7 @@ namespace taskt.Commands
                 dataTable.TableName = v_DatasetName;
                 engine.DataTables.Add(dataTable);
 
-                engine.AddVariable(v_DatasetName, dataTable);
+                dataTable.StoreInUserVariable(engine, v_DatasetName);
            
             }
             else if (queryExecutionType == "Execute NonQuery")
@@ -187,7 +187,7 @@ namespace taskt.Commands
                 var result = oleCommand.ExecuteNonQuery();
                 databaseConnection.Close();
 
-                engine.AddVariable(v_DatasetName, result.ToString());
+                result.ToString().StoreInUserVariable(engine, v_DatasetName);
             }
             else if(queryExecutionType == "Execute Stored Procedure")
             {
@@ -195,7 +195,7 @@ namespace taskt.Commands
                 databaseConnection.Open();
                 var result = oleCommand.ExecuteNonQuery();
                 databaseConnection.Close();
-                engine.AddVariable(v_DatasetName, result.ToString());
+                result.ToString().StoreInUserVariable(engine, v_DatasetName);
             }
             else
             {

@@ -114,60 +114,29 @@ namespace taskt.Commands
                 }
             }
 
-
             //invoke ui for data collection
             var result = ((frmScriptEngine)engine.TasktEngineUI).Invoke(new Action(() =>
             {
-
                 //get input from user
               var userInputs = ((frmScriptEngine)engine.TasktEngineUI).ShowInput(clonedCommand);
 
                 //check if user provided input
                 if (userInputs != null)
                 {
-
                     //loop through each input and assign
                     for (int i = 0; i < userInputs.Count; i++)
-                    {
+                    {                       
                         //get target variable
                         var targetVariable = v_UserInputConfig.Rows[i]["ApplyToVariable"] as string;
-
-
-                        //if engine is expected to create variables, the user will not expect them to contain start/end markers
-                        //ex. {vAge} should not be created, vAge should be created and then called by doing {vAge}
-                        if ((!string.IsNullOrEmpty(targetVariable)) && (engine.EngineSettings.CreateMissingVariablesDuringExecution))
-                        {
-                            //remove start markers
-                            if (targetVariable.StartsWith(engine.EngineSettings.VariableStartMarker))
-                            {
-                                targetVariable = targetVariable.TrimStart(engine.EngineSettings.VariableStartMarker.ToCharArray());
-                            }
-
-                            //remove end markers
-                            if (targetVariable.EndsWith(engine.EngineSettings.VariableEndMarker))
-                            {
-                                targetVariable = targetVariable.TrimEnd(engine.EngineSettings.VariableEndMarker.ToCharArray());
-                            }
-                        }
-
 
                         //store user data in variable
                         if (!string.IsNullOrEmpty(targetVariable))
                         {
                             userInputs[i].StoreInUserVariable(engine, targetVariable);
                         }
-
-
                     }
-
-
                 }
-
-            }
-
-            ));
-
-
+            }));
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

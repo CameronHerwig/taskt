@@ -161,7 +161,7 @@ namespace taskt.Commands
                         }   
                     }
                 }
-                engine.AddVariable(v_OutputUserVariableName, outMail);
+                outMail.StoreInUserVariable(engine, v_OutputUserVariableName);
             }
         }      
 

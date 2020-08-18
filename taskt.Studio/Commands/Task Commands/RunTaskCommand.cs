@@ -103,8 +103,8 @@ namespace taskt.Commands
                 var variableName = (string)rw.ItemArray[0];
                 object variableValue;
 
-                if (LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]) != null)
-                    variableValue = LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]).VariableValue;
+                if (VariableMethods.LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]) != null)
+                    variableValue = VariableMethods.LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]).VariableValue;
                 else
                     variableValue = ((string)rw.ItemArray[1]).ConvertToUserVariable(currentScriptEngine);
 
@@ -298,24 +298,6 @@ namespace taskt.Commands
                     _assignmentsGridViewHelper.Rows[i].Cells[2] = returnComboBox;
                 }
             }
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance, string lookupVariable)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == lookupVariable).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) && lookupVariable.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)
-                                           && lookupVariable.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = lookupVariable.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                        .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

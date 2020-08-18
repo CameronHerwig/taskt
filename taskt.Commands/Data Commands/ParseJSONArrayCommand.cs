@@ -73,23 +73,7 @@ namespace taskt.Commands
                 resultList.Add(result.ToString());
             }
 
-            //get variable
-            var requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_OutputUserVariableName).FirstOrDefault();
-
-            //create if var does not exist
-            if (requiredComplexVariable == null)
-            {
-                engine.VariableList.Add(
-                    new ScriptVariable() 
-                    { 
-                        VariableName = v_OutputUserVariableName, 
-                        CurrentPosition = 0 
-                    });
-                requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_OutputUserVariableName).FirstOrDefault();
-            }
-
-            //assign value to variable
-            requiredComplexVariable.VariableValue = resultList;
+            resultList.StoreInUserVariable(engine, v_OutputUserVariableName);           
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

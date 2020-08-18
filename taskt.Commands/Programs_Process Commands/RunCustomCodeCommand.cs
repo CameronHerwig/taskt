@@ -120,7 +120,7 @@ namespace taskt.Commands
 
                 if(v_OutputUserVariableName.Length != 0)
                 {
-                    engine.AddVariable(v_OutputUserVariableName, result);
+                    result.StoreInUserVariable(engine, v_OutputUserVariableName);
                 }
             }
         }

@@ -69,14 +69,13 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var dataRowValue = v_DataRowValue.ConvertToUserVariable(engine);
 
-            var dataRowVariable = LookupVariable(engine);
-            var variableList = engine.VariableList;
-            DataRow dataRow;
+            var dataRowVariable = VariableMethods.LookupVariable(engine, v_DataRow);
 
+            DataRow dataRow;
+            var loopIndexVariable = VariableMethods.LookupVariable(engine, "Loop.CurrentIndex");
             //check in case of looping through datatable using BeginListLoopCommand
-            if (dataRowVariable.VariableValue is DataTable && engine.VariableList.Exists(x => x.VariableName == "Loop.CurrentIndex"))
+            if (dataRowVariable.VariableValue is DataTable && loopIndexVariable != null)
             {
-                var loopIndexVariable = engine.VariableList.Where(x => x.VariableName == "Loop.CurrentIndex").FirstOrDefault();
                 int loopIndex = int.Parse(loopIndexVariable.VariableValue.ToString());
                 dataRow = ((DataTable)dataRowVariable.VariableValue).Rows[loopIndex - 1];
             }
@@ -113,24 +112,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Write '{v_DataRowValue}' to Column '{v_DataValueIndex}' in '{v_DataRow}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataRow).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataRow.StartsWith(sendingInstance.EngineSettings.VariableStartMarker) 
-                                         && v_DataRow.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataRow.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                   .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

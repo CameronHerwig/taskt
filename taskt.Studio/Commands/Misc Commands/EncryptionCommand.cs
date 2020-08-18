@@ -93,20 +93,9 @@ namespace taskt.Commands
                 throw new NotImplementedException($"Encryption Service Requested '{v_EncryptionType.ConvertToUserVariable(engine)}' has not been implemented");
             }
 
-            //get variable
-            var requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_applyToVariableName).FirstOrDefault();
-
-            //create if var does not exist
-            if (requiredComplexVariable == null)
-            {
-                engine.VariableList.Add(new ScriptVariable() { VariableName = v_applyToVariableName, CurrentPosition = 0 });
-                requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_applyToVariableName).FirstOrDefault();
-            }
-
-            //assign value to variable
-            requiredComplexVariable.VariableValue = resultData;
-
+            resultData.StoreInUserVariable(engine, v_applyToVariableName);
         }
+
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);

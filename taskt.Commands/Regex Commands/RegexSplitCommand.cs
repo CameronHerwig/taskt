@@ -61,7 +61,7 @@ namespace taskt.Commands
             string vRegex = v_RegEx.ConvertToUserVariable(engine);
             var vResultData = Regex.Split(vInputData, vRegex).ToList();
 
-            engine.AddVariable(v_OutputVariableName, vResultData);
+            vResultData.StoreInUserVariable(engine, v_OutputVariableName);
         }
 
         public override string GetDisplayValue()

@@ -13,7 +13,7 @@ namespace taskt.Core.Utilities.CommonUtilities
     public static class VariableMethods
     {
         /// <summary>
-        /// Replaces variable placeholders ([variable]) with variable text.
+        /// Replaces variable placeholders ({variable}) with variable text.
         /// </summary>
         /// <param name="sender">The script engine instance (frmScriptEngine) which contains session variables.</param>
         public static string ConvertToUserVariable(this String str, IEngine engine)
@@ -49,10 +49,10 @@ namespace taskt.Core.Utilities.CommonUtilities
                     str = matchingElement.ElementValue;
                 }
             }
-            
-            //custom variable markers
-            var startVariableMarker = engine.EngineSettings.VariableStartMarker;
-            var endVariableMarker = engine.EngineSettings.VariableEndMarker;
+
+            //variable markers
+            var startVariableMarker = "{";
+            var endVariableMarker = "}";
 
             //split by custom markers
             string[] potentialVariables = str.Split(new string[] { startVariableMarker, endVariableMarker }, StringSplitOptions.None);
@@ -317,58 +317,43 @@ namespace taskt.Core.Utilities.CommonUtilities
         }
 
         /// <summary>
-        /// Stores value of the string to a user-defined variable.
+        /// Stores value of the object to a user-defined variable.
         /// </summary>
         /// <param name="sender">The script engine instance (frmScriptEngine) which contains session variables.</param>
         /// <param name="targetVariable">the name of the user-defined variable to override with new value</param>
-        public static void StoreInUserVariable(this String value, IEngine engine, string targetVariable)
+        public static void StoreInUserVariable(this object variableValue, IEngine engine, string variableName)
         {
-            var requiredVariable = LookupVariable(engine, targetVariable);
-
-            //if still not found and user has elected option, create variable at runtime
-            if ((requiredVariable == null) && (engine.EngineSettings.CreateMissingVariablesDuringExecution))
+            if (engine.VariableList.Any(f => f.VariableName == variableName))
             {
-                engine.VariableList.Add(new ScriptVariable() { VariableName = targetVariable });
-                requiredVariable = LookupVariable(engine, targetVariable);
+                //update existing variable
+                var existingVariable = engine.VariableList.FirstOrDefault(f => f.VariableName == variableName);
+                existingVariable.VariableName = variableName;
+                existingVariable.VariableValue = variableValue;
             }
-
-            if (requiredVariable != null)
+            else if (engine.VariableList.Any(f => "{" + f.VariableName + "}" == variableName))
             {
-                var sourceVariable = LookupVariable(engine, value);
-                if(sourceVariable != null)
-                {
-                    requiredVariable.VariableValue = sourceVariable.VariableValue;
-                }
-                else
-                {
-                    var variableValue = value.ConvertToUserVariable(engine);
-
-                    if (variableValue.StartsWith("{{") && variableValue.EndsWith("}}"))
-                    {
-                        var itemList = variableValue.Replace("{{", "").Replace("}}", "").Split('|').Select(s => s.Trim()).ToList();
-                        requiredVariable.VariableValue = itemList;
-                    }
-                    else
-                    {
-                        requiredVariable.VariableValue = variableValue;
-                    }
-                }
+                //update existing edge-case variable due to user error
+                var existingVariable = engine.VariableList.FirstOrDefault(f => "{" + f.VariableName + "}" == variableName);
+                existingVariable.VariableName = variableName;
+                existingVariable.VariableValue = variableValue;
             }
             else
             {
-                throw new Exception("Attempted to store data in a variable, but it was not found. Enclose variables within braces, ex. {vVariable}");
+                //add new variable
+                var newVariable = new ScriptVariable();
+                newVariable.VariableName = variableName;
+                newVariable.VariableValue = variableValue;
+                engine.VariableList.Add(newVariable);
             }
-        }
-        
+        }       
+
         /// <summary>
         /// Formats item as a variable (enclosing brackets)
         /// </summary>
         /// <param name="str">The string to be wrapped as a variable</param>
         public static string ApplyVariableFormatting(this String str)
         {
-            var settings = new ApplicationSettings().GetOrCreateApplicationSettings();
-
-            return str.Insert(0, settings.EngineSettings.VariableStartMarker).Insert(str.Length + 1, settings.EngineSettings.VariableEndMarker);
+            return str.Insert(0, "{").Insert(str.Length + 1, "}");
         }
 
         public static ScriptVariable LookupVariable(IEngine engine, string variableName)
@@ -377,10 +362,10 @@ namespace taskt.Core.Utilities.CommonUtilities
             var requiredVariable = engine.VariableList.Where(var => var.VariableName == variableName).FirstOrDefault();
 
             //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) && (variableName.StartsWith(engine.EngineSettings.VariableStartMarker)) && (variableName.EndsWith(engine.EngineSettings.VariableEndMarker)))
+            if ((requiredVariable == null) && (variableName.StartsWith("{")) && (variableName.EndsWith("}")))
             {
                 //reformat and attempt
-                var reformattedVariable = variableName.Replace(engine.EngineSettings.VariableStartMarker, "").Replace(engine.EngineSettings.VariableEndMarker, "");
+                var reformattedVariable = variableName.Replace("{", "").Replace("}", "");
                 requiredVariable = engine.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
             }
 
@@ -393,13 +378,13 @@ namespace taskt.Core.Utilities.CommonUtilities
         /// <param name="value">The string to be converted to SecureString</param>
         public static SecureString GetSecureString(this string value)
         {
-            var secureString = new System.Net.NetworkCredential(string.Empty, value).SecurePassword;
+            SecureString secureString = new System.Net.NetworkCredential(string.Empty, value).SecurePassword;
             return secureString;
         }
 
         public static string ConvertSecureStringToString(this SecureString secureString)
         {
-            var strValue = new System.Net.NetworkCredential(string.Empty, secureString).Password;
+            string strValue = new System.Net.NetworkCredential(string.Empty, secureString).Password;
             return strValue;
         }
     }

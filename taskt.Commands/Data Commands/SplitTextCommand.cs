@@ -81,21 +81,8 @@ namespace taskt.Commands
             {
                 splitString = stringVariable.Split(new string[] { splitCharacter }, StringSplitOptions.None).ToList();
             }
-            
-            var v_receivingVariable = v_OutputUserVariableName
-                .Replace(engine.EngineSettings.VariableStartMarker, "")
-                .Replace(engine.EngineSettings.VariableEndMarker, "");
 
-            //get complex variable from engine and assign
-            var requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_receivingVariable).FirstOrDefault();
-
-            if (requiredComplexVariable == null)
-            {
-                engine.VariableList.Add(new ScriptVariable() { VariableName = v_receivingVariable, CurrentPosition = 0 });
-                requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_receivingVariable).FirstOrDefault();
-            }
-
-            requiredComplexVariable.VariableValue = splitString;
+            splitString.StoreInUserVariable(engine, v_OutputUserVariableName);           
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

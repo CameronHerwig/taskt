@@ -57,7 +57,9 @@ namespace taskt.Commands
             //get sending instance
             var engine = (AutomationEngineInstance)sender;
 
-            if (!engine.VariableList.Any(f => f.VariableName == v_VariableName))
+            var variable = VariableMethods.LookupVariable(engine, v_VariableName);
+
+            if (variable == null)
             {
                 //variable does not exist so add to the list
                 try

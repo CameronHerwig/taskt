@@ -57,7 +57,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dictionaryVariable = LookupVariable(engine);
+            var dictionaryVariable = VariableMethods.LookupVariable(engine, v_DictionaryName);
 
             Dictionary<string, string> outputDictionary = (Dictionary<string, string>)dictionaryVariable.VariableValue;
 
@@ -83,27 +83,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Add {v_ColumnNameDataTable.Rows.Count} Item(s) in '{v_DictionaryName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DictionaryName).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) && 
-                (v_DictionaryName.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)) && 
-                (v_DictionaryName.EndsWith(sendingInstance.EngineSettings.VariableEndMarker)))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DictionaryName
-                    .Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                    .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }      
     }
 }

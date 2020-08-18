@@ -55,7 +55,7 @@ namespace taskt.Commands
             var filesList = Directory.GetFiles(sourceFolder).ToList();
 
             //Add File Paths to the output variable
-            engine.AddVariable(v_OutputUserVariableName, filesList);
+            filesList.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

@@ -62,7 +62,7 @@ namespace taskt.Commands
                 Dt.Columns.Add(rwColumnName.Field<string>("Column Name").ConvertToUserVariable(engine));
             }
 
-            engine.AddVariable(v_DataTable, Dt);
+            Dt.StoreInUserVariable(engine, v_DataTable);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

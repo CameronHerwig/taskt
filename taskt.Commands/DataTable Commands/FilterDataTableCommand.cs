@@ -56,7 +56,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataSetVariable = LookupVariable(engine);
+            var dataSetVariable = VariableMethods.LookupVariable(engine, v_DataTable);
             var vSearchItem = v_SearchItem.ConvertToUserVariable(engine);
 
             DataTable Dt = new DataTable();
@@ -104,7 +104,7 @@ namespace taskt.Commands
                 outputDT.Rows.Add(item.ItemArray);
             }
 
-            engine.AddVariable(v_FilteredDataTableName, outputDT);
+            outputDT.StoreInUserVariable(engine, v_FilteredDataTableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -121,24 +121,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue()+ $" [Filter Rows With '{v_SearchItem}' From '{v_DataTable}' - Store Filtered DataTable in '{v_FilteredDataTableName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataTable).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataTable.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)
-                                         && v_DataTable.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataTable.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                     .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

@@ -64,7 +64,7 @@ namespace taskt.Commands
                     rwColumnName.Field<string>("Values").ConvertToUserVariable(engine));
             }
 
-            engine.AddVariable(v_DictionaryName, outputDictionary);
+            outputDictionary.StoreInUserVariable(engine, v_DictionaryName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

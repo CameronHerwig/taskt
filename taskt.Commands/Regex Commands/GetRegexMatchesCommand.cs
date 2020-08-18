@@ -61,7 +61,7 @@ namespace taskt.Commands
 
             var matches = (from match in Regex.Matches(vInputData, vRegex).Cast<Match>() select match.Groups[0].Value).ToList();
 
-            engine.AddVariable(v_OutputVariableName,matches);
+            matches.StoreInUserVariable(engine, v_OutputVariableName);
         }
         public override List<Control> Render(IfrmCommandEditor editor)
         {

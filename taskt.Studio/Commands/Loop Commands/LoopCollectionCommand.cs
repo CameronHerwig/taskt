@@ -56,21 +56,12 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             int loopTimes;
-            ScriptVariable complexVariable = null;
+            ScriptVariable complexVariable = VariableMethods.LookupVariable(engine, v_LoopParameter);           
 
-            //get variable by regular name
-            complexVariable = engine.VariableList.Where(x => x.VariableName == v_LoopParameter).FirstOrDefault();
-
-            //user may potentially include brackets []
+            //if null then throw exception
             if (complexVariable == null)
             {
-                complexVariable = engine.VariableList.Where(x => x.VariableName.ApplyVariableFormatting() == v_LoopParameter).FirstOrDefault();
-            }
-
-            //if still null then throw exception
-            if (complexVariable == null)
-            {
-                throw new System.Exception("Complex Variable '" + v_LoopParameter + "' or '" + v_LoopParameter.ApplyVariableFormatting() + 
+                throw new System.Exception("Complex Variable '" + v_LoopParameter + 
                     "' not found. Ensure the variable exists before attempting to modify it.");
             }
 
@@ -125,7 +116,7 @@ namespace taskt.Commands
                 }
                 else
                 {
-                    engine.AddVariable(v_OutputUserVariableName, listToLoop[i]);
+                    listToLoop[i].StoreInUserVariable(engine, v_OutputUserVariableName);
                 }
                 foreach (var cmd in parentCommand.AdditionalScriptCommands)
                 {

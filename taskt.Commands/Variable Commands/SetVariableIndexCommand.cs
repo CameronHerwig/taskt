@@ -49,13 +49,6 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var requiredVariable = VariableMethods.LookupVariable(engine, v_VariableName);
 
-            //if still not found and user has elected option, create variable at runtime
-            if ((requiredVariable == null) && (engine.EngineSettings.CreateMissingVariablesDuringExecution))
-            {
-                engine.VariableList.Add(new ScriptVariable() { VariableName = v_VariableName });
-                requiredVariable = VariableMethods.LookupVariable(engine, v_VariableName);
-            }
-
             if (requiredVariable != null)
             {
                 var index = int.Parse(v_Index.ConvertToUserVariable(engine));

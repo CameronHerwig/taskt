@@ -142,7 +142,7 @@ namespace taskt.Commands
             //remove instance
             engine.RemoveAppInstance(vInstance);
 
-            engine.AddVariable(v_OutputUserVariableName, outputDictionary);
+            outputDictionary.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
         
         public override List<Control> Render(IfrmCommandEditor editor)

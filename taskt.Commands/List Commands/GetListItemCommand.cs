@@ -63,16 +63,13 @@ namespace taskt.Commands
             var itemIndex = v_ItemIndex.ConvertToUserVariable(engine);
             int index = int.Parse(itemIndex);
             //get variable by regular name
-            ScriptVariable listVariable = LookupVariable(engine);
+            ScriptVariable listVariable = VariableMethods.LookupVariable(engine, v_ListName);
 
             //if still null then throw exception
             if (listVariable == null)
             {
-                throw new System.Exception(
-                    "Complex Variable '" + v_ListName + "' or '" + 
-                    v_ListName.ApplyVariableFormatting() + 
-                    "' not found. Ensure the variable exists before attempting to modify it."
-                    );
+                throw new System.Exception("Complex Variable '" + v_ListName + 
+                    "' not found. Ensure the variable exists before attempting to modify it.");
             }
 
             dynamic listToIndex;
@@ -118,20 +115,7 @@ namespace taskt.Commands
 
             var item = listToIndex[index];
 
-            ScriptVariable newListItem = new ScriptVariable
-            {
-                VariableName = v_OutputUserVariableName,
-                VariableValue = item
-            };
-
-            //Overwrites variable if it already exists
-            if (engine.VariableList.Exists(x => x.VariableName == newListItem.VariableName))
-            {
-                ScriptVariable temp = engine.VariableList.Where(x => x.VariableName == newListItem.VariableName).FirstOrDefault();
-                engine.VariableList.Remove(temp);
-            }
-
-            engine.VariableList.Add(newListItem);
+            item.StoreInUserVariable(engine, v_OutputUserVariableName);         
         }
         
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -148,26 +132,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [From Index '{v_ItemIndex}' of '{v_ListName}' - Store List Item in '{v_OutputUserVariableName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_ListName).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) &&
-                (v_ListName.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)) &&
-                (v_ListName.EndsWith(sendingInstance.EngineSettings.VariableEndMarker)))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_ListName
-                    .Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                    .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

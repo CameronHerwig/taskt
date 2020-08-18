@@ -140,7 +140,7 @@ namespace taskt.Commands
                     }
                 }
 
-                engine.AddVariable(v_OutputUserVariableName, DT);
+                DT.StoreInUserVariable(engine, v_OutputUserVariableName);
             }
 
             if(v_Output == "Delimited String")

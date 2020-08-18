@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -45,19 +46,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var requiredVariable = VariableMethods.LookupVariable(engine, v_SecureString);
+            SecureString secureStringValue = v_Input.ConvertToUserVariable(engine).GetSecureString();
 
-            //If Variable already exists
-            if (requiredVariable != null)
-                requiredVariable.VariableValue = v_Input.ConvertToUserVariable(engine).GetSecureString();
-            else
-            {
-                engine.VariableList.Add(new ScriptVariable()
-                {
-                    VariableName = v_SecureString.ConvertToUserVariable(engine),
-                    VariableValue = v_Input.ConvertToUserVariable(engine).GetSecureString()
-                });
-            }
+            secureStringValue.StoreInUserVariable(engine, v_SecureString);           
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

@@ -50,7 +50,6 @@ namespace taskt.Core.Infrastructure
         void AddAppInstance(string instanceName, object appObject);
         object GetAppInstance(string instanceName);
         void RemoveAppInstance(string instanceName);
-        void AddVariable(string variableName, object variableValue);
         string GetEngineContext();
     }
 }

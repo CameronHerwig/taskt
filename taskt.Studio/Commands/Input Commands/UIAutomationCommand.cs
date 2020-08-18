@@ -438,10 +438,6 @@ namespace taskt.Commands
                                            where rw.Field<string>("Parameter Name") == "Apply To Variable"
                                            select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-
-                    //remove brackets from variable
-                    applyToVariable = applyToVariable.Replace(engine.EngineSettings.VariableStartMarker, "").Replace(engine.EngineSettings.VariableEndMarker, "");
-
                     //declare search result
                     string searchResult = "";
                     if (v_AutomationType == "Get Text")
@@ -512,9 +508,6 @@ namespace taskt.Commands
                     var applyToVariable2 = (from rw in v_UIAActionParameters.AsEnumerable()
                                            where rw.Field<string>("Parameter Name") == "Apply To Variable"
                                            select rw.Field<string>("Parameter Value")).FirstOrDefault();
-
-                    //remove brackets from variable
-                    applyToVariable2 = applyToVariable2.Replace(engine.EngineSettings.VariableStartMarker, "").Replace(engine.EngineSettings.VariableEndMarker, "");
 
                     //get required value
                     var requiredValue = requiredHandle.Current.GetType().GetRuntimeProperty(propertyName)?.GetValue(requiredHandle.Current).ToString();

@@ -351,16 +351,8 @@ namespace taskt.Commands
                         optionsItems.Add(optionValue);
                     }
 
-                    var requiredVariable = engine.VariableList.Where(x => x.VariableName == applyToVarName).FirstOrDefault();
-
-                    if (requiredVariable == null)
-                    {
-                        engine.VariableList.Add(new ScriptVariable() { VariableName = applyToVarName, CurrentPosition = 0 });
-                        requiredVariable = engine.VariableList.Where(x => x.VariableName == applyToVarName).FirstOrDefault();
-                    }
-
-                    requiredVariable.VariableValue = optionsItems;
-                    requiredVariable.CurrentPosition = 0;
+                    optionsItems.StoreInUserVariable(engine, applyToVarName);
+                   
                     break;
 
                 case "Select Option":
@@ -444,10 +436,10 @@ namespace taskt.Commands
                         {
                             elementList.Add(item);
                         }
-                        engine.AddVariable(variableName, elementList);
+                        elementList.StoreInUserVariable(engine, variableName);
                     }
                     else
-                        engine.AddVariable(variableName, element);                    
+                        element.StoreInUserVariable(engine, variableName);                    
                     break;
 
                 case "Get Table":
@@ -483,7 +475,7 @@ namespace taskt.Commands
                     foreach (var row in doc.DocumentNode.SelectNodes("//tr[td]"))
                         DT.Rows.Add(row.SelectNodes("td").Select(td => Regex.Replace(td.InnerText, @"\t|\n|\r", "").Trim()).ToArray());
 
-                    engine.AddVariable(DTVariableName, DT);
+                    DT.StoreInUserVariable(engine, DTVariableName);
                     break;
 
                 case "Clear Element":

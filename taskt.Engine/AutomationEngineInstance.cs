@@ -540,31 +540,7 @@ namespace taskt.Engine
             }
         }
 
-        public void AddVariable(string variableName, object variableValue)
-        {
-            if (VariableList.Any(f => f.VariableName == variableName))
-            {
-                //update existing variable
-                var existingVariable = VariableList.FirstOrDefault(f => f.VariableName == variableName);
-                existingVariable.VariableName = variableName;
-                existingVariable.VariableValue = variableValue;
-            }
-            else if (VariableList.Any(f => "{" + f.VariableName + "}" == variableName))
-            {
-                //update existing edge-case variable due to user error
-                var existingVariable = VariableList.FirstOrDefault(f => "{" + f.VariableName + "}" == variableName);
-                existingVariable.VariableName = variableName;
-                existingVariable.VariableValue = variableValue;
-            }
-            else
-            {
-                //add new variable
-                var newVariable = new ScriptVariable();
-                newVariable.VariableName = variableName;
-                newVariable.VariableValue = variableValue;
-                VariableList.Add(newVariable);
-            }
-        }
+        
 
         public void CancelScript()
         {

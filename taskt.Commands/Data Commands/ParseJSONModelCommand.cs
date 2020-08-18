@@ -106,18 +106,7 @@ namespace taskt.Commands
                     resultList.Add(result.ToString());
                 }
 
-                //get variable
-                var requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == targetVariableName).FirstOrDefault();
-
-                //create if var does not exist
-                if (requiredComplexVariable == null)
-                {
-                    engine.VariableList.Add(new ScriptVariable() { VariableName = targetVariableName, CurrentPosition = 0 });
-                    requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == targetVariableName).FirstOrDefault();
-                }
-
-                //assign value to variable
-                requiredComplexVariable.VariableValue = resultList;
+                resultList.StoreInUserVariable(engine, targetVariableName);               
             }
         }
 

@@ -49,7 +49,6 @@
             this.chkAntiIdle = new System.Windows.Forms.CheckBox();
             this.btnUpdates = new System.Windows.Forms.Button();
             this.chkAdvancedDebug = new System.Windows.Forms.CheckBox();
-            this.chkCreateMissingVariables = new System.Windows.Forms.CheckBox();
             this.uiSettingTabs = new taskt.UI.CustomControls.CustomUIControls.UITabControl();
             this.tabAppSettings = new System.Windows.Forms.TabPage();
             this.chkSlimActionBar = new System.Windows.Forms.CheckBox();
@@ -93,13 +92,6 @@
             this.chkOverrideInstances = new System.Windows.Forms.CheckBox();
             this.lblDelay = new System.Windows.Forms.Label();
             this.txtCommandDelay = new System.Windows.Forms.TextBox();
-            this.lblEndMarker = new System.Windows.Forms.Label();
-            this.lblStartMarker = new System.Windows.Forms.Label();
-            this.lblVariablePatternDesc = new System.Windows.Forms.Label();
-            this.lblVariablePattern = new System.Windows.Forms.Label();
-            this.lblVariableDisplay = new System.Windows.Forms.Label();
-            this.txtVariableEndMarker = new System.Windows.Forms.TextBox();
-            this.txtVariableStartMarker = new System.Windows.Forms.TextBox();
             this.chkTrackMetrics = new System.Windows.Forms.CheckBox();
             this.tabServerSettings = new System.Windows.Forms.TabPage();
             this.btnTaskPublish = new System.Windows.Forms.Button();
@@ -399,20 +391,6 @@
             this.chkAdvancedDebug.TabIndex = 23;
             this.chkAdvancedDebug.Text = "Show Advanced Debug Logs During Execution";
             this.chkAdvancedDebug.UseVisualStyleBackColor = false;
-            // 
-            // chkCreateMissingVariables
-            // 
-            this.chkCreateMissingVariables.AutoSize = true;
-            this.chkCreateMissingVariables.BackColor = System.Drawing.Color.Transparent;
-            this.chkCreateMissingVariables.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkCreateMissingVariables.ForeColor = System.Drawing.Color.SteelBlue;
-            this.chkCreateMissingVariables.Location = new System.Drawing.Point(13, 143);
-            this.chkCreateMissingVariables.Margin = new System.Windows.Forms.Padding(4);
-            this.chkCreateMissingVariables.Name = "chkCreateMissingVariables";
-            this.chkCreateMissingVariables.Size = new System.Drawing.Size(386, 32);
-            this.chkCreateMissingVariables.TabIndex = 24;
-            this.chkCreateMissingVariables.Text = "Create Missing Variables During Execution";
-            this.chkCreateMissingVariables.UseVisualStyleBackColor = false;
             // 
             // uiSettingTabs
             // 
@@ -730,16 +708,8 @@
             this.tabDebugSettings.Controls.Add(this.chkOverrideInstances);
             this.tabDebugSettings.Controls.Add(this.lblDelay);
             this.tabDebugSettings.Controls.Add(this.txtCommandDelay);
-            this.tabDebugSettings.Controls.Add(this.lblEndMarker);
-            this.tabDebugSettings.Controls.Add(this.lblStartMarker);
-            this.tabDebugSettings.Controls.Add(this.lblVariablePatternDesc);
-            this.tabDebugSettings.Controls.Add(this.lblVariablePattern);
-            this.tabDebugSettings.Controls.Add(this.lblVariableDisplay);
-            this.tabDebugSettings.Controls.Add(this.txtVariableEndMarker);
-            this.tabDebugSettings.Controls.Add(this.txtVariableStartMarker);
             this.tabDebugSettings.Controls.Add(this.chkTrackMetrics);
             this.tabDebugSettings.Controls.Add(this.lblAutomationEngine);
-            this.tabDebugSettings.Controls.Add(this.chkCreateMissingVariables);
             this.tabDebugSettings.Controls.Add(this.chkShowDebug);
             this.tabDebugSettings.Controls.Add(this.chkAdvancedDebug);
             this.tabDebugSettings.Controls.Add(this.chkAutoCloseWindow);
@@ -986,89 +956,6 @@
             this.txtCommandDelay.Name = "txtCommandDelay";
             this.txtCommandDelay.Size = new System.Drawing.Size(101, 34);
             this.txtCommandDelay.TabIndex = 33;
-            // 
-            // lblEndMarker
-            // 
-            this.lblEndMarker.AutoSize = true;
-            this.lblEndMarker.BackColor = System.Drawing.Color.Transparent;
-            this.lblEndMarker.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEndMarker.ForeColor = System.Drawing.Color.SteelBlue;
-            this.lblEndMarker.Location = new System.Drawing.Point(16, 425);
-            this.lblEndMarker.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblEndMarker.Name = "lblEndMarker";
-            this.lblEndMarker.Size = new System.Drawing.Size(122, 28);
-            this.lblEndMarker.TabIndex = 32;
-            this.lblEndMarker.Text = "End Marker:";
-            // 
-            // lblStartMarker
-            // 
-            this.lblStartMarker.AutoSize = true;
-            this.lblStartMarker.BackColor = System.Drawing.Color.Transparent;
-            this.lblStartMarker.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartMarker.ForeColor = System.Drawing.Color.SteelBlue;
-            this.lblStartMarker.Location = new System.Drawing.Point(16, 383);
-            this.lblStartMarker.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblStartMarker.Name = "lblStartMarker";
-            this.lblStartMarker.Size = new System.Drawing.Size(130, 28);
-            this.lblStartMarker.TabIndex = 31;
-            this.lblStartMarker.Text = "Start Marker:";
-            // 
-            // lblVariablePatternDesc
-            // 
-            this.lblVariablePatternDesc.BackColor = System.Drawing.Color.Transparent;
-            this.lblVariablePatternDesc.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVariablePatternDesc.ForeColor = System.Drawing.Color.SteelBlue;
-            this.lblVariablePatternDesc.Location = new System.Drawing.Point(13, 319);
-            this.lblVariablePatternDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblVariablePatternDesc.Name = "lblVariablePatternDesc";
-            this.lblVariablePatternDesc.Size = new System.Drawing.Size(796, 61);
-            this.lblVariablePatternDesc.TabIndex = 30;
-            this.lblVariablePatternDesc.Text = "Indicate the start and end markers for variables.  When the engine runs, it will " +
-    "automatically replace the variable with the stored value.";
-            // 
-            // lblVariablePattern
-            // 
-            this.lblVariablePattern.AutoSize = true;
-            this.lblVariablePattern.BackColor = System.Drawing.Color.Transparent;
-            this.lblVariablePattern.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVariablePattern.ForeColor = System.Drawing.Color.SteelBlue;
-            this.lblVariablePattern.Location = new System.Drawing.Point(8, 284);
-            this.lblVariablePattern.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblVariablePattern.Name = "lblVariablePattern";
-            this.lblVariablePattern.Size = new System.Drawing.Size(193, 37);
-            this.lblVariablePattern.TabIndex = 29;
-            this.lblVariablePattern.Text = "Variable Pattern";
-            // 
-            // lblVariableDisplay
-            // 
-            this.lblVariableDisplay.AutoSize = true;
-            this.lblVariableDisplay.BackColor = System.Drawing.Color.Transparent;
-            this.lblVariableDisplay.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVariableDisplay.ForeColor = System.Drawing.Color.SteelBlue;
-            this.lblVariableDisplay.Location = new System.Drawing.Point(217, 403);
-            this.lblVariableDisplay.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblVariableDisplay.Name = "lblVariableDisplay";
-            this.lblVariableDisplay.Size = new System.Drawing.Size(167, 32);
-            this.lblVariableDisplay.TabIndex = 28;
-            this.lblVariableDisplay.Text = "VariableName";
-            // 
-            // txtVariableEndMarker
-            // 
-            this.txtVariableEndMarker.Location = new System.Drawing.Point(159, 422);
-            this.txtVariableEndMarker.Margin = new System.Windows.Forms.Padding(4);
-            this.txtVariableEndMarker.Name = "txtVariableEndMarker";
-            this.txtVariableEndMarker.Size = new System.Drawing.Size(33, 34);
-            this.txtVariableEndMarker.TabIndex = 27;
-            this.txtVariableEndMarker.TextChanged += new System.EventHandler(this.txtVariableStartMarker_TextChanged);
-            // 
-            // txtVariableStartMarker
-            // 
-            this.txtVariableStartMarker.Location = new System.Drawing.Point(159, 381);
-            this.txtVariableStartMarker.Margin = new System.Windows.Forms.Padding(4);
-            this.txtVariableStartMarker.Name = "txtVariableStartMarker";
-            this.txtVariableStartMarker.Size = new System.Drawing.Size(33, 34);
-            this.txtVariableStartMarker.TabIndex = 26;
-            this.txtVariableStartMarker.TextChanged += new System.EventHandler(this.txtVariableStartMarker_TextChanged);
             // 
             // chkTrackMetrics
             // 
@@ -1579,7 +1466,6 @@
         private System.Windows.Forms.CheckBox chkAntiIdle;
         private System.Windows.Forms.Button btnUpdates;
         private System.Windows.Forms.CheckBox chkAdvancedDebug;
-        private System.Windows.Forms.CheckBox chkCreateMissingVariables;
         private CustomControls.CustomUIControls.UITabControl uiSettingTabs;
         private System.Windows.Forms.TabPage tabAppSettings;
         private System.Windows.Forms.TabPage tabDebugSettings;
@@ -1602,13 +1488,6 @@
         private System.Windows.Forms.CheckBox chkTrackMetrics;
         private System.Windows.Forms.CheckBox chkInsertCommandsInline;
         private System.Windows.Forms.Button btnGenerateWikiDocs;
-        private System.Windows.Forms.TextBox txtVariableStartMarker;
-        private System.Windows.Forms.Label lblVariableDisplay;
-        private System.Windows.Forms.TextBox txtVariableEndMarker;
-        private System.Windows.Forms.Label lblVariablePatternDesc;
-        private System.Windows.Forms.Label lblVariablePattern;
-        private System.Windows.Forms.Label lblEndMarker;
-        private System.Windows.Forms.Label lblStartMarker;
         private System.Windows.Forms.Label lblDelay;
         private System.Windows.Forms.TextBox txtCommandDelay;
         internal System.Windows.Forms.CheckBox chkOverrideInstances;

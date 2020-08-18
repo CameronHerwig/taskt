@@ -132,7 +132,7 @@ namespace taskt.Commands
                     break;
             }
 
-            engine.AddVariable(v_OutputUserVariableName, vNewList);
+            vNewList.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

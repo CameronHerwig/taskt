@@ -165,7 +165,7 @@ namespace taskt.Commands
                                        .ToList();
 
             //add list of datatables to output variable
-            engine.AddVariable(v_OutputUserVariableName, result);
+            result.StoreInUserVariable(engine, v_OutputUserVariableName);
 
             //save split datatables in individual workbooks labeled by selected column data
             if (Directory.Exists(vOutputDirectory))
