@@ -69,10 +69,10 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var dataRowValue = v_DataRowValue.ConvertToUserVariable(engine);
 
-            var dataRowVariable = VariableMethods.LookupVariable(engine, v_DataRow);
+            var dataRowVariable = v_DataRow.LookupVariable(engine);
 
             DataRow dataRow;
-            var loopIndexVariable = VariableMethods.LookupVariable(engine, "Loop.CurrentIndex");
+            var loopIndexVariable = "Loop.CurrentIndex".LookupVariable(engine);
             //check in case of looping through datatable using BeginListLoopCommand
             if (dataRowVariable.VariableValue is DataTable && loopIndexVariable != null)
             {

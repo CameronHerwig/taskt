@@ -56,7 +56,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             int loopTimes;
-            ScriptVariable complexVariable = VariableMethods.LookupVariable(engine, v_LoopParameter);           
+            ScriptVariable complexVariable = v_LoopParameter.LookupVariable(engine);           
 
             //if null then throw exception
             if (complexVariable == null)

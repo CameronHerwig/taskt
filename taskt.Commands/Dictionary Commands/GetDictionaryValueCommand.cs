@@ -58,7 +58,7 @@ namespace taskt.Commands
             //Retrieve Dictionary by name
             var engine = (AutomationEngineInstance)sender;
             var vKey = v_Key.ConvertToUserVariable(engine);
-            var dictionaryVariable = VariableMethods.LookupVariable(engine, v_InputDictionary);
+            var dictionaryVariable = v_InputDictionary.LookupVariable(engine);
 
             //Declare local dictionary and assign output
             Dictionary<string,string> dict = (Dictionary<string,string>)dictionaryVariable.VariableValue;

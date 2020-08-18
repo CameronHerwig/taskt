@@ -60,7 +60,7 @@ namespace taskt.Commands
             //get sending instance
             var engine = (AutomationEngineInstance)sender;
 
-            var vListVariable = VariableMethods.LookupVariable(engine, v_ListName);
+            var vListVariable = v_ListName.LookupVariable(engine);
             var vListIndex = int.Parse(v_ListIndex.ConvertToUserVariable(engine));
 
             if (vListVariable != null)
@@ -72,7 +72,7 @@ namespace taskt.Commands
                 else if (vListVariable.VariableValue is List<DataTable>)
                 {
                     DataTable dataTable;
-                    ScriptVariable dataTableVariable = VariableMethods.LookupVariable(engine, v_ListItem.Trim());
+                    ScriptVariable dataTableVariable = v_ListItem.Trim().LookupVariable(engine);
                     if (dataTableVariable != null && dataTableVariable.VariableValue is DataTable)
                         dataTable = (DataTable)dataTableVariable.VariableValue;
                     else
@@ -82,7 +82,7 @@ namespace taskt.Commands
                 else if (vListVariable.VariableValue is List<MailItem>)
                 {
                     MailItem mailItem;
-                    ScriptVariable mailItemVariable = VariableMethods.LookupVariable(engine, v_ListItem.Trim());
+                    ScriptVariable mailItemVariable = v_ListItem.Trim().LookupVariable(engine);
                     if (mailItemVariable != null && mailItemVariable.VariableValue is MailItem)
                         mailItem = (MailItem)mailItemVariable.VariableValue;
                     else
@@ -92,7 +92,7 @@ namespace taskt.Commands
                 else if (vListVariable.VariableValue is List<IWebElement>)
                 {
                     IWebElement webElement;
-                    ScriptVariable webElementVariable = VariableMethods.LookupVariable(engine, v_ListItem.Trim());
+                    ScriptVariable webElementVariable = v_ListItem.Trim().LookupVariable(engine);
                     if (webElementVariable != null && webElementVariable.VariableValue is IWebElement)
                         webElement = (IWebElement)webElementVariable.VariableValue;
                     else

@@ -89,7 +89,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             DataTable dataTable;
-                            ScriptVariable dataTableVariable = VariableMethods.LookupVariable(engine, item.Trim());
+                            ScriptVariable dataTableVariable = item.Trim().LookupVariable(engine);
                             if (dataTableVariable != null && dataTableVariable.VariableValue is DataTable)
                                 dataTable = (DataTable)dataTableVariable.VariableValue;
                             else
@@ -105,7 +105,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MailItem mailItem;
-                            ScriptVariable mailItemVariable = VariableMethods.LookupVariable(engine, item.Trim());
+                            ScriptVariable mailItemVariable = item.Trim().LookupVariable(engine);
                             if (mailItemVariable != null && mailItemVariable.VariableValue is MailItem)
                                 mailItem = (MailItem)mailItemVariable.VariableValue;
                             else
@@ -121,7 +121,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             IWebElement webElement;
-                            ScriptVariable webElementVariable = VariableMethods.LookupVariable(engine, item.Trim());
+                            ScriptVariable webElementVariable = item.Trim().LookupVariable(engine);
                             if (webElementVariable != null && webElementVariable.VariableValue is IWebElement)
                                 webElement = (IWebElement)webElementVariable.VariableValue;
                             else

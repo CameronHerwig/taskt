@@ -54,7 +54,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vRow = VariableMethods.LookupVariable(engine, v_RowToSet);
+            var vRow = v_RowToSet.LookupVariable(engine);
             var vInstance = v_InstanceName.ConvertToUserVariable(engine);
             var excelObject = engine.GetAppInstance(vInstance);
             var excelInstance = (Application)excelObject;
@@ -73,7 +73,7 @@ namespace taskt.Commands
             }
 
             DataRow row;
-            var loopIndexVariable = VariableMethods.LookupVariable(engine, "Loop.CurrentIndex");
+            var loopIndexVariable = "Loop.CurrentIndex".LookupVariable(engine);
             //check in case of looping through datatable using BeginListLoopCommand
             if (vRow != null && vRow.VariableValue is DataTable && loopIndexVariable != null)
             {

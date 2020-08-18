@@ -55,7 +55,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var vInstance = v_InstanceName.ConvertToUserVariable(engine);
             var wordObject = engine.GetAppInstance(vInstance);
-            var dataSetVariable = VariableMethods.LookupVariable(engine, v_DataTable);
+            var dataSetVariable = v_DataTable.LookupVariable(engine);
 
             DataTable dataTable = (DataTable)dataSetVariable.VariableValue;
 

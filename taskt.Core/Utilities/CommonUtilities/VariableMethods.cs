@@ -356,7 +356,7 @@ namespace taskt.Core.Utilities.CommonUtilities
             return str.Insert(0, "{").Insert(str.Length + 1, "}");
         }
 
-        public static ScriptVariable LookupVariable(IEngine engine, string variableName)
+        public static ScriptVariable LookupVariable(this string variableName, IEngine engine)
         {
             //search for the variable
             var requiredVariable = engine.VariableList.Where(var => var.VariableName == variableName).FirstOrDefault();

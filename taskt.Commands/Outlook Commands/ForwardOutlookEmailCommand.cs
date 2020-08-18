@@ -47,7 +47,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MailItem vMailItem = (MailItem)VariableMethods.LookupVariable(engine, v_MailItem).VariableValue;
+            MailItem vMailItem = (MailItem)v_MailItem.LookupVariable(engine).VariableValue;
   
             var vRecipients = v_Recipients.ConvertToUserVariable(engine);
             var splitRecipients = vRecipients.Split(';');

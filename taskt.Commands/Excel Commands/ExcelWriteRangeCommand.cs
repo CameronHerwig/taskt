@@ -75,7 +75,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var vDataSetVariable = VariableMethods.LookupVariable(engine, v_DataTableToSet);
+            var vDataSetVariable = v_DataTableToSet.LookupVariable(engine);
             var vTargetAddress = v_CellLocation.ConvertToUserVariable(engine);
             var excelObject = engine.GetAppInstance(vInstance);
 

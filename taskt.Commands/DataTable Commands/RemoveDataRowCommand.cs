@@ -58,7 +58,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataSetVariable = VariableMethods.LookupVariable(engine, v_DataTable);
+            var dataSetVariable = v_DataTable.LookupVariable(engine);
             var vSearchItem = v_SearchItem.ConvertToUserVariable(engine);
 
             DataTable Dt = (DataTable)dataSetVariable.VariableValue;

@@ -53,7 +53,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //get variable by regular name
-            ScriptVariable listVariable = VariableMethods.LookupVariable(engine, v_ListName);
+            ScriptVariable listVariable = v_ListName.LookupVariable(engine);
 
             //if still null then throw exception
             if (listVariable == null)
