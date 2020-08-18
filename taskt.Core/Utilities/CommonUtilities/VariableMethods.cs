@@ -323,17 +323,15 @@ namespace taskt.Core.Utilities.CommonUtilities
         /// <param name="targetVariable">the name of the user-defined variable to override with new value</param>
         public static void StoreInUserVariable(this object variableValue, IEngine engine, string variableName)
         {
+            if (variableName.StartsWith("{") && variableName.EndsWith("}"))
+                variableName = variableName.Replace("{", "").Replace("}", "");           
+            else
+                throw new Exception("Variable markers '{}' missing. Output variable is invalid.");
+
             if (engine.VariableList.Any(f => f.VariableName == variableName))
             {
                 //update existing variable
                 var existingVariable = engine.VariableList.FirstOrDefault(f => f.VariableName == variableName);
-                existingVariable.VariableName = variableName;
-                existingVariable.VariableValue = variableValue;
-            }
-            else if (engine.VariableList.Any(f => "{" + f.VariableName + "}" == variableName))
-            {
-                //update existing edge-case variable due to user error
-                var existingVariable = engine.VariableList.FirstOrDefault(f => "{" + f.VariableName + "}" == variableName);
                 existingVariable.VariableName = variableName;
                 existingVariable.VariableValue = variableValue;
             }

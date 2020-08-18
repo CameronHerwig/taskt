@@ -48,7 +48,7 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Output Data Variable")]
         [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
+        [SampleUsage("{vUserVariable}")]
         [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
                  " to pre-define your variables; however, it is highly recommended.")]
         public string v_OutputUserVariableName { get; set; }

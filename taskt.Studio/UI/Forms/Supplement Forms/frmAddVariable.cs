@@ -52,9 +52,9 @@ namespace taskt.UI.Forms.Supplement_Forms
                 }
             }
 
-            if (txtVariableName.Text.StartsWith("{") && txtVariableName.Text.EndsWith("}"))
+            if (!txtVariableName.Text.StartsWith("{") || !txtVariableName.Text.EndsWith("}"))
             {
-                lblVariableNameError.Text = "Variable markers '{' and '}' should not be included";
+                lblVariableNameError.Text = "Variable markers '{' and '}' must be included";
                 return;
             }
 

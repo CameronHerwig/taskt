@@ -51,7 +51,7 @@ namespace taskt.UI.Forms
             //add each item to parent
             foreach (var item in elements)
             {
-                AddUserElementNode(parentNode, item.ElementName, item.ElementType, item.ElementValue);
+                AddUserElementNode(parentNode, "<" + item.ElementName + ">", item.ElementType, item.ElementValue);
             }
 
             //add parent to treeview
@@ -73,7 +73,7 @@ namespace taskt.UI.Forms
             for (int i = 0; i < _userElementParentNode.Nodes.Count; i++)
             {
                 //get name and value
-                var elementName = _userElementParentNode.Nodes[i].Text;
+                var elementName = _userElementParentNode.Nodes[i].Text.Replace("<", "").Replace(">", "");
                 var elementType = (ScriptElementType)Enum.Parse(typeof(ScriptElementType), _userElementParentNode.Nodes[i].Nodes[0].Text
                                                          .Replace(_leadingType, "").Replace(_emptyType, "").Replace(" ", ""));
                 var elementValue = _userElementParentNode.Nodes[i].Nodes[1].Text.Replace(_leadingValue, "").Replace(_emptyValue, "");

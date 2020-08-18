@@ -49,7 +49,7 @@ namespace taskt.UI.Forms
             //add each item to parent
             foreach (var item in variables)
             {
-                AddUserVariableNode(parentNode, item.VariableName, (string)item.VariableValue);
+                AddUserVariableNode(parentNode, "{" + item.VariableName + "}", (string)item.VariableValue);
             }
 
             //add parent to treeview
@@ -71,7 +71,7 @@ namespace taskt.UI.Forms
             for (int i = 0; i < _userVariableParentNode.Nodes.Count; i++)
             {
                 //get name and value
-                var VariableName = _userVariableParentNode.Nodes[i].Text;
+                var VariableName = _userVariableParentNode.Nodes[i].Text.Replace("{", "").Replace("}", "");
                 var VariableValue = _userVariableParentNode.Nodes[i].Nodes[0].Text.Replace(_leadingValue, "").Replace(_emptyValue, "");
 
                 //add to list
@@ -162,10 +162,10 @@ namespace taskt.UI.Forms
             }
         }
 
-        private void AddUserVariableNode(TreeNode parentNode, string VariableName, string variableText)
+        private void AddUserVariableNode(TreeNode parentNode, string variableName, string variableText)
         {
             //add new node and sort
-            var childNode = new TreeNode(VariableName);
+            var childNode = new TreeNode(variableName);
 
             if (variableText == string.Empty)
             {

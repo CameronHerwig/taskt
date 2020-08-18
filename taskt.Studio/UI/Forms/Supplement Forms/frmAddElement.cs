@@ -56,9 +56,9 @@ namespace taskt.UI.Forms.Supplement_Forms
                 }               
             }
 
-            if (txtElementName.Text.StartsWith("<") && txtElementName.Text.EndsWith(">"))
+            if (!txtElementName.Text.StartsWith("<") || !txtElementName.Text.EndsWith(">"))
             {
-                lblElementNameError.Text = "Element markers '<' and '>' should not be included";
+                lblElementNameError.Text = "Element markers '<' and '>' must be included";
                 return;
             }
 

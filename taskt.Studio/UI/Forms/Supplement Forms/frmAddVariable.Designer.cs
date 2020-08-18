@@ -91,8 +91,8 @@
             this.lblDefineNameDescription.Name = "lblDefineNameDescription";
             this.lblDefineNameDescription.Size = new System.Drawing.Size(571, 79);
             this.lblDefineNameDescription.TabIndex = 17;
-            this.lblDefineNameDescription.Text = "Define a name for your variable, such as \'vNumber\'.  Remember to enclose the name" +
-    " within brackets in order to use the variable in commands, ex. {vNumber}.";
+            this.lblDefineNameDescription.Text = "Define a name for your variable, such as {vNumber}.  Remember to enclose the name" +
+    " within brackets in order to use the variable in commands.";
             // 
             // lblDefineDefaultValueDescriptor
             // 
