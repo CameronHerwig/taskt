@@ -261,7 +261,7 @@ namespace taskt.Commands
                     return "Loop While GUI Element Exists [Find " + guiSearch + " Element In " + guiWindowName + "]";
 
                 default:
-                    return "Loop While .... ";
+                    return "Loop While ...";
             }
 
         }

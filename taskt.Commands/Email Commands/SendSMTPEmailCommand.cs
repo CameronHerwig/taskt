@@ -75,7 +75,7 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Email Body")]
         [InputSpecification("Enter text to be used as the email body.")]
-        [SampleUsage("Everything ran ok at {DateTime.Now}  || {vBody}")]
+        [SampleUsage("Dear John, ... || {vBody}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_SMTPBody { get; set; }
@@ -170,7 +170,7 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPPassword", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPRecipients", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPSubject", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPBody", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPBody", this, editor, 100, 300));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPAttachments", this, editor));
 
             return RenderedControls;

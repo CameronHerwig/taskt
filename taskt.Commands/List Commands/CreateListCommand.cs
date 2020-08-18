@@ -29,7 +29,7 @@ namespace taskt.Commands
         [PropertyUISelectionOption("String")]
         [PropertyUISelectionOption("DataTable")]
         [PropertyUISelectionOption("MailItem (Outlook)")]
-        [PropertyUISelectionOption("MimeMessage (IMAP)")]
+        [PropertyUISelectionOption("MimeMessage (IMAP/SMTP)")]
         [PropertyUISelectionOption("IWebElement")]
         [InputSpecification("Specify the data type of the List to be created.")]
         [SampleUsage("")]
@@ -116,7 +116,7 @@ namespace taskt.Commands
                         }
                     }
                     break;
-                case "MimeMessage (IMAP)":
+                case "MimeMessage (IMAP/SMTP)":
                     vNewList = new List<MimeMessage>();
                     if (splitListItems != null)
                     {

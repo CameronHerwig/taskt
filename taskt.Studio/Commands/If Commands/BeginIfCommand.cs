@@ -275,7 +275,7 @@ namespace taskt.Commands
 
                 default:
 
-                    return "If .... ";
+                    return "If ...";
             }
         }
 
