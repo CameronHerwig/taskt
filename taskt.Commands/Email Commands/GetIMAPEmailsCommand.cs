@@ -23,7 +23,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Email Commands")]
-    [Description("This command sends an email with optional attachment(s) using IMAP protocol.")]
+    [Description("This command gets selected emails and their attachments using IMAP protocol.")]
 
     public class GetIMAPEmailsCommand : ScriptCommand
     {
@@ -71,7 +71,7 @@ namespace taskt.Commands
         [PropertyDescription("Filter")]
         [InputSpecification("Enter a valid filter string.")]
         [SampleUsage("Hello World || myRobot@company.com || {vFilter} || None")]
-        [Remarks("*Warning* Using 'None' as the Filter will return every MimeMessage in the selected Mail Folder.")]
+        [Remarks("*Warning* Using 'None' as the Filter will return every email in the selected Mail Folder.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_IMAPFilter { get; set; }
 
@@ -128,22 +128,12 @@ namespace taskt.Commands
                 " to pre-define your variables; however, it is highly recommended.")]
         public string v_OutputUserVariableName { get; set; }
 
-        //[XmlElement]
-        //[PropertyDescription("SSL Validation")]
-        //[PropertyUISelectionOption("Validate SSL")]
-        //[PropertyUISelectionOption("Bypass SSL Validation")]
-        //[InputSpecification("Select the appropriate option.")]
-        //[SampleUsage("")]
-        //[Remarks("This field manages whether taskt will attempt to validate the SSL connection.")]
-        //public string v_SSLValidation { get; set; }
-
         public GetIMAPEmailsCommand()
         {
             CommandName = "GetIMAPEmailsCommand";
             SelectionName = "Get IMAP Emails";
             CommandEnabled = true;
             CustomRendering = true;
-            //v_SSLValidation = "Validate SSL";
             v_IMAPSourceFolder = "INBOX";
             v_IMAPGetUnreadOnly = "No";
             v_IMAPMarkAsRead = "Yes";
@@ -170,7 +160,14 @@ namespace taskt.Commands
 
                 using (var cancel = new CancellationTokenSource())
                 {
-                    client.Connect(vIMAPHost, int.Parse(vIMAPPort), true, cancel.Token);
+                    try
+                    {
+                        client.Connect(v_IMAPHost, int.Parse(v_IMAPPort), true, cancel.Token); //SSL
+                    }
+                    catch (Exception)
+                    {
+                        client.Connect(v_IMAPHost, int.Parse(v_IMAPPort)); //TLS
+                    }
 
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate(vIMAPUserName, vIMAPPassword, cancel.Token);
@@ -244,8 +241,6 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_IMAPMessageDirectory", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_IMAPAttachmentDirectory", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
-
-            //RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_SSLValidation", this, editor));
 
             return RenderedControls;
         }

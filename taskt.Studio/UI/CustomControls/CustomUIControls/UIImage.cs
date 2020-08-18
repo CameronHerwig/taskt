@@ -111,6 +111,8 @@ namespace taskt.UI.CustomControls.CustomUIControls
             uiImages.Add("SeleniumSwitchBrowserFrameCommand", Resources.command_window);
             uiImages.Add("SeleniumGetBrowserInfoCommand", Resources.command_web);
             uiImages.Add("SendSMTPEmailCommand", Resources.command_smtp);
+            uiImages.Add("ForwardSMTPEmailCommand", Resources.command_smtp);
+            uiImages.Add("ReplyToSMTPEmailCommand", Resources.command_smtp);
             uiImages.Add("MoveCopyIMAPEmailCommand", Resources.command_smtp);
             uiImages.Add("DeleteIMAPEmailCommand", Resources.command_smtp);
             uiImages.Add("GetIMAPEmailsCommand", Resources.command_smtp);

@@ -2,7 +2,6 @@
 using MimeKit;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Authentication;
 using System.Threading;
 using System.Windows.Forms;
@@ -20,10 +19,18 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Email Commands")]
-    [Description("This command sends an email with optional attachment(s) using SMTP protocol.")]
+    [Description("This command forwards a selected email using SMTP protocol.")]
 
-    public class SendSMTPEmailCommand : ScriptCommand
+    public class ForwardSMTPEmailCommand : ScriptCommand
     {
+        [XmlAttribute]
+        [PropertyDescription("MimeMessage")]
+        [InputSpecification("Enter the MimeMessage to forward.")]
+        [SampleUsage("{vMimeMessage}")]
+        [Remarks("")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_SMTPMimeMessage { get; set; }
+
         [XmlAttribute]
         [PropertyDescription("Host")]
         [InputSpecification("Define the host/service name that the script should use.")]
@@ -65,14 +72,6 @@ namespace taskt.Commands
         public string v_SMTPRecipients { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Email Subject")]
-        [InputSpecification("Enter the subject of the email.")]
-        [SampleUsage("Hello || {vSubject}")]
-        [Remarks("")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public string v_SMTPSubject { get; set; }
-
-        [XmlAttribute]
         [PropertyDescription("Email Body")]
         [InputSpecification("Enter text to be used as the email body.")]
         [SampleUsage("Everything ran ok at {DateTime.Now}  || {vBody}")]
@@ -80,19 +79,10 @@ namespace taskt.Commands
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_SMTPBody { get; set; }
 
-        [XmlAttribute]
-        [PropertyDescription("Attachment File Path(s)")]
-        [InputSpecification("Enter the file path(s) of the file(s) to attach.")]
-        [SampleUsage(@"C:\temp\myFile.xlsx || {vFile} || C:\temp\myFile1.xlsx;C:\temp\myFile2.xlsx || {vFile1};{vFile2} || {vFiles}")]
-        [Remarks("This input is optional. Multiple attachments should be delimited by a semicolon (;).")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowFileSelectionHelper)]
-        public string v_SMTPAttachments { get; set; }
-
-        public SendSMTPEmailCommand()
+        public ForwardSMTPEmailCommand()
         {
-            CommandName = "SendSMTPEmailCommand";
-            SelectionName = "Send SMTP Email";
+            CommandName = "ForwardSMTPEmailCommand";
+            SelectionName = "Forward SMTP Email";
             CommandEnabled = true;
             CustomRendering = true;
         }
@@ -100,15 +90,13 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-
+            MimeMessage vMimeMessageToForward = (MimeMessage)VariableMethods.LookupVariable(engine, v_SMTPMimeMessage).VariableValue;
             string vSMTPHost = v_SMTPHost.ConvertToUserVariable(engine);
             string vSMTPPort = v_SMTPPort.ConvertToUserVariable(engine);
             string vSMTPUserName = v_SMTPUserName.ConvertToUserVariable(engine);
             string vSMTPPassword = v_SMTPPassword.ConvertToUserVariable(engine);
             string vSMTPRecipients = v_SMTPRecipients.ConvertToUserVariable(engine);
-            string vSMTPSubject = v_SMTPSubject.ConvertToUserVariable(engine);
             string vSMTPBody = v_SMTPBody.ConvertToUserVariable(engine);
-            string vSMTPAttachments = v_SMTPAttachments.ConvertToUserVariable(engine);
 
             using (var client = new SmtpClient())
             {
@@ -132,53 +120,44 @@ namespace taskt.Commands
                     //construct a new message
                     var message = new MimeMessage();
                     message.From.Add(MailboxAddress.Parse(vSMTPUserName));
+                    message.ReplyTo.Add(MailboxAddress.Parse(vSMTPUserName));
 
                     var splitRecipients = vSMTPRecipients.Split(';');
                     foreach (var vSMTPToEmail in splitRecipients)
                         message.To.Add(MailboxAddress.Parse(vSMTPToEmail));
 
-                    message.Subject = vSMTPSubject;
+                    message.Subject = "Fwd: " + vMimeMessageToForward.Subject;
 
                     //create a body
                     var builder = new BodyBuilder();
                     builder.TextBody = vSMTPBody;
-
-                    if (!string.IsNullOrEmpty(vSMTPAttachments))
-                    {
-                        var splitAttachments = vSMTPAttachments.Split(';');
-                        foreach (var vSMTPattachment in splitAttachments)
-                        {
-                            using (MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(vSMTPattachment)))
-                                builder.Attachments.Add(vSMTPattachment, memoryStream.ToArray());
-                        }
-                    }
+                    builder.Attachments.Add(new MessagePart { Message = vMimeMessageToForward });
                     message.Body = builder.ToMessageBody();
 
                     client.Send(message);
                     client.ServerCertificateValidationCallback = null;
                 }
-            }   
+            }                    
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPMimeMessage", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPHost", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPPort", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPUserName", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPPassword", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPRecipients", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPSubject", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPBody", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPAttachments", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + $" [To '{v_SMTPRecipients}' - Subject '{v_SMTPSubject}']";
+            return base.GetDisplayValue() + $" [MimeMessage '{v_SMTPMimeMessage}' - Forward to '{v_SMTPRecipients}']";
         }
     }
 }

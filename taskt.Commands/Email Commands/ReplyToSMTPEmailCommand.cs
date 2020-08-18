@@ -20,10 +20,18 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Email Commands")]
-    [Description("This command sends an email with optional attachment(s) using SMTP protocol.")]
+    [Description("This command replies to a selected email using SMTP protocol.")]
 
-    public class SendSMTPEmailCommand : ScriptCommand
+    public class ReplyToSMTPEmailCommand : ScriptCommand
     {
+        [XmlAttribute]
+        [PropertyDescription("MimeMessage")]
+        [InputSpecification("Enter the MimeMessage to reply to.")]
+        [SampleUsage("{vMimeMessage}")]
+        [Remarks("")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        public string v_SMTPMimeMessage { get; set; }
+
         [XmlAttribute]
         [PropertyDescription("Host")]
         [InputSpecification("Define the host/service name that the script should use.")]
@@ -57,20 +65,13 @@ namespace taskt.Commands
         public string v_SMTPPassword { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Recipient(s)")]
-        [InputSpecification("Enter the email address(es) of the recipient(s).")]
-        [SampleUsage("test@test.com || test@test.com;test2@test.com || {vEmail} || {vEmail1};{vEmail2} || {vEmails}")]
-        [Remarks("Multiple recipient email addresses should be delimited by a semicolon (;).")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public string v_SMTPRecipients { get; set; }
-
-        [XmlAttribute]
-        [PropertyDescription("Email Subject")]
-        [InputSpecification("Enter the subject of the email.")]
-        [SampleUsage("Hello || {vSubject}")]
-        [Remarks("")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public string v_SMTPSubject { get; set; }
+        [PropertyDescription("Mail Operation")]
+        [PropertyUISelectionOption("Reply")]
+        [PropertyUISelectionOption("Reply All")]
+        [InputSpecification("Specify whether you intend to reply or reply all.")]
+        [SampleUsage("")]
+        [Remarks("Replying will reply to only the original sender. Reply all will reply to everyone in the recipient list.")]
+        public string v_SMTPOperationType { get; set; }
 
         [XmlAttribute]
         [PropertyDescription("Email Body")]
@@ -89,24 +90,23 @@ namespace taskt.Commands
         [PropertyUIHelper(UIAdditionalHelperType.ShowFileSelectionHelper)]
         public string v_SMTPAttachments { get; set; }
 
-        public SendSMTPEmailCommand()
+        public ReplyToSMTPEmailCommand()
         {
-            CommandName = "SendSMTPEmailCommand";
-            SelectionName = "Send SMTP Email";
+            CommandName = "ReplyToSMTPEmailCommand";
+            SelectionName = "Reply To SMTP Email";
             CommandEnabled = true;
             CustomRendering = true;
+            v_SMTPOperationType = "Reply";
         }
 
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-
+            MimeMessage vMimeMessageToReply = (MimeMessage)VariableMethods.LookupVariable(engine, v_SMTPMimeMessage).VariableValue;
             string vSMTPHost = v_SMTPHost.ConvertToUserVariable(engine);
             string vSMTPPort = v_SMTPPort.ConvertToUserVariable(engine);
             string vSMTPUserName = v_SMTPUserName.ConvertToUserVariable(engine);
             string vSMTPPassword = v_SMTPPassword.ConvertToUserVariable(engine);
-            string vSMTPRecipients = v_SMTPRecipients.ConvertToUserVariable(engine);
-            string vSMTPSubject = v_SMTPSubject.ConvertToUserVariable(engine);
             string vSMTPBody = v_SMTPBody.ConvertToUserVariable(engine);
             string vSMTPAttachments = v_SMTPAttachments.ConvertToUserVariable(engine);
 
@@ -133,11 +133,20 @@ namespace taskt.Commands
                     var message = new MimeMessage();
                     message.From.Add(MailboxAddress.Parse(vSMTPUserName));
 
-                    var splitRecipients = vSMTPRecipients.Split(';');
-                    foreach (var vSMTPToEmail in splitRecipients)
-                        message.To.Add(MailboxAddress.Parse(vSMTPToEmail));
+                    if (vMimeMessageToReply.ReplyTo.Count > 0)
+                        message.To.AddRange(vMimeMessageToReply.ReplyTo);
+                    else if (vMimeMessageToReply.From.Count > 0)
+                        message.To.AddRange(vMimeMessageToReply.From);
+                    else if (vMimeMessageToReply.Sender != null)
+                        message.To.Add(vMimeMessageToReply.Sender);
+  
+                    if (v_SMTPOperationType == "Reply All")
+                    {
+                        message.To.AddRange(message.To);
+                        message.Cc.AddRange(message.Cc);
+                    }
 
-                    message.Subject = vSMTPSubject;
+                    message.Subject = "Re: " + vMimeMessageToReply.Subject;
 
                     //create a body
                     var builder = new BodyBuilder();
@@ -157,19 +166,19 @@ namespace taskt.Commands
                     client.Send(message);
                     client.ServerCertificateValidationCallback = null;
                 }
-            }   
+            }
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPMimeMessage", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPHost", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPPort", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPUserName", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPPassword", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPRecipients", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPSubject", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_SMTPOperationType", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPBody", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SMTPAttachments", this, editor));
 
@@ -178,7 +187,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + $" [To '{v_SMTPRecipients}' - Subject '{v_SMTPSubject}']";
+            return base.GetDisplayValue() + $" [MimeMessage '{v_SMTPMimeMessage}']";
         }
     }
 }

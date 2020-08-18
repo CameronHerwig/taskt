@@ -17,7 +17,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Outlook Commands")]
-    [Description("This command moves or copies selected emails in Outlook.")]
+    [Description("This command moves or copies a selected email in Outlook.")]
 
     public class MoveCopyOutlookEmailCommand : ScriptCommand
     {

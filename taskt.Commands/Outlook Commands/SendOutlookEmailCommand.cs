@@ -86,7 +86,7 @@ namespace taskt.Commands
             if (currentUser.Type == "EX")
             {
                 ExchangeUser manager = currentUser.GetExchangeUser().GetExchangeUserManager();
-                // Add recipient using display name, alias, or smtp address
+
                 foreach (var t in splitRecipients)
                     mail.Recipients.Add(t.ToString());
 

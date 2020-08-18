@@ -16,7 +16,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Outlook Commands")]
-    [Description("This command replies to selected emails in Outlook.")]
+    [Description("This command replies to a selected email in Outlook.")]
 
     public class ReplyToOutlookEmailCommand : ScriptCommand
     {

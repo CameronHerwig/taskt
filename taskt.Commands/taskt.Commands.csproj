@@ -124,8 +124,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Email Commands\DeleteIMAPEmailCommand.cs" />
+    <Compile Include="Email Commands\ForwardSMTPEmailCommand.cs" />
     <Compile Include="Email Commands\GetIMAPEmailsCommand.cs" />
     <Compile Include="Email Commands\MoveCopyIMAPEmailCommand.cs" />
+    <Compile Include="Email Commands\ReplyToSMTPEmailCommand.cs" />
     <Compile Include="Email Commands\SendSMTPEmailCommand.cs" />
     <Compile Include="List Commands\AddListItemCommand.cs" />
     <Compile Include="Data Commands\DateCalculationCommand.cs" />

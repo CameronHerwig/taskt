@@ -21,7 +21,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Email Commands")]
-    [Description("This command moves or copies selected emails using IMAP protocol.")]
+    [Description("This command moves or copies a selected email using IMAP protocol.")]
 
     public class MoveCopyIMAPEmailCommand : ScriptCommand
     {
@@ -118,7 +118,14 @@ namespace taskt.Commands
 
                 using (var cancel = new CancellationTokenSource())
                 {
-                    client.Connect(vIMAPHost, int.Parse(vIMAPPort), true, cancel.Token);
+                    try
+                    {
+                        client.Connect(v_IMAPHost, int.Parse(v_IMAPPort), true, cancel.Token); //SSL
+                    }
+                    catch (Exception)
+                    {
+                        client.Connect(v_IMAPHost, int.Parse(v_IMAPPort)); //TLS
+                    }
 
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate(vIMAPUserName, vIMAPPassword, cancel.Token);
