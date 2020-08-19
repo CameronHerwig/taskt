@@ -15,12 +15,6 @@ namespace taskt.Core.Script
         public string VariableName { get; set; }
 
         /// <summary>
-        /// index/position tracking for complex variables (list)
-        /// </summary>
-        [JsonIgnore]
-        public int CurrentPosition = 0;
-
-        /// <summary>
         /// value of the variable or current index
         /// </summary>
         public object VariableValue { get; set; }

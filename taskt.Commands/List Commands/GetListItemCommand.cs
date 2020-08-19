@@ -63,7 +63,7 @@ namespace taskt.Commands
             var itemIndex = v_ItemIndex.ConvertToUserVariable(engine);
             int index = int.Parse(itemIndex);
             //get variable by regular name
-            ScriptVariable listVariable = v_ListName.LookupVariable(engine);
+            var listVariable = v_ListName.LookupVariable(engine);
 
             //if still null then throw exception
             if (listVariable == null)
@@ -73,30 +73,30 @@ namespace taskt.Commands
             }
 
             dynamic listToIndex;
-            if (listVariable.VariableValue is List<string>)
+            if (listVariable is List<string>)
             {
-                listToIndex = (List<string>)listVariable.VariableValue;
+                listToIndex = (List<string>)listVariable;
             }
-            else if (listVariable.VariableValue is List<DataTable>)
+            else if (listVariable is List<DataTable>)
             {
-                listToIndex = (List<DataTable>)listVariable.VariableValue;
+                listToIndex = (List<DataTable>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MailItem>)
+            else if (listVariable is List<MailItem>)
             {
-                listToIndex = (List<MailItem>)listVariable.VariableValue;
+                listToIndex = (List<MailItem>)listVariable;
             }
-            else if (listVariable.VariableValue is List<IWebElement>)
+            else if (listVariable is List<IWebElement>)
             {
-                listToIndex = (List<IWebElement>)listVariable.VariableValue;
+                listToIndex = (List<IWebElement>)listVariable;
             }
             else if (
-                (listVariable.VariableValue.ToString().StartsWith("[")) && 
-                (listVariable.VariableValue.ToString().EndsWith("]")) && 
-                (listVariable.VariableValue.ToString().Contains(","))
+                (listVariable.ToString().StartsWith("[")) && 
+                (listVariable.ToString().EndsWith("]")) && 
+                (listVariable.ToString().Contains(","))
                 )
             {
                 //automatically handle if user has given a json array
-                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.VariableValue.ToString()) as JArray;
+                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.ToString()) as JArray;
 
                 var itemList = new List<string>();
                 foreach (var jsonItem in jsonArray)
@@ -105,7 +105,7 @@ namespace taskt.Commands
                     itemList.Add(value.ToString());
                 }
 
-                listVariable.VariableValue = itemList;
+                itemList.StoreInUserVariable(engine, v_ListName);
                 listToIndex = itemList;
             }
             else

@@ -89,9 +89,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             DataTable dataTable;
-                            ScriptVariable dataTableVariable = item.Trim().LookupVariable(engine);
-                            if (dataTableVariable != null && dataTableVariable.VariableValue is DataTable)
-                                dataTable = (DataTable)dataTableVariable.VariableValue;
+                            var dataTableVariable = item.Trim().LookupVariable(engine);
+                            if (dataTableVariable != null && dataTableVariable is DataTable)
+                                dataTable = (DataTable)dataTableVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<DataTable>)vNewList).Add(dataTable);
@@ -105,9 +105,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MailItem mailItem;
-                            ScriptVariable mailItemVariable = item.Trim().LookupVariable(engine);
-                            if (mailItemVariable != null && mailItemVariable.VariableValue is MailItem)
-                                mailItem = (MailItem)mailItemVariable.VariableValue;
+                            var mailItemVariable = item.Trim().LookupVariable(engine);
+                            if (mailItemVariable != null && mailItemVariable is MailItem)
+                                mailItem = (MailItem)mailItemVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<MailItem>)vNewList).Add(mailItem);
@@ -121,9 +121,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             IWebElement webElement;
-                            ScriptVariable webElementVariable = item.Trim().LookupVariable(engine);
-                            if (webElementVariable != null && webElementVariable.VariableValue is IWebElement)
-                                webElement = (IWebElement)webElementVariable.VariableValue;
+                            var webElementVariable = item.Trim().LookupVariable(engine);
+                            if (webElementVariable != null && webElementVariable is IWebElement)
+                                webElement = (IWebElement)webElementVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<IWebElement>)vNewList).Add(webElement);

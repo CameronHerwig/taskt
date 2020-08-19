@@ -53,7 +53,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //get variable by regular name
-            ScriptVariable listVariable = v_ListName.LookupVariable(engine);
+            var listVariable = v_ListName.LookupVariable(engine);
 
             //if still null then throw exception
             if (listVariable == null)
@@ -63,26 +63,26 @@ namespace taskt.Commands
             }
 
             dynamic listToCount; 
-            if (listVariable.VariableValue is List<string>)
+            if (listVariable is List<string>)
             {
-                listToCount = (List<string>)listVariable.VariableValue;
+                listToCount = (List<string>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MailItem>)
+            else if (listVariable is List<MailItem>)
             {
-                listToCount = (List<MailItem>)listVariable.VariableValue;
+                listToCount = (List<MailItem>)listVariable;
             }
-            else if (listVariable.VariableValue is List<IWebElement>)
+            else if (listVariable is List<IWebElement>)
             {
-                listToCount = (List<IWebElement>)listVariable.VariableValue;
+                listToCount = (List<IWebElement>)listVariable;
             }
             else if (
-                (listVariable.VariableValue.ToString().StartsWith("[")) && 
-                (listVariable.VariableValue.ToString().EndsWith("]")) && 
-                (listVariable.VariableValue.ToString().Contains(","))
+                (listVariable.ToString().StartsWith("[")) && 
+                (listVariable.ToString().EndsWith("]")) && 
+                (listVariable.ToString().Contains(","))
                 )
             {
                 //automatically handle if user has given a json array
-                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.VariableValue.ToString()) as JArray;
+                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.ToString()) as JArray;
 
                 var itemList = new List<string>();
                 foreach (var item in jsonArray)
@@ -91,7 +91,7 @@ namespace taskt.Commands
                     itemList.Add(value.ToString());
                 }
 
-                listVariable.VariableValue = itemList;
+                itemList.StoreInUserVariable(engine, v_ListName);
                 listToCount = itemList;
             }
             else

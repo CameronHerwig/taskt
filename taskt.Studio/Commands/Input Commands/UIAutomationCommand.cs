@@ -349,8 +349,8 @@ namespace taskt.Commands
 
                     var secureStrVariable = secureString.LookupVariable(engine);
 
-                    if (secureStrVariable.VariableValue is SecureString)
-                        secureString = ((SecureString)secureStrVariable.VariableValue).ConvertSecureStringToString();
+                    if (secureStrVariable is SecureString)
+                        secureString = ((SecureString)secureStrVariable).ConvertSecureStringToString();
                     else
                         throw new ArgumentException("Provided Argument is not a 'Secure String'");
 

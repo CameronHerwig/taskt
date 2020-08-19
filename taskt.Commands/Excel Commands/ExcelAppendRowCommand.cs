@@ -75,10 +75,10 @@ namespace taskt.Commands
             DataRow row;
             var loopIndexVariable = "Loop.CurrentIndex".LookupVariable(engine);
             //check in case of looping through datatable using BeginListLoopCommand
-            if (vRow != null && vRow.VariableValue is DataTable && loopIndexVariable != null)
+            if (vRow != null && vRow is DataTable && loopIndexVariable != null)
             {
-                int loopIndex = int.Parse(loopIndexVariable.VariableValue.ToString());
-                row = ((DataTable)vRow.VariableValue).Rows[loopIndex - 1];
+                int loopIndex = int.Parse(loopIndexVariable.ToString());
+                row = ((DataTable)vRow).Rows[loopIndex - 1];
 
                 string cellValue;
                 for (int j = 0; j < row.ItemArray.Length; j++)
@@ -92,9 +92,9 @@ namespace taskt.Commands
                     i++;
                 }
             }
-            else if (vRow != null && vRow.VariableValue is DataRow)
+            else if (vRow != null && vRow is DataRow)
             {
-                row = (DataRow)vRow.VariableValue;
+                row = (DataRow)vRow;
 
                 string cellValue;
                 for (int j = 0; j < row.ItemArray.Length; j++)

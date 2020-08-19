@@ -56,7 +56,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             int loopTimes;
-            ScriptVariable complexVariable = v_LoopParameter.LookupVariable(engine);           
+            var complexVariable = v_LoopParameter.LookupVariable(engine);           
 
             //if null then throw exception
             if (complexVariable == null)
@@ -66,28 +66,28 @@ namespace taskt.Commands
             }
 
             dynamic listToLoop;
-            if (complexVariable.VariableValue is List<string>)
+            if (complexVariable is List<string>)
             {
-                listToLoop = (List<string>)complexVariable.VariableValue;
+                listToLoop = (List<string>)complexVariable;
             }
-            else if (complexVariable.VariableValue is List<IWebElement>)
+            else if (complexVariable is List<IWebElement>)
             {
-                listToLoop = (List<IWebElement>)complexVariable.VariableValue;
+                listToLoop = (List<IWebElement>)complexVariable;
             }
-            else if (complexVariable.VariableValue is DataTable)
+            else if (complexVariable is DataTable)
             {
-                listToLoop = ((DataTable)complexVariable.VariableValue).Rows;
+                listToLoop = ((DataTable)complexVariable).Rows;
             }
-            else if (complexVariable.VariableValue is List<MailItem>)
+            else if (complexVariable is List<MailItem>)
             {
-                listToLoop = (List<MailItem>)complexVariable.VariableValue;
+                listToLoop = (List<MailItem>)complexVariable;
             }
-            else if ((complexVariable.VariableValue.ToString().StartsWith("[")) && 
-                (complexVariable.VariableValue.ToString().EndsWith("]")) && 
-                (complexVariable.VariableValue.ToString().Contains(",")))
+            else if ((complexVariable.ToString().StartsWith("[")) && 
+                (complexVariable.ToString().EndsWith("]")) && 
+                (complexVariable.ToString().Contains(",")))
             {
                 //automatically handle if user has given a json array
-                JArray jsonArray = JsonConvert.DeserializeObject(complexVariable.VariableValue.ToString()) as JArray;
+                JArray jsonArray = JsonConvert.DeserializeObject(complexVariable.ToString()) as JArray;
 
                var itemList = new List<string>();
                 foreach (var item in jsonArray)
@@ -96,7 +96,7 @@ namespace taskt.Commands
                     itemList.Add(value.ToString());
                 }
 
-                complexVariable.VariableValue = itemList;
+                itemList.StoreInUserVariable(engine, v_LoopParameter);
                 listToLoop = itemList;
             }
             else

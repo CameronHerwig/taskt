@@ -75,14 +75,13 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var vDataSetVariable = v_DataTableToSet.LookupVariable(engine);
             var vTargetAddress = v_CellLocation.ConvertToUserVariable(engine);
             var excelObject = engine.GetAppInstance(vInstance);
 
             var excelInstance = (Application)excelObject;
             var excelSheet = (Worksheet)excelInstance.ActiveSheet;
 
-            DataTable Dt = (DataTable)vDataSetVariable.VariableValue;
+            DataTable Dt = (DataTable)v_DataTableToSet.LookupVariable(engine);
             if (string.IsNullOrEmpty(vTargetAddress) || vTargetAddress.Contains(":")) 
                 throw new Exception("Cell Location is invalid or empty");
           

@@ -56,18 +56,14 @@ namespace taskt.Commands
                 "0".StoreInUserVariable(engine, "Loop.CurrentIndex");
 
             int loopTimes;
-            ScriptVariable complexVarible = null;
 
             var loopParameter = loopCommand.v_LoopParameter.ConvertToUserVariable(engine);
             loopTimes = int.Parse(loopParameter);
 
-            int startIndex = 0;
-            int.TryParse(v_LoopStart.ConvertToUserVariable(engine), out startIndex);
+            int.TryParse(v_LoopStart.ConvertToUserVariable(engine), out int startIndex);
 
             for (int i = startIndex; i < loopTimes; i++)
             {
-                if (complexVarible != null)
-                    complexVarible.CurrentPosition = i;
 
               //  (i + 1).ToString().StoreInUserVariable(engine, "Loop.CurrentIndex");
 

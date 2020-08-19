@@ -56,39 +56,39 @@ namespace taskt.Commands
 
             if (vListVariable != null)
             {
-                if (vListVariable.VariableValue is List<string>)
+                if (vListVariable is List<string>)
                 {
-                    ((List<string>)vListVariable.VariableValue).Add(v_ListItem.Trim().ConvertToUserVariable(engine));
+                    ((List<string>)vListVariable).Add(v_ListItem.Trim().ConvertToUserVariable(engine));
                 }
-                else if (vListVariable.VariableValue is List<DataTable>)
+                else if (vListVariable is List<DataTable>)
                 {
                     DataTable dataTable;
-                    ScriptVariable dataTableVariable = v_ListItem.Trim().LookupVariable(engine);
-                    if (dataTableVariable != null && dataTableVariable.VariableValue is DataTable)
-                        dataTable = (DataTable)dataTableVariable.VariableValue;
+                    var dataTableVariable = v_ListItem.Trim().LookupVariable(engine);
+                    if (dataTableVariable != null && dataTableVariable is DataTable)
+                        dataTable = (DataTable)dataTableVariable;
                     else
                         throw new Exception("Invalid List Item type, please provide valid List Item type.");
-                    ((List<DataTable>)vListVariable.VariableValue).Add(dataTable);
+                    ((List<DataTable>)vListVariable).Add(dataTable);
                 }
-                else if (vListVariable.VariableValue is List<MailItem>)
+                else if (vListVariable is List<MailItem>)
                 {
                     MailItem mailItem;
-                    ScriptVariable mailItemVariable = v_ListItem.Trim().LookupVariable(engine);
-                    if (mailItemVariable != null && mailItemVariable.VariableValue is MailItem)
-                        mailItem = (MailItem)mailItemVariable.VariableValue;
+                    var mailItemVariable = v_ListItem.Trim().LookupVariable(engine);
+                    if (mailItemVariable != null && mailItemVariable is MailItem)
+                        mailItem = (MailItem)mailItemVariable;
                     else
                         throw new Exception("Invalid List Item type, please provide valid List Item type.");
-                    ((List<MailItem>)vListVariable.VariableValue).Add(mailItem);
+                    ((List<MailItem>)vListVariable).Add(mailItem);
                 }
-                else if (vListVariable.VariableValue is List<IWebElement>)
+                else if (vListVariable is List<IWebElement>)
                 {
                     IWebElement webElement;
-                    ScriptVariable webElementVariable = v_ListItem.Trim().LookupVariable(engine);
-                    if (webElementVariable != null && webElementVariable.VariableValue is IWebElement)
-                        webElement = (IWebElement)webElementVariable.VariableValue;
+                    var webElementVariable = v_ListItem.Trim().LookupVariable(engine);
+                    if (webElementVariable != null && webElementVariable is IWebElement)
+                        webElement = (IWebElement)webElementVariable;
                     else
                         throw new Exception("Invalid List Item type, please provide valid List Item type.");
-                    ((List<IWebElement>)vListVariable.VariableValue).Add(webElement);
+                    ((List<IWebElement>)vListVariable).Add(webElement);
                 }
                 else
                 {

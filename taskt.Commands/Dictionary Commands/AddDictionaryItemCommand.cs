@@ -59,7 +59,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var dictionaryVariable = v_DictionaryName.LookupVariable(engine);
 
-            Dictionary<string, string> outputDictionary = (Dictionary<string, string>)dictionaryVariable.VariableValue;
+            Dictionary<string, string> outputDictionary = (Dictionary<string, string>)dictionaryVariable;
 
             foreach (DataRow rwColumnName in v_ColumnNameDataTable.Rows)
             {
@@ -67,7 +67,7 @@ namespace taskt.Commands
                     rwColumnName.Field<string>("Keys").ConvertToUserVariable(engine), 
                     rwColumnName.Field<string>("Values").ConvertToUserVariable(engine));
             }
-            dictionaryVariable.VariableValue = outputDictionary;
+            outputDictionary.StoreInUserVariable(engine, v_DictionaryName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

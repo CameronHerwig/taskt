@@ -72,13 +72,13 @@ namespace taskt.Commands
             DataRow dataRow;
             var loopIndexVariable = "Loop.CurrentIndex".LookupVariable(engine);
             //check if currently looping through datatable using BeginListLoopCommand
-            if (dataRowVariable.VariableValue is DataTable && loopIndexVariable != null)
+            if (dataRowVariable is DataTable && loopIndexVariable != null)
             {
-                int loopIndex = int.Parse(loopIndexVariable.VariableValue.ToString());
-                dataRow = ((DataTable)dataRowVariable.VariableValue).Rows[loopIndex-1];
+                int loopIndex = int.Parse(loopIndexVariable.ToString());
+                dataRow = ((DataTable)dataRowVariable).Rows[loopIndex-1];
             }
             else 
-                dataRow = (DataRow)dataRowVariable.VariableValue;
+                dataRow = (DataRow)dataRowVariable;
 
             var valueIndex = v_DataValueIndex.ConvertToUserVariable(engine);
             string value = "";

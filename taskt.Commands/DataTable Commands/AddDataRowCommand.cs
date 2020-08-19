@@ -64,9 +64,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataSetVariable = v_DataTable.LookupVariable(engine);
 
-            DataTable Dt = (DataTable)dataSetVariable.VariableValue;
+            DataTable Dt = (DataTable)v_DataTable.LookupVariable(engine);
             var newRow = Dt.NewRow();
 
             foreach (DataRow rw in v_DataRowDataTable.Rows)
@@ -77,7 +76,7 @@ namespace taskt.Commands
             }
             Dt.Rows.Add(newRow);
 
-            dataSetVariable.VariableValue = Dt;
+            Dt.StoreInUserVariable(engine, v_DataTable);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

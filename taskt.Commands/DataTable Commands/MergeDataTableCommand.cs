@@ -81,17 +81,17 @@ namespace taskt.Commands
                 throw new Exception("Destination DataTable Variable '" + v_DestinationDataTable + "' is not initialized.");
 
             // (Data Type Check)
-            if (!(v_SourceDTVariable.VariableValue is DataTable))
+            if (!(v_SourceDTVariable is DataTable))
                 throw new Exception("Type of Source DataTable Variable '" + v_SourceDataTable + "' is not DataTable.");
 
-            if (!(v_DestinationDTVariable.VariableValue is DataTable))
+            if (!(v_DestinationDTVariable is DataTable))
                 throw new Exception("Type of Destination DataTable Variable '" + v_DestinationDataTable + "' is not DataTable.");
 
             // Same Variable Check
             if (v_SourceDataTable != v_DestinationDataTable)
             {
-                var sourceDT = (DataTable)v_SourceDTVariable.VariableValue;
-                var destinationDT = (DataTable)v_DestinationDTVariable.VariableValue;
+                var sourceDT = (DataTable)v_SourceDTVariable;
+                var destinationDT = (DataTable)v_DestinationDTVariable;
 
                 switch (v_MissingSchemaAction)
                 {
@@ -112,7 +112,7 @@ namespace taskt.Commands
                 }
 
                 // Update Destination Variable Value
-                v_DestinationDTVariable.VariableValue = destinationDT;
+                destinationDT.StoreInUserVariable(engine, v_DestinationDataTable);               
             }
 
         }

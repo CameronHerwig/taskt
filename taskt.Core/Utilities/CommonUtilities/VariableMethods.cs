@@ -161,20 +161,23 @@ namespace taskt.Core.Utilities.CommonUtilities
             }
         }       
 
-        public static LookupVariable(this string variableName, IEngine engine)
+        public static object LookupVariable(this string variableName, IEngine engine)
         {
-            //search for the variable
-            var requiredVariable = engine.VariableList.Where(var => var.VariableName == variableName).FirstOrDefault();
+            ScriptVariable requiredVariable;
 
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) && (variableName.StartsWith("{")) && (variableName.EndsWith("}")))
+            if (variableName.StartsWith("{") && variableName.EndsWith("}"))
             {
                 //reformat and attempt
                 var reformattedVariable = variableName.Replace("{", "").Replace("}", "");
                 requiredVariable = engine.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
             }
+            else
+                throw new Exception("Variable markers '{}' missing. '" + variableName + "' could not be found.");
 
-            return requiredVariable;
+            if (requiredVariable != null)
+                return requiredVariable.VariableValue;
+            else
+                return null;
         }
 
         /// <summary>

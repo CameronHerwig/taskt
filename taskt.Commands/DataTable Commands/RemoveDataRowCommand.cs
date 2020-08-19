@@ -58,10 +58,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataSetVariable = v_DataTable.LookupVariable(engine);
             var vSearchItem = v_SearchItem.ConvertToUserVariable(engine);
 
-            DataTable Dt = (DataTable)dataSetVariable.VariableValue;
+            DataTable Dt = (DataTable)v_DataTable.LookupVariable(engine);
             var t = new List<Tuple<string, string>>();
             var listPairs = vSearchItem.Split(')');
             int i = 0;
@@ -107,7 +106,7 @@ namespace taskt.Commands
                     Dt.Rows.Remove(item);
                 }
                 Dt.AcceptChanges();
-                dataSetVariable.VariableValue = Dt;
+                Dt.StoreInUserVariable(engine, v_DataTable);
             }
 
             //If And operation is checked
@@ -136,7 +135,7 @@ namespace taskt.Commands
                 Dt.AcceptChanges();
 
                 //Assigns Datatable to newly updated Datatable
-                dataSetVariable.VariableValue = Dt;
+                Dt.StoreInUserVariable(engine, v_DataTable);
             }
         }
 
