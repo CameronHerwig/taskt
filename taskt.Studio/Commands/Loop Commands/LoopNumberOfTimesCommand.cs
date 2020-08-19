@@ -50,7 +50,7 @@ namespace taskt.Commands
             LoopNumberOfTimesCommand loopCommand = (LoopNumberOfTimesCommand)parentCommand.ScriptCommand;
             var engine = (AutomationEngineInstance)sender;
 
-            var currentIndex = "Loop.CurrentIndex".LookupVariable(engine);
+            var currentIndex = "Loop.CurrentIndex".LookupComplexVariable(engine);
 
             if (currentIndex == null)
                 "0".StoreInUserVariable(engine, "Loop.CurrentIndex");

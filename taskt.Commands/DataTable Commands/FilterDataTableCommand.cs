@@ -58,7 +58,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var vSearchItem = v_SearchItem.ConvertToUserVariable(engine);
 
-            DataTable Dt = (DataTable)v_DataTable.LookupVariable(engine);
+            DataTable Dt = (DataTable)v_DataTable.LookupComplexVariable(engine);
             var t = new List<Tuple<string, string>>();
             var listPairs = vSearchItem.Split(')');
             int i = 0;

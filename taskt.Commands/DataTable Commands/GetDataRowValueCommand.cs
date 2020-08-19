@@ -67,10 +67,10 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataRowVariable = v_DataRow.LookupVariable(engine);
+            var dataRowVariable = v_DataRow.LookupComplexVariable(engine);
 
             DataRow dataRow;
-            var loopIndexVariable = "Loop.CurrentIndex".LookupVariable(engine);
+            var loopIndexVariable = "Loop.CurrentIndex".LookupComplexVariable(engine);
             //check if currently looping through datatable using BeginListLoopCommand
             if (dataRowVariable is DataTable && loopIndexVariable != null)
             {

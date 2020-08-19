@@ -347,7 +347,7 @@ namespace taskt.Commands
                                             where rw.Field<string>("Parameter Name") == "Clear Element Before Setting Text"
                                             select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                    var secureStrVariable = secureString.LookupVariable(engine);
+                    var secureStrVariable = secureString.LookupComplexVariable(engine);
 
                     if (secureStrVariable is SecureString)
                         secureString = ((SecureString)secureStrVariable).ConvertSecureStringToString();

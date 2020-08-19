@@ -49,7 +49,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            DataTable dataTable = (DataTable)v_DataTable.LookupVariable(engine);
+            DataTable dataTable = (DataTable)v_DataTable.LookupComplexVariable(engine);
             var count = dataTable.Rows.Count.ToString();
 
             count.StoreInUserVariable(engine, v_OutputUserVariableName);

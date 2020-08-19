@@ -57,7 +57,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dictionaryVariable = v_DictionaryName.LookupVariable(engine);
+            var dictionaryVariable = v_DictionaryName.LookupComplexVariable(engine);
 
             Dictionary<string, string> outputDictionary = (Dictionary<string, string>)dictionaryVariable;
 

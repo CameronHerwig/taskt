@@ -63,7 +63,7 @@ namespace taskt.Commands
             var itemIndex = v_ItemIndex.ConvertToUserVariable(engine);
             int index = int.Parse(itemIndex);
             //get variable by regular name
-            var listVariable = v_ListName.LookupVariable(engine);
+            var listVariable = v_ListName.LookupComplexVariable(engine);
 
             //if still null then throw exception
             if (listVariable == null)

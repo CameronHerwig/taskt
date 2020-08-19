@@ -103,8 +103,8 @@ namespace taskt.Commands
                 var variableName = (string)rw.ItemArray[0];
                 object variableValue;
 
-                if (((string)rw.ItemArray[1]).LookupVariable(currentScriptEngine) != null)
-                    variableValue = ((string)rw.ItemArray[1]).LookupVariable(currentScriptEngine);
+                if (((string)rw.ItemArray[1]).LookupComplexVariable(currentScriptEngine) != null)
+                    variableValue = ((string)rw.ItemArray[1]).LookupComplexVariable(currentScriptEngine);
                 else
                     variableValue = ((string)rw.ItemArray[1]).ConvertToUserVariable(currentScriptEngine);
 

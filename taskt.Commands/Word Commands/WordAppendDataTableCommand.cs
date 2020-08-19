@@ -56,7 +56,7 @@ namespace taskt.Commands
             var vInstance = v_InstanceName.ConvertToUserVariable(engine);
             var wordObject = engine.GetAppInstance(vInstance);
 
-            DataTable dataTable = (DataTable)v_DataTable.LookupVariable(engine);
+            DataTable dataTable = (DataTable)v_DataTable.LookupComplexVariable(engine);
 
             //selecting the word instance and open document
             Application wordInstance = (Application)wordObject;

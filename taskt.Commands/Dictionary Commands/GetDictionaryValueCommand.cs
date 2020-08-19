@@ -60,7 +60,7 @@ namespace taskt.Commands
             var vKey = v_Key.ConvertToUserVariable(engine);
 
             //Declare local dictionary and assign output
-            Dictionary<string,string> dict = (Dictionary<string,string>)v_InputDictionary.LookupVariable(engine);
+            Dictionary<string,string> dict = (Dictionary<string,string>)v_InputDictionary.LookupComplexVariable(engine);
             var dictValue = dict[vKey].ConvertToUserVariable(engine);
 
             dictValue.StoreInUserVariable(engine, v_OutputUserVariableName);

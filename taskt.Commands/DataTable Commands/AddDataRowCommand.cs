@@ -65,7 +65,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            DataTable Dt = (DataTable)v_DataTable.LookupVariable(engine);
+            DataTable Dt = (DataTable)v_DataTable.LookupComplexVariable(engine);
             var newRow = Dt.NewRow();
 
             foreach (DataRow rw in v_DataRowDataTable.Rows)

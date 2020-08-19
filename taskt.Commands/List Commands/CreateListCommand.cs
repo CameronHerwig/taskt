@@ -89,7 +89,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             DataTable dataTable;
-                            var dataTableVariable = item.Trim().LookupVariable(engine);
+                            var dataTableVariable = item.Trim().LookupComplexVariable(engine);
                             if (dataTableVariable != null && dataTableVariable is DataTable)
                                 dataTable = (DataTable)dataTableVariable;
                             else
@@ -105,7 +105,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MailItem mailItem;
-                            var mailItemVariable = item.Trim().LookupVariable(engine);
+                            var mailItemVariable = item.Trim().LookupComplexVariable(engine);
                             if (mailItemVariable != null && mailItemVariable is MailItem)
                                 mailItem = (MailItem)mailItemVariable;
                             else
@@ -121,7 +121,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             IWebElement webElement;
-                            var webElementVariable = item.Trim().LookupVariable(engine);
+                            var webElementVariable = item.Trim().LookupComplexVariable(engine);
                             if (webElementVariable != null && webElementVariable is IWebElement)
                                 webElement = (IWebElement)webElementVariable;
                             else

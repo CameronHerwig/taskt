@@ -89,6 +89,25 @@ namespace taskt.Core.Utilities.CommonUtilities
             return str.CalculateVariables(engine);
         }
 
+        public static object LookupComplexVariable(this string variableName, IEngine engine)
+        {
+            ScriptVariable requiredVariable;
+
+            if (variableName.StartsWith("{") && variableName.EndsWith("}"))
+            {
+                //reformat and attempt
+                var reformattedVariable = variableName.Replace("{", "").Replace("}", "");
+                requiredVariable = engine.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
+            }
+            else
+                throw new Exception("Variable markers '{}' missing. '" + variableName + "' could not be found.");
+
+            if (requiredVariable != null)
+                return requiredVariable.VariableValue;
+            else
+                return null;
+        }
+
         private static string CalculateVariables(this string str, IEngine engine)
         {
             if (!engine.AutoCalculateVariables)
@@ -160,25 +179,6 @@ namespace taskt.Core.Utilities.CommonUtilities
                 engine.VariableList.Add(newVariable);
             }
         }       
-
-        public static object LookupVariable(this string variableName, IEngine engine)
-        {
-            ScriptVariable requiredVariable;
-
-            if (variableName.StartsWith("{") && variableName.EndsWith("}"))
-            {
-                //reformat and attempt
-                var reformattedVariable = variableName.Replace("{", "").Replace("}", "");
-                requiredVariable = engine.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-            else
-                throw new Exception("Variable markers '{}' missing. '" + variableName + "' could not be found.");
-
-            if (requiredVariable != null)
-                return requiredVariable.VariableValue;
-            else
-                return null;
-        }
 
         /// <summary>
         /// Converts a string to SecureString

@@ -60,7 +60,7 @@ namespace taskt.Commands
             //get sending instance
             var engine = (AutomationEngineInstance)sender;
 
-            var vListVariable = v_ListName.LookupVariable(engine);
+            var vListVariable = v_ListName.LookupComplexVariable(engine);
             var vListIndex = int.Parse(v_ListIndex.ConvertToUserVariable(engine));
 
             if (vListVariable != null)
@@ -72,7 +72,7 @@ namespace taskt.Commands
                 else if (vListVariable is List<DataTable>)
                 {
                     DataTable dataTable;
-                    var dataTableVariable = v_ListItem.Trim().LookupVariable(engine);
+                    var dataTableVariable = v_ListItem.Trim().LookupComplexVariable(engine);
                     if (dataTableVariable != null && dataTableVariable is DataTable)
                         dataTable = (DataTable)dataTableVariable;
                     else
@@ -82,7 +82,7 @@ namespace taskt.Commands
                 else if (vListVariable is List<MailItem>)
                 {
                     MailItem mailItem;
-                    var mailItemVariable = v_ListItem.Trim().LookupVariable(engine);
+                    var mailItemVariable = v_ListItem.Trim().LookupComplexVariable(engine);
                     if (mailItemVariable != null && mailItemVariable is MailItem)
                         mailItem = (MailItem)mailItemVariable;
                     else
@@ -92,7 +92,7 @@ namespace taskt.Commands
                 else if (vListVariable is List<IWebElement>)
                 {
                     IWebElement webElement;
-                    var webElementVariable = v_ListItem.Trim().LookupVariable(engine);
+                    var webElementVariable = v_ListItem.Trim().LookupComplexVariable(engine);
                     if (webElementVariable != null && webElementVariable is IWebElement)
                         webElement = (IWebElement)webElementVariable;
                     else

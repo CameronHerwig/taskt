@@ -81,7 +81,7 @@ namespace taskt.Commands
             var excelInstance = (Application)excelObject;
             var excelSheet = (Worksheet)excelInstance.ActiveSheet;
 
-            DataTable Dt = (DataTable)v_DataTableToSet.LookupVariable(engine);
+            DataTable Dt = (DataTable)v_DataTableToSet.LookupComplexVariable(engine);
             if (string.IsNullOrEmpty(vTargetAddress) || vTargetAddress.Contains(":")) 
                 throw new Exception("Cell Location is invalid or empty");
           
