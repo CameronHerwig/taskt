@@ -37,16 +37,7 @@ namespace taskt.Commands
         [SampleUsage("A1:B10 || A1: || {vRange} || {vStart}:{vEnd} || {vStart}:")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        public string v_Range { get; set; }
-
-        [XmlAttribute]
-        [PropertyDescription("Output Option")]
-        [PropertyUISelectionOption("DataTable")]
-        [PropertyUISelectionOption("Delimited String")]
-        [InputSpecification("Indicate whether this command should return a DataTable or Delimited String.")]
-        [SampleUsage("")]
-        [Remarks("")]
-        public string v_Output { get; set; }     
+        public string v_Range { get; set; }   
 
         [XmlAttribute]
         [PropertyDescription("Add Headers")]
@@ -73,7 +64,6 @@ namespace taskt.Commands
             CustomRendering = true;
             v_InstanceName = "DefaultExcel";
             v_AddHeaders = "Yes";
-            v_Output = "DataTable";
             v_Range = "A1:";
         }
 
@@ -104,71 +94,40 @@ namespace taskt.Commands
                 throw new Exception("Selected range is invalid");
             }              
 
-            if (v_Output == "DataTable")
+            int rw = cellRange.Rows.Count;
+            int cl = cellRange.Columns.Count;
+            int rCnt;
+            int cCnt;
+            string cName;
+            DataTable DT = new DataTable();
+
+            for (rCnt = 2; rCnt <= rw; rCnt++)
             {
-                List<object> lst = new List<object>();
-                int rw = cellRange.Rows.Count;
-                int cl = cellRange.Columns.Count;
-                int rCnt;
-                int cCnt;
-                string cName;
-                DataTable DT = new DataTable();
-
-                for (rCnt = 2; rCnt <= rw; rCnt++)
+                DataRow newRow = DT.NewRow();
+                for (cCnt = 1; cCnt <= cl; cCnt++)
                 {
-                    DataRow newRow = DT.NewRow();
-                    for (cCnt = 1; cCnt <= cl; cCnt++)
-                    {
-                        if (!DT.Columns.Contains(cCnt.ToString()))
-                            DT.Columns.Add(cCnt.ToString());
+                    if (!DT.Columns.Contains(cCnt.ToString()))
+                        DT.Columns.Add(cCnt.ToString());
 
-                        if (((cellRange.Cells[rCnt, cCnt] as Range).Value2) == null)
-                            newRow[cCnt.ToString()] = "";
-                        else
-                            newRow[cCnt.ToString()] = (cellRange.Cells[rCnt, cCnt] as Range).Value2.ToString();
-                    }
-                    DT.Rows.Add(newRow);
+                    if (((cellRange.Cells[rCnt, cCnt] as Range).Value2) == null)
+                        newRow[cCnt.ToString()] = "";
+                    else
+                        newRow[cCnt.ToString()] = (cellRange.Cells[rCnt, cCnt] as Range).Value2.ToString();
                 }
-
-                if (v_AddHeaders == "Yes")
-                {
-                    //Set column names
-                    for (cCnt = 1; cCnt <= cl; cCnt++)
-                    {
-                        cName = ((cellRange.Cells[1, cCnt] as Range).Value2).ToString();
-                        DT.Columns[cCnt - 1].ColumnName = cName;
-                    }
-                }
-
-                DT.StoreInUserVariable(engine, v_OutputUserVariableName);
+                DT.Rows.Add(newRow);
             }
 
-            if(v_Output == "Delimited String")
+            if (v_AddHeaders == "Yes")
             {
-                List<object> lst = new List<object>();
-                int rw = cellRange.Rows.Count;
-                int cl = cellRange.Columns.Count;
-                int rCnt;
-                int cCnt;
-                string str;
-
-                //Get Range from Excel sheet and add to list of strings.
-                for (rCnt = 1; rCnt <= rw; rCnt++)
+                //Set column names
+                for (cCnt = 1; cCnt <= cl; cCnt++)
                 {
-                    for (cCnt = 1; cCnt <= cl; cCnt++)
-                    {
-                        if (((cellRange.Cells[rCnt, cCnt] as Range).Value2) != null)
-                        {
-                            str = ((cellRange.Cells[rCnt, cCnt] as Range).Value2).ToString();
-                            lst.Add(str);
-                        }
-                    }
+                    cName = ((cellRange.Cells[1, cCnt] as Range).Value2).ToString();
+                    DT.Columns[cCnt - 1].ColumnName = cName;
                 }
-                string output = string.Join(",", lst);
-
-                //Store Strings of comma seperated values into user variable
-                output.StoreInUserVariable(engine, v_OutputUserVariableName);
             }
+
+            DT.StoreInUserVariable(engine, v_OutputUserVariableName);           
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -177,7 +136,6 @@ namespace taskt.Commands
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_InstanceName", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Range", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_Output", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_AddHeaders", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
@@ -186,7 +144,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + $" [Get Range '{v_Range}' - Store '{v_Output}' in '{v_OutputUserVariableName}' - Instance Name '{v_InstanceName}']";
+            return base.GetDisplayValue() + $" [Get Range '{v_Range}' - Store DataTable in '{v_OutputUserVariableName}' - Instance Name '{v_InstanceName}']";
         }
     }
 }
