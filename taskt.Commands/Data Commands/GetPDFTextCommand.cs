@@ -41,7 +41,7 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Text Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
         [SampleUsage("{vUserVariable}")]
         [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
