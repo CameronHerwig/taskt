@@ -196,7 +196,5 @@ namespace taskt.Core.Utilities.CommonUtilities
             string strValue = new NetworkCredential(string.Empty, secureString).Password;
             return strValue;
         }
-
-
     }
 }
