@@ -47,12 +47,11 @@ namespace taskt.Commands
         public string v_RequestTimeout { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Please select the variable to receive the response")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_userVariableName { get; set; }
+        [PropertyDescription("Output Response Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public RemoteAPICommand()
         {
@@ -73,7 +72,7 @@ namespace taskt.Commands
                 var timeout = v_RequestTimeout.ConvertToUserVariable(engine);
                 
                 var response = LocalTCPClient.SendAutomationTask(server, paramType, timeout);
-                response.StoreInUserVariable(engine, v_userVariableName);
+                response.StoreInUserVariable(engine, v_OutputUserVariableName);
             }
             catch (Exception ex)
             {
@@ -84,14 +83,11 @@ namespace taskt.Commands
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
+
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_BaseURL", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_ParameterType", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_RequestTimeout", this, editor));
-
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_userVariableName", this));
-            var VariableNameControl = CommandControls.CreateStandardComboboxFor("v_userVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_userVariableName", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
 

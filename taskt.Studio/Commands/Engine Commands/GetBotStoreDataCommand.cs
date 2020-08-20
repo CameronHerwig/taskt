@@ -53,11 +53,11 @@ namespace taskt.Commands
         public string v_DataOption { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Select the variable to receive the output")]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_applyToVariableName { get; set; }
+        [PropertyDescription("Output Result Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public GetBotStoreDataCommand()
         {
@@ -69,40 +69,28 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-
             var keyName = v_KeyName.ConvertToUserVariable(engine);
             var dataOption = v_DataOption.ConvertToUserVariable(engine);
 
             BotStoreRequestType requestType;
             if (dataOption == "Retrieve Entire Record")
-            {
                 requestType = BotStoreRequestType.BotStoreModel;
-            }
             else
-            {
                 requestType = BotStoreRequestType.BotStoreValue;
-            }
 
-            
             try
             {
                 var result = HttpServerClient.GetData(keyName, requestType);
 
                 if (requestType == BotStoreRequestType.BotStoreValue)
-                {
                     result = JsonConvert.DeserializeObject<string>(result);
-                }
 
-
-                result.StoreInUserVariable(engine, v_applyToVariableName);
+                result.StoreInUserVariable(engine, v_OutputUserVariableName);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
-
-
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -116,11 +104,7 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_DataOption", this, new Control[] { dropdown }, editor));
             RenderedControls.Add(dropdown);
 
-
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_applyToVariableName", this));
-            var VariableNameControl = CommandControls.CreateStandardComboboxFor("v_applyToVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_applyToVariableName", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }

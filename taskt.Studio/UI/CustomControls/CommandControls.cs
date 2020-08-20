@@ -909,11 +909,8 @@ namespace taskt.UI.CustomControls
                 cbo.Items.Clear();
 
                 foreach (var variable in ((frmCommandEditor)editor).ScriptVariables)
-                {
-                    cbo.Items.Add(variable.VariableName);
-                }
+                    cbo.Items.Add("{" + variable.VariableName + "}");
             }
-
             return cbo;
         }
 
@@ -927,11 +924,8 @@ namespace taskt.UI.CustomControls
                 cbo.Items.Clear();
 
                 foreach (var element in editor.ScriptElements)
-                {
-                    cbo.Items.Add(element.ElementName);
-                }
+                    cbo.Items.Add("<" + element.ElementName + ">");
             }
-
             return cbo;
         }
     }

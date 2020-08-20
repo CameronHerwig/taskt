@@ -36,20 +36,19 @@ namespace taskt.Commands
         [Remarks("")]
         public string v_StopwatchAction { get; set; }
 
-
-        [XmlAttribute]
-        [PropertyDescription("Apply Result To Variable")]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_userVariableName { get; set; }
-
         [XmlAttribute]
         [PropertyDescription("Optional - Specify String Format")]
         [InputSpecification("Specify if a specific string format is required.")]
         [SampleUsage("MM/dd/yy, hh:mm, etc.")]
         [Remarks("")]
         public string v_ToStringFormat { get; set; }
+
+        [XmlAttribute]
+        [PropertyDescription("Output Result Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         [XmlIgnore]
         [NonSerialized]
@@ -114,7 +113,7 @@ namespace taskt.Commands
                         elapsedTime = stopwatch.Elapsed.ToString(format);
                     }
 
-                    elapsedTime.StoreInUserVariable(engine, v_userVariableName);
+                    elapsedTime.StoreInUserVariable(engine, v_OutputUserVariableName);
 
                     break;
                 default:
@@ -137,13 +136,7 @@ namespace taskt.Commands
             RenderedControls.Add(StopWatchComboBoxLabel);
             RenderedControls.Add(StopWatchComboBox);
 
-            //create controls for user variable
-            MeasureControls = CommandControls.CreateDefaultDropdownGroupFor("v_userVariableName", this, editor);
-
-            //load variables for selection
-            var comboBox = (ComboBox)MeasureControls[1];
-            comboBox.AddVariableNames(editor);
-
+            MeasureControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
             MeasureControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_ToStringFormat", this, editor));
 
             foreach (var ctrl in MeasureControls)

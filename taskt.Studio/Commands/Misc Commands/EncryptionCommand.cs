@@ -50,12 +50,11 @@ namespace taskt.Commands
         public string v_PassPhrase { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Please select the variable to receive the encrypted data")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_applyToVariableName { get; set; }
+        [PropertyDescription("Output Encrypted Data Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public EncryptionCommand()
         {
@@ -93,7 +92,7 @@ namespace taskt.Commands
                 throw new NotImplementedException($"Encryption Service Requested '{v_EncryptionType.ConvertToUserVariable(engine)}' has not been implemented");
             }
 
-            resultData.StoreInUserVariable(engine, v_applyToVariableName);
+            resultData.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -104,11 +103,7 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_EncryptionType", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_InputValue", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_PassPhrase", this, editor));
-
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_applyToVariableName", this));
-            var VariableNameControl = CommandControls.CreateStandardComboboxFor("v_applyToVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_applyToVariableName", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
 
@@ -118,7 +113,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + $" [{v_EncryptionType} Data, apply to '{v_applyToVariableName}']";
+            return base.GetDisplayValue() + $" [{v_EncryptionType} Data, apply to '{v_OutputUserVariableName}']";
         }
     }
 }

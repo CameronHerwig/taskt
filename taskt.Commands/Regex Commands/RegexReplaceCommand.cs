@@ -47,11 +47,11 @@ namespace taskt.Commands
         public string v_ReplaceTextData { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Please select variable to get regex result")]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("")]
-        public string v_OutputVariableName { get; set; }
+        [PropertyDescription("Output Result Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public RegexReplaceCommand()
         {
@@ -69,12 +69,12 @@ namespace taskt.Commands
             string vReplaceData = v_ReplaceTextData.ConvertToUserVariable(engine);
             string resultData = Regex.Replace(vInputData, vRegex, vReplaceData);
 
-            resultData.StoreInUserVariable(engine, v_OutputVariableName);
+            resultData.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Replace All Matches with '" + v_ReplaceTextData + "', Get Result in: '" + v_OutputVariableName + "']";
+            return base.GetDisplayValue() + " [Replace All Matches with '" + v_ReplaceTextData + "', Get Result in: '" + v_OutputUserVariableName + "']";
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -84,10 +84,7 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_RegEx", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_InputTextData", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_ReplaceTextData", this, editor));
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_OutputVariableName", this));
-            var VariableNameControl = CommandControls.CreateStandardComboboxFor("v_OutputVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_OutputVariableName", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }

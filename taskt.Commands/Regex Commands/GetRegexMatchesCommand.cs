@@ -38,12 +38,13 @@ namespace taskt.Commands
         [SampleUsage("**Hello** or **vSomeVariable**")]
         [Remarks("")]
         public string v_InputData { get; set; }
+
         [XmlAttribute]
-        [PropertyDescription("Please select variable to get regex result")]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("")]
-        public string v_OutputVariableName { get; set; }
+        [PropertyDescription("Output Result Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public GetRegexMatchesCommand()
         {
@@ -61,7 +62,7 @@ namespace taskt.Commands
 
             var matches = (from match in Regex.Matches(vInputData, vRegex).Cast<Match>() select match.Groups[0].Value).ToList();
 
-            matches.StoreInUserVariable(engine, v_OutputVariableName);
+            matches.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
         public override List<Control> Render(IfrmCommandEditor editor)
         {
@@ -69,17 +70,14 @@ namespace taskt.Commands
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Regex", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_InputData", this, editor));
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_OutputVariableName", this));
-            var VariableNameControl = CommandControls.CreateStandardComboboxFor("v_OutputVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_OutputVariableName", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Apply Regex to '" + v_InputData + "', Get All Matches in: '" + v_OutputVariableName + "']";
+            return base.GetDisplayValue() + " [Apply Regex to '" + v_InputData + "', Get All Matches in: '" + v_OutputUserVariableName + "']";
         }
     }
 }

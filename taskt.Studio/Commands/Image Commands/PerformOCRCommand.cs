@@ -31,11 +31,11 @@ namespace taskt.Commands
         public string v_FilePath { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Apply OCR Result To Variable")]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_userVariableName { get; set; }
+        [PropertyDescription("Output OCR Result Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public PerformOCRCommand()
         {
@@ -60,25 +60,21 @@ namespace taskt.Commands
             }
 
             //apply to user variable
-            endResult.StoreInUserVariable(engine, v_userVariableName);
+            endResult.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_FilePath", this, editor));
-
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_userVariableName", this));
-            var VariableNameControl = CommandControls.CreateStandardComboboxFor("v_userVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_userVariableName", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return "OCR '" + v_FilePath + "' and apply result to '" + v_userVariableName + "'";
+            return "OCR '" + v_FilePath + "' and apply result to '" + v_OutputUserVariableName + "'";
         }
     }
 }
