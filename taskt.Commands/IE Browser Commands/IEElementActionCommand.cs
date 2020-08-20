@@ -26,10 +26,10 @@ namespace taskt.Commands
     public class IEElementActionCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Browser Instance Name")]
-        [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
+        [PropertyDescription("IE Browser Instance Name")]
+        [InputSpecification("Enter the unique instance that was specified in the **IE Create Browser** command.")]
         [SampleUsage("MyIEBrowserInstance")]
-        [Remarks("Failure to enter the correct instance name or failure to first call the **Create Browser** command will cause an error.")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **IE Create Browser** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         [XmlElement]

@@ -22,7 +22,7 @@ namespace taskt.Commands
     public class IECreateBrowserCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Browser Instance Name")]
+        [PropertyDescription("IE Browser Instance Name")]
         [InputSpecification("Enter a unique name that will represent the application instance.")]
         [SampleUsage("MyIEBrowserInstance")]
         [Remarks("This unique name allows you to refer to the instance by name in future commands, " +
