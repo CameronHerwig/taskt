@@ -63,14 +63,9 @@ namespace taskt.Commands
         {
             base.Render(editor);
 
-
-            //create auto close control set
-            var autocloseControlSet = CommandControls.CreateDefaultInputGroupFor("v_AutoCloseAfter", this, editor);
-            RenderedControls.AddRange(autocloseControlSet);
-
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_AutoCloseAfter", this, editor));
 
             return RenderedControls;
-
         }
 
         public override string GetDisplayValue()

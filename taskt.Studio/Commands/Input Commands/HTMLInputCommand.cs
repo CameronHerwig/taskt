@@ -62,7 +62,7 @@ namespace taskt.Commands
             if (engine.TasktEngineUI == null)
             {
                 engine.ReportProgress("HTML UserInput Supported With UI Only");
-                System.Windows.Forms.MessageBox.Show("HTML UserInput Supported With UI Only", "UserInput Command", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                MessageBox.Show("HTML UserInput Supported With UI Only", "UserInput Command", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 return;
             }
 

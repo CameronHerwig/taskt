@@ -38,9 +38,9 @@ namespace taskt.Commands
         {
             CommandName = "MessageBoxCommand";
             SelectionName = "Show Message";
-            CommandEnabled = true;
-            v_AutoCloseAfter = "0";
+            CommandEnabled = true;          
             CustomRendering = true;
+            v_AutoCloseAfter = "0";
         }
 
         public override void RunCommand(object sender)

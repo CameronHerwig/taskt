@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Security;
 using taskt.Core.Infrastructure;
 using taskt.Core.Script;
@@ -14,16 +15,16 @@ namespace taskt.Core.Utilities.CommonUtilities
         /// Replaces variable placeholders ({variable}) with variable text.
         /// </summary>
         /// <param name="sender">The script engine instance (frmScriptEngine) which contains session variables.</param>
-        public static string ConvertToUserVariable(this string str, IEngine engine)
+        public static string ConvertToUserVariable(this string userInputString, IEngine engine)
         {
-            if (string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(userInputString))
                 return string.Empty;
 
             if (engine == null)
-                return str;
+                return userInputString;
 
-            if (str.Length < 2)
-                return str;
+            if (userInputString.Length < 2)
+                return userInputString;
 
             var variableList = engine.VariableList;
             var systemVariables = Common.Common.GenerateSystemVariables();
@@ -35,14 +36,14 @@ namespace taskt.Core.Utilities.CommonUtilities
             var elementSearchList = engine.ElementList;
 
             //check if it's an element first
-            if (str.StartsWith("<") && str.EndsWith(">"))
+            if (userInputString.StartsWith("<") && userInputString.EndsWith(">"))
             {
-                string potentialElement = str.TrimStart('<').TrimEnd('>');
+                string potentialElement = userInputString.TrimStart('<').TrimEnd('>');
                 var matchingElement = elementSearchList.Where(elem => elem.ElementName == potentialElement).FirstOrDefault();
                 if (matchingElement != null)
                 {
-                    //if element found, store it in str and continue checking for variables
-                    str = matchingElement.ElementValue;
+                    //if element found, store it in userInputString and continue checking for variables
+                    userInputString = matchingElement.ElementValue;
                 }
             }
 
@@ -50,13 +51,13 @@ namespace taskt.Core.Utilities.CommonUtilities
             var startVariableMarker = "{";
             var endVariableMarker = "}";
 
-            if (!str.Contains(startVariableMarker) || !str.Contains(endVariableMarker))
+            if (!userInputString.Contains(startVariableMarker) || !userInputString.Contains(endVariableMarker))
             {
-                return str.CalculateVariables(engine);
+                return userInputString.CalculateVariables(engine);
             }
                 
             //split by custom markers
-            string[] potentialVariables = str.Split(new string[] { startVariableMarker, endVariableMarker }, StringSplitOptions.None);
+            string[] potentialVariables = userInputString.Split(new string[] { startVariableMarker, endVariableMarker }, StringSplitOptions.None);
 
             foreach (var potentialVariable in potentialVariables)
             {
@@ -80,13 +81,13 @@ namespace taskt.Core.Utilities.CommonUtilities
                 {
                     var searchVariable = startVariableMarker + potentialVariable + endVariableMarker;
 
-                    if (str.Contains(searchVariable))
+                    if (userInputString.Contains(searchVariable))
                     {
-                        str = str.Replace(searchVariable, (string)varCheck.VariableValue);
+                        userInputString = userInputString.Replace(searchVariable, (string)varCheck.VariableValue);
                     }
                 }                           
             }
-            return str.CalculateVariables(engine);
+            return userInputString.CalculateVariables(engine);
         }
 
         public static object LookupComplexVariable(this string variableName, IEngine engine)
@@ -100,7 +101,7 @@ namespace taskt.Core.Utilities.CommonUtilities
                 requiredVariable = engine.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
             }
             else
-                throw new Exception("Variable markers '{}' missing. '" + variableName + "' could not be found.");
+                throw new Exception("Variable markers '{}' missing. Variable '" + variableName + "' could not be found.");
 
             if (requiredVariable != null)
                 return requiredVariable.VariableValue;
@@ -161,7 +162,7 @@ namespace taskt.Core.Utilities.CommonUtilities
             if (variableName.StartsWith("{") && variableName.EndsWith("}"))
                 variableName = variableName.Replace("{", "").Replace("}", "");           
             else
-                throw new Exception("Variable markers '{}' missing. Output variable is invalid.");
+                throw new Exception("Variable markers '{}' missing. '" + variableName + "' is an invalid output variable name.");
 
             if (engine.VariableList.Any(f => f.VariableName == variableName))
             {
@@ -186,13 +187,13 @@ namespace taskt.Core.Utilities.CommonUtilities
         /// <param name="value">The string to be converted to SecureString</param>
         public static SecureString GetSecureString(this string value)
         {
-            SecureString secureString = new System.Net.NetworkCredential(string.Empty, value).SecurePassword;
+            SecureString secureString = new NetworkCredential(string.Empty, value).SecurePassword;
             return secureString;
         }
 
         public static string ConvertSecureStringToString(this SecureString secureString)
         {
-            string strValue = new System.Net.NetworkCredential(string.Empty, secureString).Password;
+            string strValue = new NetworkCredential(string.Empty, secureString).Password;
             return strValue;
         }
 

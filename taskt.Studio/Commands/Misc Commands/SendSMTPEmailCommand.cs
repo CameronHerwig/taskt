@@ -130,7 +130,7 @@ namespace taskt.Commands
 
                 var client = new SmtpClient(varSMTPHost, int.Parse(varSMTPPort))
                 {
-                    Credentials = new System.Net.NetworkCredential(varSMTPUserName, varSMTPPassword),
+                    Credentials = new NetworkCredential(varSMTPUserName, varSMTPPassword),
                     EnableSsl = true
                 };
 

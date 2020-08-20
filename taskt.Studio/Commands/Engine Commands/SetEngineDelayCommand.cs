@@ -13,13 +13,12 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Engine Commands")]
-    [Description("This command allows you to set delays between execution of commands in a running instance.")]
-    [UsesDescription("Use this command when you want to change the execution speed between commands.")]
-    [ImplementationDescription("")]
+    [Description("This command sets delays between the execution of commands in a running instance.")]
+
     public class SetEngineDelayCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Set Delay between commands (in milliseconds).")]
+        [PropertyDescription("Command Delay Time (Seconds)")]
         [InputSpecification("Enter a specific amount of time in milliseconds (ex. to specify 8 seconds, one would enter 8000) or specify a variable containing a value.")]
         [SampleUsage("**250** or **[vVariableSpeed]**")]
         [Remarks("")]

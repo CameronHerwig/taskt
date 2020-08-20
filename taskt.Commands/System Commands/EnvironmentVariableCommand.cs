@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -29,13 +30,11 @@ namespace taskt.Commands
         public string v_EnvVariableName { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Please select the variable to receive output")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_applyToVariableName { get; set; }
-
+        [PropertyDescription("Output Environment Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         [XmlIgnore]
         [NonSerialized]
@@ -60,7 +59,7 @@ namespace taskt.Commands
             var variables = Environment.GetEnvironmentVariables();
             var envValue = (string)variables[environmentVariable];
 
-            envValue.StoreInUserVariable(engine, v_applyToVariableName);
+            envValue.StoreInUserVariable(engine, v_OutputUserVariableName);
 
 
         }
@@ -72,17 +71,14 @@ namespace taskt.Commands
             VariableNameComboBox = (ComboBox)CommandControls.CreateDropdownFor("v_EnvVariableName", this);
 
 
-            foreach (System.Collections.DictionaryEntry env in Environment.GetEnvironmentVariables())
+            foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
             {
                 var envVariableKey = env.Key.ToString();
                 var envVariableValue = env.Value.ToString();
                 VariableNameComboBox.Items.Add(envVariableKey);
             }
 
-
             VariableNameComboBox.SelectedValueChanged += VariableNameComboBox_SelectedValueChanged;
-
-
 
             RenderedControls.Add(ActionNameComboBoxLabel);
             RenderedControls.Add(VariableNameComboBox);
@@ -94,7 +90,7 @@ namespace taskt.Commands
             RenderedControls.Add(VariableValue);
 
 
-            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_applyToVariableName", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
             
 
             return RenderedControls;
@@ -118,7 +114,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Apply '" + v_EnvVariableName + "' to Variable '" + v_applyToVariableName + "']";
+            return base.GetDisplayValue() + " [Apply '" + v_EnvVariableName + "' to Variable '" + v_OutputUserVariableName + "']";
         }
     }
 

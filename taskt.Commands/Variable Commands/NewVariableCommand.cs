@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -49,16 +48,19 @@ namespace taskt.Commands
             SelectionName = "New Variable";
             CommandEnabled = true;
             CustomRendering = true;
-            v_IfExists = "Do Nothing If Variable Exists";
+            v_IfExists = "Error If Variable Exists";
         }
 
         public override void RunCommand(object sender)
         {
             //get sending instance
             var engine = (AutomationEngineInstance)sender;
-
             var variable = v_VariableName.LookupComplexVariable(engine);
-            var input = v_Input.ConvertToUserVariable(engine);
+
+            var input = v_Input.LookupComplexVariable(engine);
+
+            if (input is string)
+                input = v_Input.ConvertToUserVariable(engine);
 
             if (variable == null)
             {

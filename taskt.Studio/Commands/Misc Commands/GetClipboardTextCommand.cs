@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
-using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
 using taskt.Core.User32;
 using taskt.Core.Utilities.CommonUtilities;

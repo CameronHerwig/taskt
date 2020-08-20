@@ -109,7 +109,7 @@ namespace taskt.Commands
                 {
                     var newMessage = new ShowMessageCommand();
                     newMessage.v_Message = "User Input question '" + rw["Label"] + "' is missing variables to apply results to! Results for the item will not be tracked.  To fix this, assign a variable in the designer!";
-                    newMessage.v_AutoCloseAfter = 10;
+                    newMessage.v_AutoCloseAfter = "10";
                     newMessage.RunCommand(sender);
                 }
             }
