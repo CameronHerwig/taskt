@@ -135,6 +135,7 @@ namespace taskt.Commands
             RenderedControls.Add(StopWatchComboBoxLabel);
             RenderedControls.Add(StopWatchComboBox);
 
+            MeasureControls = new List<Control>();
             MeasureControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
             MeasureControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_ToStringFormat", this, editor));
 
