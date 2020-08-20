@@ -333,7 +333,7 @@ namespace taskt.Engine
             //bypass comments
             if (parentCommand.CommandName == "AddCodeCommentCommand" || parentCommand.IsCommented)
             {
-                ReportProgress($"Skipping Line {parentCommand.LineNumber}: {(parentCommand.v_IsPrivate ? _privateCommandLog : parentCommand.GetDisplayValue().ConvertToUserVariable(this))}", parentCommand.LogLevel);
+                ReportProgress($"Skipping Line {parentCommand.LineNumber}: {(parentCommand.v_IsPrivate ? _privateCommandLog : parentCommand.GetDisplayValue().ConvertUserVariableToString(this))}", parentCommand.LogLevel);
                 return;
             }
 
@@ -395,7 +395,7 @@ namespace taskt.Engine
                     if (parentCommand.CommandName == "LogMessageCommand")
                     {
                         string displayValue = parentCommand.GetDisplayValue().Replace("Log Message ['", "").Replace("']", "");
-                        string logMessage = displayValue.Split('-').Last().ConvertToUserVariable(this);
+                        string logMessage = displayValue.Split('-').Last().ConvertUserVariableToString(this);
                         displayValue = displayValue.Replace(displayValue.Split('-').Last(), logMessage);
                         ReportProgress($"Logging Line {parentCommand.LineNumber}: {(parentCommand.v_IsPrivate ? _privateCommandLog : displayValue)}",
                             parentCommand.LogLevel);

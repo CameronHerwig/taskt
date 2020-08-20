@@ -75,9 +75,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MailItem vMailItem = (MailItem)v_MailItem.LookupComplexVariable(engine);
-            var vBody = v_Body.ConvertToUserVariable(engine);
-            var vAttachment = v_Attachments.ConvertToUserVariable(engine);
+            MailItem vMailItem = (MailItem)v_MailItem.ConvertUserVariableToObject(engine);
+            var vBody = v_Body.ConvertUserVariableToString(engine);
+            var vAttachment = v_Attachments.ConvertUserVariableToString(engine);
            
             if (v_OperationType == "Reply")
             {

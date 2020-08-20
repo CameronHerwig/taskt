@@ -73,7 +73,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;   
             System.Diagnostics.Stopwatch stopwatch;
 
-            var action = v_StopwatchAction.ConvertToUserVariable(engine);
+            var action = v_StopwatchAction.ConvertUserVariableToString(engine);
 
             switch (action)
             {
@@ -108,7 +108,7 @@ namespace taskt.Commands
                     }
                     else
                     {
-                        var format = v_ToStringFormat.ConvertToUserVariable(engine);
+                        var format = v_ToStringFormat.ConvertUserVariableToString(engine);
                         elapsedTime = stopwatch.Elapsed.ToString(format);
                     }
 

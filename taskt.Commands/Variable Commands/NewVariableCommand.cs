@@ -55,12 +55,12 @@ namespace taskt.Commands
         {
             //get sending instance
             var engine = (AutomationEngineInstance)sender;
-            var variable = v_VariableName.LookupComplexVariable(engine);
+            var variable = v_VariableName.ConvertUserVariableToObject(engine);
 
-            var input = v_Input.LookupComplexVariable(engine);
+            var input = v_Input.ConvertUserVariableToObject(engine);
 
             if (input is string)
-                input = v_Input.ConvertToUserVariable(engine);
+                input = v_Input.ConvertUserVariableToString(engine);
 
             if (variable == null)
             {

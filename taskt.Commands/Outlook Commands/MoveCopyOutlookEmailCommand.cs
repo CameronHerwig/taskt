@@ -68,8 +68,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MailItem vMailItem = (MailItem)v_MailItem.LookupComplexVariable(engine);
-            var vDestinationFolder = v_DestinationFolder.ConvertToUserVariable(engine);
+            MailItem vMailItem = (MailItem)v_MailItem.ConvertUserVariableToObject(engine);
+            var vDestinationFolder = v_DestinationFolder.ConvertUserVariableToString(engine);
             
             Application outlookApp = new Application();
             AddressEntry currentUser = outlookApp.Session.CurrentUser.AddressEntry;

@@ -67,12 +67,12 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variablized string
-            var variableMath = v_MathExpression.ConvertToUserVariable(engine);
+            var variableMath = v_MathExpression.ConvertUserVariableToString(engine);
 
             try
             {
-                var decimalSeparator = v_DecimalSeparator.ConvertToUserVariable(engine);
-                var thousandSeparator = v_ThousandSeparator.ConvertToUserVariable(engine);
+                var decimalSeparator = v_DecimalSeparator.ConvertUserVariableToString(engine);
+                var thousandSeparator = v_ThousandSeparator.ConvertUserVariableToString(engine);
 
                 //remove thousandths markers
                 variableMath = variableMath.Replace(thousandSeparator, "");

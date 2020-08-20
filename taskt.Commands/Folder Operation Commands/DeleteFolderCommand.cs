@@ -41,7 +41,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //apply variable logic
-            var sourceFolder = v_SourceFolderPath.ConvertToUserVariable(engine);
+            var sourceFolder = v_SourceFolderPath.ConvertUserVariableToString(engine);
 
             //delete folder
             Directory.Delete(sourceFolder, true);

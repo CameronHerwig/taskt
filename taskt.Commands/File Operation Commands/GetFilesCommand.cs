@@ -48,7 +48,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //apply variable logic
-            var sourceFolder = v_SourceFolderPath.ConvertToUserVariable(engine);
+            var sourceFolder = v_SourceFolderPath.ConvertUserVariableToString(engine);
 
             //Get File Paths from the folder
             var filesList = Directory.GetFiles(sourceFolder).ToList();

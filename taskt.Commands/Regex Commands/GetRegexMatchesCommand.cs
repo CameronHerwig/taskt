@@ -57,8 +57,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInputData = v_InputData.ConvertToUserVariable(engine);
-            string vRegex = v_Regex.ConvertToUserVariable(engine);
+            var vInputData = v_InputData.ConvertUserVariableToString(engine);
+            string vRegex = v_Regex.ConvertUserVariableToString(engine);
 
             var matches = (from match in Regex.Matches(vInputData, vRegex).Cast<Match>() select match.Groups[0].Value).ToList();
 

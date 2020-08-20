@@ -57,15 +57,15 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dictionaryVariable = v_DictionaryName.LookupComplexVariable(engine);
+            var dictionaryVariable = v_DictionaryName.ConvertUserVariableToObject(engine);
 
             Dictionary<string, string> outputDictionary = (Dictionary<string, string>)dictionaryVariable;
 
             foreach (DataRow rwColumnName in v_ColumnNameDataTable.Rows)
             {
                 outputDictionary.Add(
-                    rwColumnName.Field<string>("Keys").ConvertToUserVariable(engine), 
-                    rwColumnName.Field<string>("Values").ConvertToUserVariable(engine));
+                    rwColumnName.Field<string>("Keys").ConvertUserVariableToString(engine), 
+                    rwColumnName.Field<string>("Values").ConvertUserVariableToString(engine));
             }
             outputDictionary.StoreInUserVariable(engine, v_DictionaryName);
         }

@@ -61,8 +61,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vRow = v_RowToSet.LookupComplexVariable(engine);
-            var vTargetAddress = v_CellLocation.ConvertToUserVariable(engine);
+            var vRow = v_RowToSet.ConvertUserVariableToObject(engine);
+            var vTargetAddress = v_CellLocation.ConvertUserVariableToString(engine);
             var excelObject = engine.GetAppInstance(v_InstanceName);
             var excelInstance = (Application)excelObject;
             var excelSheet = (Worksheet)excelInstance.ActiveSheet;
@@ -83,7 +83,7 @@ namespace taskt.Commands
 
             //Write row
             DataRow row;
-            var loopIndexVariable = "Loop.CurrentIndex".ConvertToUserVariable(engine);
+            var loopIndexVariable = "Loop.CurrentIndex".ConvertUserVariableToString(engine);
             //check in case of looping through datatable using BeginListLoopCommand
             if (vRow != null && vRow is DataTable && loopIndexVariable != null)
             {
@@ -118,7 +118,7 @@ namespace taskt.Commands
             }
             else
             {
-                string vRowString = v_RowToSet.ConvertToUserVariable(engine);
+                string vRowString = v_RowToSet.ConvertUserVariableToString(engine);
                 var splittext = vRowString.Split(',');
 
                 string cellValue;

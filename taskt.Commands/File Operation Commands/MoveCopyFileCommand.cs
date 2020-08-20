@@ -78,8 +78,8 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //apply variable logic
-            var sourceFile = v_SourceFilePath.ConvertToUserVariable(engine);
-            var destinationFolder = v_DestinationDirectory.ConvertToUserVariable(engine);
+            var sourceFile = v_SourceFilePath.ConvertUserVariableToString(engine);
+            var destinationFolder = v_DestinationDirectory.ConvertUserVariableToString(engine);
 
             if ((v_CreateDirectory == "Yes") && (!Directory.Exists(destinationFolder)))
             {

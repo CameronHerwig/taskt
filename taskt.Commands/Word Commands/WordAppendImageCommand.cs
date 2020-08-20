@@ -50,7 +50,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vImagePath = v_ImagePath.ConvertToUserVariable(engine);
+            var vImagePath = v_ImagePath.ConvertUserVariableToString(engine);
             var wordObject = engine.GetAppInstance(v_InstanceName);
 
             Application wordInstance = (Application)wordObject;

@@ -47,7 +47,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get input value
-            var stringRequiringLength = v_InputValue.ConvertToUserVariable(engine);
+            var stringRequiringLength = v_InputValue.ConvertUserVariableToString(engine);
 
             //count number of words
             var stringLength = stringRequiringLength.Length;

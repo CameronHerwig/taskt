@@ -58,8 +58,8 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //convert variables
-            var filePath = v_FilePath.ConvertToUserVariable(engine);
-            var outputText = v_TextToWrite.ConvertToUserVariable(engine).Replace("[crLF]", Environment.NewLine);
+            var filePath = v_FilePath.ConvertUserVariableToString(engine);
+            var outputText = v_TextToWrite.ConvertUserVariableToString(engine).Replace("[crLF]", Environment.NewLine);
 
             //append or overwrite as necessary
             if (v_Overwrite == "Append")

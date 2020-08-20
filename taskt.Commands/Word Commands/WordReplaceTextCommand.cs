@@ -55,8 +55,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vFindText = v_FindText.ConvertToUserVariable(engine);
-            var vReplaceWithText = v_ReplaceWithText.ConvertToUserVariable(engine);
+            var vFindText = v_FindText.ConvertUserVariableToString(engine);
+            var vReplaceWithText = v_ReplaceWithText.ConvertUserVariableToString(engine);
 
             //get word app object
             var wordObject = engine.GetAppInstance(v_InstanceName);

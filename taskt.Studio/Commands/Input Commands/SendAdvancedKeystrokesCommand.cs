@@ -137,7 +137,7 @@ namespace taskt.Commands
             }
 
             //return key to up position if requested
-            if (v_KeyUpDefault.ConvertToUserVariable(engine) == "Yes")
+            if (v_KeyUpDefault.ConvertUserVariableToString(engine) == "Yes")
             {
                 foreach (var key in keysDown)
                 {

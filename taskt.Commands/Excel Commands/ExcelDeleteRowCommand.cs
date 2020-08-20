@@ -61,7 +61,7 @@ namespace taskt.Commands
             var excelObject = engine.GetAppInstance(v_InstanceName);
             var excelInstance = (Application)excelObject;
             Worksheet workSheet = excelInstance.ActiveSheet;
-            string vRowToDelete = v_RowNumber.ConvertToUserVariable(engine);
+            string vRowToDelete = v_RowNumber.ConvertUserVariableToString(engine);
 
             var cells = workSheet.Range["A" + vRowToDelete, Type.Missing];
             var entireRow = cells.EntireRow;

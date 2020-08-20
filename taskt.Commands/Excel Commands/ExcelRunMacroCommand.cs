@@ -47,7 +47,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vMacro = v_MacroName.ConvertToUserVariable(engine);
+            var vMacro = v_MacroName.ConvertUserVariableToString(engine);
             var excelObject = engine.GetAppInstance(v_InstanceName);         
             var excelInstance = (Application)excelObject;
             excelInstance.Run(vMacro);           

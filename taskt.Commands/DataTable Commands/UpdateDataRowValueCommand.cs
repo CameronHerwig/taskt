@@ -65,12 +65,12 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataRowValue = v_DataRowValue.ConvertToUserVariable(engine);
+            var dataRowValue = v_DataRowValue.ConvertUserVariableToString(engine);
 
-            var dataRowVariable = v_DataRow.LookupComplexVariable(engine);
+            var dataRowVariable = v_DataRow.ConvertUserVariableToObject(engine);
 
             DataRow dataRow;
-            var loopIndexVariable = "Loop.CurrentIndex".ConvertToUserVariable(engine);
+            var loopIndexVariable = "Loop.CurrentIndex".ConvertUserVariableToString(engine);
             //check in case of looping through datatable using BeginListLoopCommand
             if (dataRowVariable is DataTable && loopIndexVariable != null)
             {
@@ -80,7 +80,7 @@ namespace taskt.Commands
 
             else dataRow = (DataRow)dataRowVariable;
 
-            var valueIndex = v_DataValueIndex.ConvertToUserVariable(engine);
+            var valueIndex = v_DataValueIndex.ConvertUserVariableToString(engine);
 
             if (v_Option == "Column Index")
             {

@@ -53,11 +53,11 @@ namespace taskt.Commands
         {
             //Retrieve Dictionary by name
             var engine = (AutomationEngineInstance)sender;
-            var vKey = v_Key.ConvertToUserVariable(engine);
+            var vKey = v_Key.ConvertUserVariableToString(engine);
 
             //Declare local dictionary and assign output
-            Dictionary<string,string> dict = (Dictionary<string,string>)v_InputDictionary.LookupComplexVariable(engine);
-            var dictValue = dict[vKey].ConvertToUserVariable(engine);
+            Dictionary<string,string> dict = (Dictionary<string,string>)v_InputDictionary.ConvertUserVariableToObject(engine);
+            var dictValue = dict[vKey].ConvertUserVariableToString(engine);
 
             dictValue.StoreInUserVariable(engine, v_OutputUserVariableName);
         }

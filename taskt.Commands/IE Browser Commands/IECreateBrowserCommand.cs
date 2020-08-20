@@ -58,7 +58,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var webURL = v_URL.ConvertToUserVariable(engine);
+            var webURL = v_URL.ConvertUserVariableToString(engine);
 
             InternetExplorer newBrowserSession = new InternetExplorer();
             try

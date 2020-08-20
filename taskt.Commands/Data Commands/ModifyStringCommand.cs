@@ -57,7 +57,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            var stringValue = v_InputText.ConvertToUserVariable(engine);
+            var stringValue = v_InputText.ConvertUserVariableToString(engine);
 
             switch (v_TextOperation)
             {

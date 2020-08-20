@@ -80,7 +80,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var browserObject = engine.GetAppInstance(v_InstanceName);
             var seleniumInstance = (IWebDriver)browserObject;
-            var matchParam = v_MatchParameter.ConvertToUserVariable(engine);
+            var matchParam = v_MatchParameter.ConvertUserVariableToString(engine);
 
             var handles = seleniumInstance.WindowHandles;
             var currentHandle = seleniumInstance.CurrentWindowHandle;

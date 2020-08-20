@@ -56,7 +56,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var excelObject = engine.GetAppInstance(v_InstanceName);
-            var vTargetAddress = v_CellLocation.ConvertToUserVariable(engine);
+            var vTargetAddress = v_CellLocation.ConvertUserVariableToString(engine);
             var excelInstance = (Application)excelObject;
             Worksheet excelSheet = excelInstance.ActiveSheet;
 

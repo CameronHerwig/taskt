@@ -95,13 +95,13 @@ namespace taskt.Commands
             dynamic clonedCommand = Common.Clone(this);
 
             //translate variable
-            clonedCommand.v_InputHeader = clonedCommand.v_InputHeader.ConvertToUserVariable(sender);
-            clonedCommand.v_InputDirections = clonedCommand.v_InputDirections.ConvertToUserVariable(sender);
+            clonedCommand.v_InputHeader = ((string)clonedCommand.v_InputHeader).ConvertUserVariableToString(engine);
+            clonedCommand.v_InputDirections = ((string)clonedCommand.v_InputDirections).ConvertUserVariableToString(engine);
 
             //translate variables for each label
             foreach (DataRow rw in clonedCommand.v_UserInputConfig.Rows)
             {
-                rw["DefaultValue"] = rw["DefaultValue"].ToString().ConvertToUserVariable(engine);
+                rw["DefaultValue"] = rw["DefaultValue"].ToString().ConvertUserVariableToString(engine);
 
                 var targetVariable = rw["ApplyToVariable"] as string;
 

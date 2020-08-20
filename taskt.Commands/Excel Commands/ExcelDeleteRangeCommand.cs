@@ -62,7 +62,7 @@ namespace taskt.Commands
             var excelInstance = (Application)excelObject;
             Worksheet excelSheet = excelInstance.ActiveSheet;
 
-            string vRange = v_Range.ConvertToUserVariable(engine);
+            string vRange = v_Range.ConvertUserVariableToString(engine);
             var splitRange = vRange.Split(':');
             Range cellRange;
             //Delete a range of cells

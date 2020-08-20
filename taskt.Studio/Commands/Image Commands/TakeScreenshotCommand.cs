@@ -57,8 +57,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            string vFolderPath = v_FolderPath.ConvertToUserVariable(engine);
-            string vFileName = v_FileName.ConvertToUserVariable(engine);
+            string vFolderPath = v_FolderPath.ConvertUserVariableToString(engine);
+            string vFileName = v_FileName.ConvertUserVariableToString(engine);
             string vFilePath = Path.Combine(vFolderPath, vFileName);
 
             Bitmap image;

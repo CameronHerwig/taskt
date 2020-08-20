@@ -53,12 +53,12 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var stringVariable = v_InputText.ConvertToUserVariable(engine);
+            var stringVariable = v_InputText.ConvertUserVariableToString(engine);
             var splitCharacter = v_SplitCharacter;
 
             if(v_SplitCharacter != "[crLF]" && v_SplitCharacter != "[chars]")
             {
-                splitCharacter = v_SplitCharacter.ConvertToUserVariable(engine);
+                splitCharacter = v_SplitCharacter.ConvertUserVariableToString(engine);
             }
             List<string> splitString;
             if (splitCharacter == "[crLF]")

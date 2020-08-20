@@ -70,8 +70,8 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             // Get Variable Objects
-            var v_SourceDTVariable = v_SourceDataTable.LookupComplexVariable(engine);
-            var v_DestinationDTVariable = v_DestinationDataTable.LookupComplexVariable(engine);
+            var v_SourceDTVariable = v_SourceDataTable.ConvertUserVariableToObject(engine);
+            var v_DestinationDTVariable = v_DestinationDataTable.ConvertUserVariableToObject(engine);
 
             // (Null Check)
             if (v_SourceDTVariable is null)

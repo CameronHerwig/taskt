@@ -47,7 +47,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variablized input
-            var variableInput = v_JsonArrayName.ConvertToUserVariable(engine);
+            var variableInput = v_JsonArrayName.ConvertUserVariableToString(engine);
 
             //create objects
             JArray arr;

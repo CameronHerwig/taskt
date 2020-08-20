@@ -51,7 +51,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var lengthToWait = v_LengthToWait.ConvertToUserVariable(engine);
+            var lengthToWait = v_LengthToWait.ConvertUserVariableToString(engine);
             var waitUntil = int.Parse(lengthToWait);
             var endDateTime = DateTime.Now.AddSeconds(waitUntil);
 
@@ -59,7 +59,7 @@ namespace taskt.Commands
 
             while (DateTime.Now < endDateTime)
             {
-                string windowName = v_WindowName.ConvertToUserVariable(engine);
+                string windowName = v_WindowName.ConvertUserVariableToString(engine);
                 hWnd = User32Functions.FindWindow(windowName);
 
                 if (hWnd != IntPtr.Zero) //If found

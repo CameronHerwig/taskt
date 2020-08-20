@@ -39,7 +39,7 @@ namespace taskt.Commands
         {
             //get engine
             var engine = (AutomationEngineInstance)sender;
-            var vSwitchValue = v_SwitchValue.ConvertToUserVariable(engine);
+            var vSwitchValue = v_SwitchValue.ConvertUserVariableToString(engine);
 
             //get indexes of commands
             var caseIndices = FindAllCaseIndices(parentCommand.AdditionalScriptCommands);

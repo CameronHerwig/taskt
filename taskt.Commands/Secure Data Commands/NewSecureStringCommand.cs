@@ -45,7 +45,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            SecureString secureStringValue = v_Input.ConvertToUserVariable(engine).GetSecureString();
+            SecureString secureStringValue = v_Input.ConvertUserVariableToString(engine).GetSecureString();
 
             secureStringValue.StoreInUserVariable(engine, v_OutputUserVariableName);           
         }

@@ -15,7 +15,7 @@ namespace taskt.Core.Utilities.CommonUtilities
         /// Replaces variable placeholders ({variable}) with variable text.
         /// </summary>
         /// <param name="sender">The script engine instance (frmScriptEngine) which contains session variables.</param>
-        public static string ConvertToUserVariable(this string userInputString, IEngine engine)
+        public static string ConvertUserVariableToString(this string userInputString, IEngine engine)
         {
             if (string.IsNullOrEmpty(userInputString))
                 return string.Empty;
@@ -90,7 +90,7 @@ namespace taskt.Core.Utilities.CommonUtilities
             return userInputString.CalculateVariables(engine);
         }
 
-        public static object LookupComplexVariable(this string variableName, IEngine engine)
+        public static object ConvertUserVariableToObject(this string variableName, IEngine engine)
         {
             ScriptVariable requiredVariable;
 

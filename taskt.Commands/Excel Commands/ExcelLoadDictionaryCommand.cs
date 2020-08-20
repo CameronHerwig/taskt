@@ -77,10 +77,10 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vInstance = DateTime.Now.ToString();
-            var vFilePath = v_FilePath.ConvertToUserVariable(engine);
-            var vSheetName = v_SheetName.ConvertToUserVariable(engine);
-            var vKeyColumn = v_KeyColumn.ConvertToUserVariable(engine);
-            var vValueColumn = v_ValueColumn.ConvertToUserVariable(engine);
+            var vFilePath = v_FilePath.ConvertUserVariableToString(engine);
+            var vSheetName = v_SheetName.ConvertUserVariableToString(engine);
+            var vKeyColumn = v_KeyColumn.ConvertUserVariableToString(engine);
+            var vValueColumn = v_ValueColumn.ConvertUserVariableToString(engine);
 
             var newExcelSession = new Application{ Visible = false };
             engine.AddAppInstance(vInstance, newExcelSession);

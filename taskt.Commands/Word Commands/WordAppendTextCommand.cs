@@ -107,7 +107,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vText = v_TextToSet.ConvertToUserVariable(engine);
+            var vText = v_TextToSet.ConvertUserVariableToString(engine);
             var wordObject = engine.GetAppInstance(v_InstanceName);
 
             Application wordInstance = (Application)wordObject;

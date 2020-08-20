@@ -56,8 +56,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var keyName = v_KeyName.ConvertToUserVariable(engine);
-            var dataOption = v_DataOption.ConvertToUserVariable(engine);
+            var keyName = v_KeyName.ConvertUserVariableToString(engine);
+            var dataOption = v_DataOption.ConvertUserVariableToString(engine);
 
             BotStoreRequestType requestType;
             if (dataOption == "Retrieve Entire Record")

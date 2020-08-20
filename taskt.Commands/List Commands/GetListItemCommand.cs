@@ -58,10 +58,10 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var itemIndex = v_ItemIndex.ConvertToUserVariable(engine);
+            var itemIndex = v_ItemIndex.ConvertUserVariableToString(engine);
             int index = int.Parse(itemIndex);
             //get variable by regular name
-            var listVariable = v_ListName.LookupComplexVariable(engine);
+            var listVariable = v_ListName.ConvertUserVariableToObject(engine);
 
             //if still null then throw exception
             if (listVariable == null)

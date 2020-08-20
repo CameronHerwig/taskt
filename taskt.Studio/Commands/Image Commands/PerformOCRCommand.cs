@@ -48,7 +48,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vFilePath = v_FilePath.ConvertToUserVariable(engine);
+            var vFilePath = v_FilePath.ConvertUserVariableToString(engine);
 
             OneNoteOCR ocrEngine = new OneNoteOCR();
             OCRText[] ocrTextArray = ocrEngine.OcrTexts(vFilePath).ToArray();

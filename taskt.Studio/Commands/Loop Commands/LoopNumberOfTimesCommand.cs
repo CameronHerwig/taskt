@@ -49,17 +49,17 @@ namespace taskt.Commands
             LoopNumberOfTimesCommand loopCommand = (LoopNumberOfTimesCommand)parentCommand.ScriptCommand;
             var engine = (AutomationEngineInstance)sender;
 
-            var currentIndex = "Loop.CurrentIndex".ConvertToUserVariable(engine);
+            var currentIndex = "Loop.CurrentIndex".ConvertUserVariableToString(engine);
 
             if (currentIndex == null)
                 "0".StoreInUserVariable(engine, "Loop.CurrentIndex");
 
             int loopTimes;
 
-            var loopParameter = loopCommand.v_LoopParameter.ConvertToUserVariable(engine);
+            var loopParameter = loopCommand.v_LoopParameter.ConvertUserVariableToString(engine);
             loopTimes = int.Parse(loopParameter);
 
-            int.TryParse(v_LoopStart.ConvertToUserVariable(engine), out int startIndex);
+            int.TryParse(v_LoopStart.ConvertUserVariableToString(engine), out int startIndex);
 
             for (int i = startIndex; i < loopTimes; i++)
             {

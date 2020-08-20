@@ -57,15 +57,15 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            string windowName = v_WindowName.ConvertToUserVariable(engine);
+            string windowName = v_WindowName.ConvertUserVariableToString(engine);
 
             var targetWindows = User32Functions.FindTargetWindows(windowName);
 
             //loop each window and set the window state
             foreach (var targetedWindow in targetWindows)
             {
-                var variableXSize = v_XWindowSize.ConvertToUserVariable(engine);
-                var variableYSize = v_YWindowSize.ConvertToUserVariable(engine);
+                var variableXSize = v_XWindowSize.ConvertUserVariableToString(engine);
+                var variableYSize = v_YWindowSize.ConvertUserVariableToString(engine);
 
                 if (!int.TryParse(variableXSize, out int xPos))
                 {

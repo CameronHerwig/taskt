@@ -63,7 +63,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var customCode = v_Code.ConvertToUserVariable(engine);
+            var customCode = v_Code.ConvertUserVariableToString(engine);
 
             if (customCode.Contains("static void Main"))
             {
@@ -156,7 +156,7 @@ namespace taskt.Commands
             }
             else
             {
-                var arguments = v_Args.ConvertToUserVariable(engine);
+                var arguments = v_Args.ConvertUserVariableToString(engine);
 
                 //run code, taskt will wait for the app to exit before resuming
                 using (Process scriptProc = new Process())

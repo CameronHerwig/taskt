@@ -46,8 +46,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (Engine.AutomationEngineInstance)sender;
-            string variableMessage = v_Message.ConvertToUserVariable(engine);
-            int closeAfter = int.Parse(v_AutoCloseAfter.ConvertToUserVariable(engine));
+            string variableMessage = v_Message.ConvertUserVariableToString(engine);
+            int closeAfter = int.Parse(v_AutoCloseAfter.ConvertUserVariableToString(engine));
             variableMessage = variableMessage.Replace("\\n", Environment.NewLine);
 
             if (engine.TasktEngineUI == null)

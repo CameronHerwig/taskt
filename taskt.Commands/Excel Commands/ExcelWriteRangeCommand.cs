@@ -70,13 +70,13 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vTargetAddress = v_CellLocation.ConvertToUserVariable(engine);
+            var vTargetAddress = v_CellLocation.ConvertUserVariableToString(engine);
             var excelObject = engine.GetAppInstance(v_InstanceName);
 
             var excelInstance = (Application)excelObject;
             var excelSheet = (Worksheet)excelInstance.ActiveSheet;
 
-            DataTable Dt = (DataTable)v_DataTableToSet.LookupComplexVariable(engine);
+            DataTable Dt = (DataTable)v_DataTableToSet.ConvertUserVariableToObject(engine);
             if (string.IsNullOrEmpty(vTargetAddress) || vTargetAddress.Contains(":")) 
                 throw new Exception("Cell Location is invalid or empty");
           

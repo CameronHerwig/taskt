@@ -98,7 +98,7 @@ namespace taskt.Commands
 
                 if (!string.IsNullOrEmpty(v_SeleniumOptions))
                 {
-                    var convertedOptions = v_SeleniumOptions.ConvertToUserVariable(engine);
+                    var convertedOptions = v_SeleniumOptions.ConvertUserVariableToString(engine);
                     options.AddArguments(convertedOptions);
                 }
 

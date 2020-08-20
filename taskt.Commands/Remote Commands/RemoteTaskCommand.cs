@@ -87,11 +87,11 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             try
             {
-                var server = v_BaseURL.ConvertToUserVariable(engine);
-                var paramType = v_ParameterType.ConvertToUserVariable(engine);
-                var parameter = v_Parameter.ConvertToUserVariable(engine);
-                var awaitPreference = v_ExecuteAwait.ConvertToUserVariable(engine);
-                var timeout = v_RequestTimeout.ConvertToUserVariable(engine);
+                var server = v_BaseURL.ConvertUserVariableToString(engine);
+                var paramType = v_ParameterType.ConvertUserVariableToString(engine);
+                var parameter = v_Parameter.ConvertUserVariableToString(engine);
+                var awaitPreference = v_ExecuteAwait.ConvertUserVariableToString(engine);
+                var timeout = v_RequestTimeout.ConvertUserVariableToString(engine);
 
                 var response = LocalTCPClient.SendAutomationTask(server, paramType, timeout, parameter, awaitPreference);
                 response.StoreInUserVariable(engine, v_OutputUserVariableName);

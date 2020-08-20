@@ -119,7 +119,7 @@ namespace taskt.Commands
             double accuracy;
             try
             {
-                accuracy = double.Parse(v_MatchAccuracy.ConvertToUserVariable(engine));
+                accuracy = double.Parse(v_MatchAccuracy.ConvertUserVariableToString(engine));
                 if (accuracy > 1 || accuracy < 0)
                     throw new ArgumentOutOfRangeException("Accuracy value is out of range (0-1)");
             }
@@ -141,7 +141,7 @@ namespace taskt.Commands
                                    where rw.Field<string>("Parameter Name") == "Timeout (Seconds)"
                                    select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                timeoutText = timeoutText.ConvertToUserVariable(engine);
+                timeoutText = timeoutText.ConvertUserVariableToString(engine);
                 int timeOut = Convert.ToInt32(timeoutText);
                 var timeToEnd = DateTime.Now.AddSeconds(timeOut);
 
@@ -187,10 +187,10 @@ namespace taskt.Commands
                                                 select rw.Field<string>("Parameter Value")).FirstOrDefault();
                         xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                         Point clickPositionPoint = GetClickPosition(clickPosition, element); 
 
@@ -208,16 +208,16 @@ namespace taskt.Commands
                     case "Set Text":
                         string textToSet = (from rw in v_ImageActionParameterTable.AsEnumerable()
                                             where rw.Field<string>("Parameter Name") == "Text To Set"
-                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine);
                         clickPosition = (from rw in v_ImageActionParameterTable.AsEnumerable()
                                          where rw.Field<string>("Parameter Name") == "Click Position"
                                          select rw.Field<string>("Parameter Value")).FirstOrDefault();
                         xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         string encryptedData = (from rw in v_ImageActionParameterTable.AsEnumerable()
                                                 where rw.Field<string>("Parameter Name") == "Encrypted Text"
                                                 select rw.Field<string>("Parameter Value")).FirstOrDefault();
@@ -250,12 +250,12 @@ namespace taskt.Commands
                                          select rw.Field<string>("Parameter Value")).FirstOrDefault();
                         xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
-                        var secureStrVariable = secureString.LookupComplexVariable(engine);
+                        var secureStrVariable = secureString.ConvertUserVariableToObject(engine);
 
                         if (secureStrVariable is SecureString)
                             secureString = ((SecureString)secureStrVariable).ConvertSecureStringToString();

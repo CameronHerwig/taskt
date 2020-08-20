@@ -101,14 +101,14 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            string vSMTPHost = v_SMTPHost.ConvertToUserVariable(engine);
-            string vSMTPPort = v_SMTPPort.ConvertToUserVariable(engine);
-            string vSMTPUserName = v_SMTPUserName.ConvertToUserVariable(engine);
-            string vSMTPPassword = v_SMTPPassword.ConvertToUserVariable(engine);
-            string vSMTPRecipients = v_SMTPRecipients.ConvertToUserVariable(engine);
-            string vSMTPSubject = v_SMTPSubject.ConvertToUserVariable(engine);
-            string vSMTPBody = v_SMTPBody.ConvertToUserVariable(engine);
-            string vSMTPAttachments = v_SMTPAttachments.ConvertToUserVariable(engine);
+            string vSMTPHost = v_SMTPHost.ConvertUserVariableToString(engine);
+            string vSMTPPort = v_SMTPPort.ConvertUserVariableToString(engine);
+            string vSMTPUserName = v_SMTPUserName.ConvertUserVariableToString(engine);
+            string vSMTPPassword = v_SMTPPassword.ConvertUserVariableToString(engine);
+            string vSMTPRecipients = v_SMTPRecipients.ConvertUserVariableToString(engine);
+            string vSMTPSubject = v_SMTPSubject.ConvertUserVariableToString(engine);
+            string vSMTPBody = v_SMTPBody.ConvertUserVariableToString(engine);
+            string vSMTPAttachments = v_SMTPAttachments.ConvertUserVariableToString(engine);
 
             using (var client = new SmtpClient())
             {

@@ -50,7 +50,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //get variable by regular name
-            var listVariable = v_ListName.LookupComplexVariable(engine);
+            var listVariable = v_ListName.ConvertUserVariableToObject(engine);
 
             //if still null then throw exception
             if (listVariable == null)

@@ -57,8 +57,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vFolderPath = v_FolderPath.ConvertToUserVariable(engine);
-            var vFileName = v_FileName.ConvertToUserVariable(engine);
+            var vFolderPath = v_FolderPath.ConvertUserVariableToString(engine);
+            var vFileName = v_FileName.ConvertUserVariableToString(engine);
             var excelObject = engine.GetAppInstance(v_InstanceName);
             var excelInstance = (Application)excelObject;
 

@@ -59,8 +59,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            string vProgramName = v_ProgramName.ConvertToUserVariable(engine);
-            string vProgramArgs = v_ProgramArgs.ConvertToUserVariable(engine);
+            string vProgramName = v_ProgramName.ConvertUserVariableToString(engine);
+            string vProgramArgs = v_ProgramArgs.ConvertUserVariableToString(engine);
             Process newProcess;
 
             if (v_ProgramArgs == "")

@@ -68,10 +68,10 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variablized string
-            var variableString = v_InputData.ConvertToUserVariable(engine);
+            var variableString = v_InputData.ConvertUserVariableToString(engine);
 
             //get formatting
-            var formatting = v_ToStringFormat.ConvertToUserVariable(engine);
+            var formatting = v_ToStringFormat.ConvertUserVariableToString(engine);
 
             string formattedString = "";
             switch (v_FormatType)

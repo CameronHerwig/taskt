@@ -325,8 +325,8 @@ namespace taskt.Commands
                                   where rw.Field<string>("Parameter Name") == "Value2"
                                   select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                value1 = value1.ConvertToUserVariable(engine);
-                value2 = value2.ConvertToUserVariable(engine);
+                value1 = value1.ConvertUserVariableToString(engine);
+                value2 = value2.ConvertUserVariableToString(engine);
 
                 decimal cdecValue1, cdecValue2;
 
@@ -377,8 +377,8 @@ namespace taskt.Commands
                                   where rw.Field<string>("Parameter Name") == "Value2"
                                   select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                value1 = value1.ConvertToUserVariable(engine);
-                value2 = value2.ConvertToUserVariable(engine);
+                value1 = value1.ConvertUserVariableToString(engine);
+                value2 = value2.ConvertUserVariableToString(engine);
 
                 DateTime dt1, dt2;
                 dt1 = DateTime.Parse(value1);
@@ -426,8 +426,8 @@ namespace taskt.Commands
                                          where rw.Field<string>("Parameter Name") == "Case Sensitive"
                                          select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                value1 = value1.ConvertToUserVariable(engine);
-                value2 = value2.ConvertToUserVariable(engine);
+                value1 = value1.ConvertUserVariableToString(engine);
+                value2 = value2.ConvertUserVariableToString(engine);
 
                 if (caseSensitive == "No")
                 {
@@ -460,7 +460,7 @@ namespace taskt.Commands
                                         where rw.Field<string>("Parameter Name") == "Variable Name"
                                         select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                var actualVariable = variableName.ConvertToUserVariable(engine).Trim();
+                var actualVariable = variableName.ConvertUserVariableToString(engine).Trim();
 
                 if (!string.IsNullOrEmpty(actualVariable))
                 {
@@ -478,7 +478,7 @@ namespace taskt.Commands
                                         where rw.Field<string>("Parameter Name") == "Variable Name"
                                         select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                var actualVariable = variableName.ConvertToUserVariable(engine).Trim();
+                var actualVariable = variableName.ConvertUserVariableToString(engine).Trim();
 
                 var numericTest = decimal.TryParse(actualVariable, out decimal parsedResult);
 
@@ -500,7 +500,7 @@ namespace taskt.Commands
                                           select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
                 //convert to variable
-                string variableLineNumber = userLineNumber.ConvertToUserVariable(engine);
+                string variableLineNumber = userLineNumber.ConvertUserVariableToString(engine);
 
                 //convert to int
                 int lineNumber = int.Parse(variableLineNumber);
@@ -530,7 +530,7 @@ namespace taskt.Commands
                                           select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
                 //convert to variable
-                string variableLineNumber = userLineNumber.ConvertToUserVariable(engine);
+                string variableLineNumber = userLineNumber.ConvertUserVariableToString(engine);
 
                 //convert to int
                 int lineNumber = int.Parse(variableLineNumber);
@@ -558,7 +558,7 @@ namespace taskt.Commands
                                       where rw.Field<string>("Parameter Name") == "Window Name"
                                       select rw.Field<string>("Parameter Value")).FirstOrDefault());
                 //variable translation
-                string variablizedWindowName = windowName.ConvertToUserVariable(engine);
+                string variablizedWindowName = windowName.ConvertUserVariableToString(engine);
 
                 //search for window
                 IntPtr windowPtr = User32Functions.FindWindow(variablizedWindowName);
@@ -575,7 +575,7 @@ namespace taskt.Commands
                                       where rw.Field<string>("Parameter Name") == "Window Name"
                                       select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                string variablizedWindowName = windowName.ConvertToUserVariable(engine);
+                string variablizedWindowName = windowName.ConvertUserVariableToString(engine);
 
                 var currentWindowTitle = User32Functions.GetActiveWindowTitle();
 
@@ -596,7 +596,7 @@ namespace taskt.Commands
                                               where rw.Field<string>("Parameter Name") == "True When"
                                               select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                var userFileSelected = fileName.ConvertToUserVariable(engine);
+                var userFileSelected = fileName.ConvertUserVariableToString(engine);
 
                 bool existCheck = false;
                 if (trueWhenFileExists == "It Does Exist")
@@ -619,7 +619,7 @@ namespace taskt.Commands
                                               where rw.Field<string>("Parameter Name") == "True When"
                                               select rw.Field<string>("Parameter Value")).FirstOrDefault());
 
-                var userFolderSelected = folderName.ConvertToUserVariable(engine);
+                var userFolderSelected = folderName.ConvertUserVariableToString(engine);
 
                 bool existCheck = false;
                 if (trueWhenFileExists == "It Does Exist")
@@ -653,7 +653,7 @@ namespace taskt.Commands
 
                 SeleniumElementActionCommand newElementActionCommand = new SeleniumElementActionCommand();
                 newElementActionCommand.v_SeleniumSearchType = searchMethod;
-                newElementActionCommand.v_InstanceName = instanceName.ConvertToUserVariable(engine);
+                newElementActionCommand.v_InstanceName = instanceName.ConvertUserVariableToString(engine);
                 bool elementExists = newElementActionCommand.ElementExists(sender, searchMethod, parameterName);
                 ifResult = elementExists;
 
@@ -664,15 +664,15 @@ namespace taskt.Commands
             {
                 string windowName = ((from rw in v_IfActionParameterTable.AsEnumerable()
                                       where rw.Field<string>("Parameter Name") == "Window Name"
-                                      select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                      select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                 string elementSearchParam = ((from rw in v_IfActionParameterTable.AsEnumerable()
                                               where rw.Field<string>("Parameter Name") == "Element Search Parameter"
-                                              select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                              select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                 string elementSearchMethod = ((from rw in v_IfActionParameterTable.AsEnumerable()
                                                where rw.Field<string>("Parameter Name") == "Element Search Method"
-                                               select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                               select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                 string trueWhenElementExists = (from rw in v_IfActionParameterTable.AsEnumerable()
                                               where rw.Field<string>("Parameter Name") == "True When"
@@ -701,7 +701,7 @@ namespace taskt.Commands
                 {
                     accuracy = double.Parse((from rw in v_IfActionParameterTable.AsEnumerable()
                                         where rw.Field<string>("Parameter Name") == "Accuracy (0-1)"
-                                        select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                        select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                     if (accuracy > 1 || accuracy < 0)
                         throw new ArgumentOutOfRangeException("Accuracy value is out of range (0-1)");
                 }
@@ -714,7 +714,7 @@ namespace taskt.Commands
                                               where rw.Field<string>("Parameter Name") == "True When"
                                               select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                var imageVariable = imageName.LookupComplexVariable(engine);
+                var imageVariable = imageName.ConvertUserVariableToObject(engine);
 
                 Bitmap capturedImage;
                 if (imageVariable != null && imageVariable is Bitmap)

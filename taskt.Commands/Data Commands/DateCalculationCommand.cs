@@ -83,7 +83,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variablized string
-            var variableDateTime = v_InputDate.ConvertToUserVariable(engine);
+            var variableDateTime = v_InputDate.ConvertUserVariableToString(engine);
 
             //convert to date time
             DateTime requiredDateTime;
@@ -94,7 +94,7 @@ namespace taskt.Commands
 
             //get increment value
             double requiredInterval;
-            var variableIncrement = v_Increment.ConvertToUserVariable(engine);
+            var variableIncrement = v_Increment.ConvertUserVariableToString(engine);
 
             //convert to double
             if (!Double.TryParse(variableIncrement, out requiredInterval))
@@ -140,7 +140,7 @@ namespace taskt.Commands
             }
 
             //handle if formatter is required
-            var formatting = v_ToStringFormat.ConvertToUserVariable(engine);
+            var formatting = v_ToStringFormat.ConvertUserVariableToString(engine);
             var stringDateFormatted = requiredDateTime.ToString(formatting);
 
             //store string (Result) in variable

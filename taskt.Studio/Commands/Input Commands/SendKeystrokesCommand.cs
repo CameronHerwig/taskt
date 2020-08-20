@@ -71,7 +71,7 @@ namespace taskt.Commands
                 activateWindow.RunCommand(sender);
             }
 
-            string textToSend = v_TextToSend.ConvertToUserVariable(engine);
+            string textToSend = v_TextToSend.ConvertUserVariableToString(engine);
 
             if (v_EncryptionOption == "Encrypted")
             {

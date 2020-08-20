@@ -67,12 +67,12 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             
             //get variablized input
-            var variableInput = v_JsonObject.ConvertToUserVariable(engine);
+            var variableInput = v_JsonObject.ConvertUserVariableToString(engine);
 
             foreach (DataRow rw in v_ParseObjects.Rows)
             {
-                var jsonSelector = rw.Field<string>("Json Selector").ConvertToUserVariable(engine);
-                var targetVariableName = rw.Field<string>("Output Variable").ConvertToUserVariable(engine);
+                var jsonSelector = rw.Field<string>("Json Selector").ConvertUserVariableToString(engine);
+                var targetVariableName = rw.Field<string>("Output Variable").ConvertUserVariableToString(engine);
 
                 //create objects
                 JObject o;

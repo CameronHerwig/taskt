@@ -54,9 +54,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            DataTable dataTable = (DataTable)v_DataTable.LookupComplexVariable(engine);
+            DataTable dataTable = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
 
-            var rowIndex = v_DataRowIndex.ConvertToUserVariable(engine);
+            var rowIndex = v_DataRowIndex.ConvertUserVariableToString(engine);
             int index = int.Parse(rowIndex);
 
             DataRow row = dataTable.Rows[index];

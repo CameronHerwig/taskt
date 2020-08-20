@@ -60,8 +60,8 @@ namespace taskt.Commands
             foreach (DataRow rwColumnName in v_ColumnNameDataTable.Rows)
             {
                 outputDictionary.Add(
-                    rwColumnName.Field<string>("Keys").ConvertToUserVariable(engine), 
-                    rwColumnName.Field<string>("Values").ConvertToUserVariable(engine));
+                    rwColumnName.Field<string>("Keys").ConvertUserVariableToString(engine), 
+                    rwColumnName.Field<string>("Values").ConvertUserVariableToString(engine));
             }
 
             outputDictionary.StoreInUserVariable(engine, v_OutputUserVariableName);

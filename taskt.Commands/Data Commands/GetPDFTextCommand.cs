@@ -59,7 +59,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variable path or URL to source file
-            var vSourceFilePath = v_FilePath.ConvertToUserVariable(engine);
+            var vSourceFilePath = v_FilePath.ConvertUserVariableToString(engine);
 
             if (v_FileSourceType == "File URL")
             {

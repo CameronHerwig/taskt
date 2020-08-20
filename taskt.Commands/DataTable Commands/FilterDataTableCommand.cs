@@ -55,9 +55,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vSearchItem = v_SearchItem.ConvertToUserVariable(engine);
+            var vSearchItem = v_SearchItem.ConvertUserVariableToString(engine);
 
-            DataTable Dt = (DataTable)v_DataTable.LookupComplexVariable(engine);
+            DataTable Dt = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
             var t = new List<Tuple<string, string>>();
             var listPairs = vSearchItem.Split(')');
             int i = 0;

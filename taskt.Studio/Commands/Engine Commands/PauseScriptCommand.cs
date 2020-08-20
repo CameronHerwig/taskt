@@ -40,7 +40,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var userPauseLength = v_PauseLength.ConvertToUserVariable(engine);
+            var userPauseLength = v_PauseLength.ConvertUserVariableToString(engine);
             var pauseLength = int.Parse(userPauseLength);
             Thread.Sleep(pauseLength);
         }

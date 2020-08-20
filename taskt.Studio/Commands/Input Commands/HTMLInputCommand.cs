@@ -70,7 +70,7 @@ namespace taskt.Commands
             var result = ((frmScriptEngine)engine.TasktEngineUI).Invoke(new Action(() =>
             {
                 //sample for temp testing
-                var htmlInput = v_InputHTML.ConvertToUserVariable(engine);
+                var htmlInput = v_InputHTML.ConvertUserVariableToString(engine);
 
                 var variables = engine.TasktEngineUI.ShowHTMLInput(htmlInput);
 

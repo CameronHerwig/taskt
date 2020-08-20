@@ -49,8 +49,8 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //convert items to variables
-            var fileName = v_FileName.ConvertToUserVariable(engine);
-            var pauseTime = int.Parse(v_WaitTime.ConvertToUserVariable(engine));
+            var fileName = v_FileName.ConvertUserVariableToString(engine);
+            var pauseTime = int.Parse(v_WaitTime.ConvertUserVariableToString(engine));
 
             //determine when to stop waiting based on user config
             var stopWaiting = DateTime.Now.AddSeconds(pauseTime);

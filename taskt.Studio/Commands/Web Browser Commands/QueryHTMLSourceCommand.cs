@@ -55,7 +55,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(v_HTMLVariable.ConvertToUserVariable(engine));
+            doc.LoadHtml(v_HTMLVariable.ConvertUserVariableToString(engine));
 
             var div = doc.DocumentNode.SelectSingleNode(v_XPathQuery);
             string divString = div.InnerText;

@@ -69,7 +69,7 @@ namespace taskt.Commands
         {         
             var engine = (AutomationEngineInstance)sender;
             var excelObject = engine.GetAppInstance(v_InstanceName);
-            var vRange = v_Range.ConvertToUserVariable(engine);
+            var vRange = v_Range.ConvertUserVariableToString(engine);
             var excelInstance = (Application)excelObject;
 
             Worksheet excelSheet = excelInstance.ActiveSheet;

@@ -51,7 +51,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var wordObject = engine.GetAppInstance(v_InstanceName);
 
-            DataTable dataTable = (DataTable)v_DataTable.LookupComplexVariable(engine);
+            DataTable dataTable = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
 
             //selecting the word instance and open document
             Application wordInstance = (Application)wordObject;

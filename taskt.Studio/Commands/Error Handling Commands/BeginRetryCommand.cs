@@ -78,8 +78,8 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var retryCommand = (BeginRetryCommand)parentCommand.ScriptCommand;
 
-            int retryCount = int.Parse(retryCommand.v_RetryCount.ConvertToUserVariable(engine));
-            int retryInterval = int.Parse(retryCommand.v_RetryInterval.ConvertToUserVariable(engine))*1000;
+            int retryCount = int.Parse(retryCommand.v_RetryCount.ConvertUserVariableToString(engine));
+            int retryInterval = int.Parse(retryCommand.v_RetryInterval.ConvertUserVariableToString(engine))*1000;
             bool exceptionOccurred;
 
             for(int startIndex = 0; startIndex < retryCount; startIndex++)

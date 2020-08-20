@@ -175,8 +175,8 @@ namespace taskt.Commands
                 var parameterName = (string)param["Parameter Name"];
                 var parameterValue = (string)param["Parameter Value"];
 
-                parameterName = parameterName.ConvertToUserVariable(engine);
-                parameterValue = parameterValue.ConvertToUserVariable(engine);
+                parameterName = parameterName.ConvertUserVariableToString(engine);
+                parameterValue = parameterValue.ConvertUserVariableToString(engine);
 
                 PropertyCondition propCondition;
                 if (bool.TryParse(parameterValue, out bool bValue))
@@ -219,7 +219,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //create variable window name
-            var variableWindowName = v_WindowName.ConvertToUserVariable(engine);
+            var variableWindowName = v_WindowName.ConvertUserVariableToString(engine);
             if (variableWindowName == "Current Window")
                 variableWindowName = User32Functions.GetActiveWindowTitle();
 
@@ -250,8 +250,8 @@ namespace taskt.Commands
                                    select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
                     //convert potential variable
-                    var xAdjustVariable = xAdjust.ConvertToUserVariable(engine);
-                    var yAdjustVariable = yAdjust.ConvertToUserVariable(engine);
+                    var xAdjustVariable = xAdjust.ConvertUserVariableToString(engine);
+                    var yAdjustVariable = yAdjust.ConvertUserVariableToString(engine);
 
                     //parse to int
                     var xAdjustInt = int.Parse(xAdjustVariable);
@@ -292,7 +292,7 @@ namespace taskt.Commands
                     {
                         textToSet = EncryptionServices.DecryptString(textToSet, "TASKT");
                     }
-                    textToSet = textToSet.ConvertToUserVariable(engine);
+                    textToSet = textToSet.ConvertUserVariableToString(engine);
 
                     if (requiredHandle.Current.IsEnabled && requiredHandle.Current.IsKeyboardFocusable)
                     {
@@ -347,7 +347,7 @@ namespace taskt.Commands
                                             where rw.Field<string>("Parameter Name") == "Clear Element Before Setting Text"
                                             select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                    var secureStrVariable = secureString.LookupComplexVariable(engine);
+                    var secureStrVariable = secureString.ConvertUserVariableToObject(engine);
 
                     if (secureStrVariable is SecureString)
                         secureString = ((SecureString)secureStrVariable).ConvertSecureStringToString();
@@ -476,7 +476,7 @@ namespace taskt.Commands
                                        where rw.Field<string>("Parameter Name") == "Timeout (Seconds)"
                                        select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                    timeoutText = timeoutText.ConvertToUserVariable(engine);
+                    timeoutText = timeoutText.ConvertUserVariableToString(engine);
 
                     int timeOut = Convert.ToInt32(timeoutText);
 

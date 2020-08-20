@@ -88,9 +88,9 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vExcelObject = engine.GetAppInstance(v_InstanceName);
-            var vRange = v_Range.ConvertToUserVariable(engine);
-            var vColumnName = v_ColumnName.ConvertToUserVariable(engine);
-            var vOutputDirectory = v_OutputDirectory.ConvertToUserVariable(engine);
+            var vRange = v_Range.ConvertUserVariableToString(engine);
+            var vColumnName = v_ColumnName.ConvertUserVariableToString(engine);
+            var vOutputDirectory = v_OutputDirectory.ConvertUserVariableToString(engine);
             var excelInstance = (Application)vExcelObject;
 
             excelInstance.DisplayAlerts = false;

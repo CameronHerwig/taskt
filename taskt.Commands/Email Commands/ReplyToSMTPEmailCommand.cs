@@ -102,13 +102,13 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MimeMessage vMimeMessageToReply = (MimeMessage)v_SMTPMimeMessage.LookupComplexVariable(engine);
-            string vSMTPHost = v_SMTPHost.ConvertToUserVariable(engine);
-            string vSMTPPort = v_SMTPPort.ConvertToUserVariable(engine);
-            string vSMTPUserName = v_SMTPUserName.ConvertToUserVariable(engine);
-            string vSMTPPassword = v_SMTPPassword.ConvertToUserVariable(engine);
-            string vSMTPBody = v_SMTPBody.ConvertToUserVariable(engine);
-            string vSMTPAttachments = v_SMTPAttachments.ConvertToUserVariable(engine);
+            MimeMessage vMimeMessageToReply = (MimeMessage)v_SMTPMimeMessage.ConvertUserVariableToObject(engine);
+            string vSMTPHost = v_SMTPHost.ConvertUserVariableToString(engine);
+            string vSMTPPort = v_SMTPPort.ConvertUserVariableToString(engine);
+            string vSMTPUserName = v_SMTPUserName.ConvertUserVariableToString(engine);
+            string vSMTPPassword = v_SMTPPassword.ConvertUserVariableToString(engine);
+            string vSMTPBody = v_SMTPBody.ConvertUserVariableToString(engine);
+            string vSMTPAttachments = v_SMTPAttachments.ConvertUserVariableToString(engine);
 
             using (var client = new SmtpClient())
             {

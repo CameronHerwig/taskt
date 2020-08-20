@@ -95,9 +95,9 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //get file path
-            var filePath = v_FilePath.ConvertToUserVariable(engine);
-            var className = v_ClassName.ConvertToUserVariable(engine);
-            var methodName = v_MethodName.ConvertToUserVariable(engine);
+            var filePath = v_FilePath.ConvertUserVariableToString(engine);
+            var className = v_ClassName.ConvertUserVariableToString(engine);
+            var methodName = v_MethodName.ConvertUserVariableToString(engine);
 
             //if file path does not exist
             if (!File.Exists(filePath))
@@ -141,7 +141,7 @@ namespace taskt.Commands
                                                                    .Where(rws => rws.Field<string>("Parameter Name") == paramName)
                                                                    .Select(rws => rws.Field<string>("Parameter Value"))
                                                                    .FirstOrDefault()
-                                                                   .ConvertToUserVariable(engine);
+                                                                   .ConvertUserVariableToString(engine);
 
                     dynamic parseResult;
                     //check namespace and convert

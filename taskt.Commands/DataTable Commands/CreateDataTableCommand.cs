@@ -59,7 +59,7 @@ namespace taskt.Commands
 
             foreach(DataRow rwColumnName in v_ColumnNameDataTable.Rows)
             {
-                Dt.Columns.Add(rwColumnName.Field<string>("Column Name").ConvertToUserVariable(engine));
+                Dt.Columns.Add(rwColumnName.Field<string>("Column Name").ConvertUserVariableToString(engine));
             }
 
             Dt.StoreInUserVariable(engine, v_OutputUserVariableName);

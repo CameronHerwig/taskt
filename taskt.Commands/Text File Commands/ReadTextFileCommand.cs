@@ -47,7 +47,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //convert variables
-            var filePath = v_FilePath.ConvertToUserVariable(engine);
+            var filePath = v_FilePath.ConvertUserVariableToString(engine);
             //read text from file
             var textFromFile = File.ReadAllText(filePath);
             //assign text to user variable

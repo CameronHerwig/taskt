@@ -51,7 +51,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var browserObject = engine.GetAppInstance(v_InstanceName);
             var seleniumInstance = (IWebDriver)browserObject;
-            seleniumInstance.Navigate().GoToUrl(v_URL.ConvertToUserVariable(engine));
+            seleniumInstance.Navigate().GoToUrl(v_URL.ConvertUserVariableToString(engine));
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

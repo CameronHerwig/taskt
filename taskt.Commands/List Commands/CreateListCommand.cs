@@ -79,7 +79,7 @@ namespace taskt.Commands
                     if (splitListItems != null)
                     {
                         foreach (string item in splitListItems)
-                            ((List<string>)vNewList).Add(item.Trim().ConvertToUserVariable(engine));
+                            ((List<string>)vNewList).Add(item.Trim().ConvertUserVariableToString(engine));
                     }                   
                     break;
                 case "DataTable":
@@ -89,7 +89,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             DataTable dataTable;
-                            var dataTableVariable = item.Trim().LookupComplexVariable(engine);
+                            var dataTableVariable = item.Trim().ConvertUserVariableToObject(engine);
                             if (dataTableVariable != null && dataTableVariable is DataTable)
                                 dataTable = (DataTable)dataTableVariable;
                             else
@@ -105,7 +105,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MailItem mailItem;
-                            var mailItemVariable = item.Trim().LookupComplexVariable(engine);
+                            var mailItemVariable = item.Trim().ConvertUserVariableToObject(engine);
                             if (mailItemVariable != null && mailItemVariable is MailItem)
                                 mailItem = (MailItem)mailItemVariable;
                             else
@@ -121,7 +121,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MimeMessage mimeMessage;
-                            var mimeMessageVariable = item.Trim().LookupComplexVariable(engine);
+                            var mimeMessageVariable = item.Trim().ConvertUserVariableToObject(engine);
                             if (mimeMessageVariable != null && mimeMessageVariable is MimeMessage)
                                 mimeMessage = (MimeMessage)mimeMessageVariable;
                             else
@@ -137,7 +137,7 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             IWebElement webElement;
-                            var webElementVariable = item.Trim().LookupComplexVariable(engine);
+                            var webElementVariable = item.Trim().ConvertUserVariableToObject(engine);
                             if (webElementVariable != null && webElementVariable is IWebElement)
                                 webElement = (IWebElement)webElementVariable;
                             else

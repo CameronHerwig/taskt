@@ -61,9 +61,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var inputText = v_InputText.ConvertToUserVariable(engine);
-            var startIndex = int.Parse(v_StartIndex.ConvertToUserVariable(engine));
-            var stringLength = int.Parse(v_StringLength.ConvertToUserVariable(engine));
+            var inputText = v_InputText.ConvertUserVariableToString(engine);
+            var startIndex = int.Parse(v_StartIndex.ConvertUserVariableToString(engine));
+            var stringLength = int.Parse(v_StringLength.ConvertUserVariableToString(engine));
 
             //apply substring
             if (stringLength >= 0)

@@ -63,7 +63,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var p = (SPhraseSpec)engine.GetAppInstance(v_InstanceName);
 
-            var userInput = v_Parameter.ConvertToUserVariable(engine);
+            var userInput = v_Parameter.ConvertUserVariableToString(engine);
 
             switch (v_ParameterType)
             {

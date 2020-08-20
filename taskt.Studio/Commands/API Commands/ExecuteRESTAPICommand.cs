@@ -121,9 +121,9 @@ namespace taskt.Commands
                 var engine = (AutomationEngineInstance)sender;
 
                 //get parameters
-                var targetURL = v_BaseURL.ConvertToUserVariable(engine);
-                var targetEndpoint = v_APIEndPoint.ConvertToUserVariable(engine);
-                var targetMethod = v_APIMethodType.ConvertToUserVariable(engine);
+                var targetURL = v_BaseURL.ConvertUserVariableToString(engine);
+                var targetEndpoint = v_APIEndPoint.ConvertUserVariableToString(engine);
+                var targetMethod = v_APIMethodType.ConvertUserVariableToString(engine);
 
                 //client
                 var client = new RestClient(targetURL);
@@ -143,8 +143,8 @@ namespace taskt.Commands
                 //for each api parameter
                 foreach (var param in apiParameters)
                 {
-                    var paramName = ((string)param["Parameter Name"]).ConvertToUserVariable(engine);
-                    var paramValue = ((string)param["Parameter Value"]).ConvertToUserVariable(engine);
+                    var paramName = ((string)param["Parameter Name"]).ConvertUserVariableToString(engine);
+                    var paramValue = ((string)param["Parameter Value"]).ConvertUserVariableToString(engine);
 
                     request.AddParameter(paramName, paramValue);
                 }
@@ -152,8 +152,8 @@ namespace taskt.Commands
                 //for each header
                 foreach (var header in apiHeaders)
                 {
-                    var paramName = ((string)header["Parameter Name"]).ConvertToUserVariable(engine);
-                    var paramValue = ((string)header["Parameter Value"]).ConvertToUserVariable(engine);
+                    var paramName = ((string)header["Parameter Name"]).ConvertUserVariableToString(engine);
+                    var paramValue = ((string)header["Parameter Value"]).ConvertUserVariableToString(engine);
 
                     request.AddHeader(paramName, paramValue);
                 }
@@ -165,7 +165,7 @@ namespace taskt.Commands
                 //add json body
                 if (jsonBody != null)
                 {
-                    var json = jsonBody.ConvertToUserVariable(engine);
+                    var json = jsonBody.ConvertUserVariableToString(engine);
                     request.AddJsonBody(jsonBody);
                 }
 
@@ -175,9 +175,9 @@ namespace taskt.Commands
                 //get file
                 if (file != null)
                 {
-                    var paramName = ((string)file["Parameter Name"]).ConvertToUserVariable(engine);
-                    var paramValue = ((string)file["Parameter Value"]).ConvertToUserVariable(engine);
-                    var fileData = paramValue.ConvertToUserVariable(engine);
+                    var paramName = ((string)file["Parameter Name"]).ConvertUserVariableToString(engine);
+                    var paramValue = ((string)file["Parameter Value"]).ConvertUserVariableToString(engine);
+                    var fileData = paramValue.ConvertUserVariableToString(engine);
                     request.AddFile(paramName, fileData);
 
                 }
@@ -185,10 +185,10 @@ namespace taskt.Commands
                 //add advanced parameters
                 foreach (DataRow rw in v_AdvancedParameters.Rows)
                 {
-                    var paramName = rw.Field<string>("Parameter Name").ConvertToUserVariable(engine);
-                    var paramValue = rw.Field<string>("Parameter Value").ConvertToUserVariable(engine);
-                    var paramType = rw.Field<string>("Parameter Type").ConvertToUserVariable(engine);
-                    var contentType = rw.Field<string>("Content Type").ConvertToUserVariable(engine);
+                    var paramName = rw.Field<string>("Parameter Name").ConvertUserVariableToString(engine);
+                    var paramValue = rw.Field<string>("Parameter Value").ConvertUserVariableToString(engine);
+                    var paramType = rw.Field<string>("Parameter Type").ConvertUserVariableToString(engine);
+                    var contentType = rw.Field<string>("Content Type").ConvertUserVariableToString(engine);
 
                     var param = new Parameter();
 
@@ -205,7 +205,7 @@ namespace taskt.Commands
                     request.Parameters.Add(param);
                 }
 
-                var requestFormat = v_RequestFormat.ConvertToUserVariable(engine);
+                var requestFormat = v_RequestFormat.ConvertUserVariableToString(engine);
                 if (string.IsNullOrEmpty(requestFormat))
                 {
                     requestFormat = "Xml";

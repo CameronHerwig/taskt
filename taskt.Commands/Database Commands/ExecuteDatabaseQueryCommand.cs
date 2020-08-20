@@ -96,11 +96,11 @@ namespace taskt.Commands
         {
             //create engine, instance, query
             var engine = (AutomationEngineInstance)sender;
-            var query = v_Query.ConvertToUserVariable(engine);
+            var query = v_Query.ConvertUserVariableToString(engine);
 
             //define connection
             var databaseConnection = (OleDbConnection)engine.GetAppInstance(v_InstanceName);
-            var queryExecutionType = v_QueryType.ConvertToUserVariable(engine);
+            var queryExecutionType = v_QueryType.ConvertUserVariableToString(engine);
 
             //define commad
             var oleCommand = new OleDbCommand(query, databaseConnection);
@@ -108,9 +108,9 @@ namespace taskt.Commands
             //add parameters
             foreach (DataRow rw in v_QueryParameters.Rows)
             {
-                var parameterName = rw.Field<string>("Parameter Name").ConvertToUserVariable(engine);
-                var parameterValue = rw.Field<string>("Parameter Value").ConvertToUserVariable(engine);
-                var parameterType = rw.Field<string>("Parameter Type").ConvertToUserVariable(engine);
+                var parameterName = rw.Field<string>("Parameter Name").ConvertUserVariableToString(engine);
+                var parameterValue = rw.Field<string>("Parameter Value").ConvertUserVariableToString(engine);
+                var parameterType = rw.Field<string>("Parameter Type").ConvertUserVariableToString(engine);
 
                 object convertedValue = null;
                 //"STRING", "BOOLEAN", "DECIMAL", "INT16", "INT32", "INT64", "DATETIME", "DOUBLE", "SINGLE", "GUID", "BYTE", "BYTE[]"

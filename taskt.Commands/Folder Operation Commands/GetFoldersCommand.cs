@@ -48,7 +48,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //apply variable logic
-            var sourceFolder = v_SourceFolderPath.ConvertToUserVariable(engine);
+            var sourceFolder = v_SourceFolderPath.ConvertUserVariableToString(engine);
 
             //Get Subdirectories List
             var directoriesList = Directory.GetDirectories(sourceFolder).ToList();

@@ -77,11 +77,11 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            var machineName = v_MachineName.ConvertToUserVariable(engine);
-            var userName = v_UserName.ConvertToUserVariable(engine);
-            var password = v_Password.ConvertToUserVariable(engine);
-            var width = int.Parse(v_RDPWidth.ConvertToUserVariable(engine));
-            var height = int.Parse(v_RDPHeight.ConvertToUserVariable(engine));
+            var machineName = v_MachineName.ConvertUserVariableToString(engine);
+            var userName = v_UserName.ConvertUserVariableToString(engine);
+            var password = v_Password.ConvertUserVariableToString(engine);
+            var width = int.Parse(v_RDPWidth.ConvertUserVariableToString(engine));
+            var height = int.Parse(v_RDPHeight.ConvertUserVariableToString(engine));
 
 
             var result = ((frmScriptEngine)engine.TasktEngineUI).Invoke(new Action(() =>

@@ -44,7 +44,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var action = (string)v_ActionName.ConvertToUserVariable(engine);
+            var action = (string)v_ActionName.ConvertUserVariableToString(engine);
             switch (action)
             {
                 case "Shutdown":

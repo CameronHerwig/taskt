@@ -48,7 +48,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            string vSheetToDelete = v_SheetName.ConvertToUserVariable(engine);
+            string vSheetToDelete = v_SheetName.ConvertUserVariableToString(engine);
 
             var excelObject = engine.GetAppInstance(v_InstanceName);
             var excelInstance = (Application)excelObject;      

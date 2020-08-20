@@ -50,7 +50,7 @@ namespace taskt.Commands
             var browserObject = engine.GetAppInstance(v_InstanceName);
             var browserInstance = (InternetExplorer)browserObject;
 
-            browserInstance.Navigate(v_URL.ConvertToUserVariable(engine));
+            browserInstance.Navigate(v_URL.ConvertUserVariableToString(engine));
             IECreateBrowserCommand.WaitForReadyState(browserInstance);
         }
 

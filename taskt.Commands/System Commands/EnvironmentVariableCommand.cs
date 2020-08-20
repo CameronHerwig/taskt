@@ -55,7 +55,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var environmentVariable = (string)v_EnvVariableName.ConvertToUserVariable(engine);
+            var environmentVariable = (string)v_EnvVariableName.ConvertUserVariableToString(engine);
 
             var variables = Environment.GetEnvironmentVariables();
             var envValue = (string)variables[environmentVariable];

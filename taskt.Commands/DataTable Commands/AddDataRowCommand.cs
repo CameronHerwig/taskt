@@ -66,13 +66,13 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            DataTable Dt = (DataTable)v_DataTable.LookupComplexVariable(engine);
+            DataTable Dt = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
             var newRow = Dt.NewRow();
 
             foreach (DataRow rw in v_DataRowDataTable.Rows)
             {
-                var columnName = rw.Field<string>("Column Name").ConvertToUserVariable(engine);
-                var data = rw.Field<string>("Data").ConvertToUserVariable(engine);
+                var columnName = rw.Field<string>("Column Name").ConvertUserVariableToString(engine);
+                var data = rw.Field<string>("Data").ConvertUserVariableToString(engine);
                 newRow.SetField(columnName, data);
             }
             Dt.Rows.Add(newRow);

@@ -62,7 +62,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var browserObject = engine.GetAppInstance(v_InstanceName);
             var seleniumInstance = (IWebDriver)browserObject;
-            var requestedInfo = v_InfoType.ConvertToUserVariable(engine);
+            var requestedInfo = v_InfoType.ConvertUserVariableToString(engine);
             string info;
 
             switch (requestedInfo)

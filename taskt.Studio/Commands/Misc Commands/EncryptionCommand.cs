@@ -68,23 +68,23 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variablized input
-            var variableInput = v_InputValue.ConvertToUserVariable(engine);
-            var passphrase = v_PassPhrase.ConvertToUserVariable(engine);
+            var variableInput = v_InputValue.ConvertUserVariableToString(engine);
+            var passphrase = v_PassPhrase.ConvertUserVariableToString(engine);
 
             string resultData = "";
-            if (v_EncryptionType.ConvertToUserVariable(engine) == "Encrypt")
+            if (v_EncryptionType.ConvertUserVariableToString(engine) == "Encrypt")
             {
                 //encrypt data
                 resultData = EncryptionServices.EncryptString(variableInput, passphrase);
             }
-            else if (v_EncryptionType.ConvertToUserVariable(engine) == "Decrypt")
+            else if (v_EncryptionType.ConvertUserVariableToString(engine) == "Decrypt")
             {
                 //encrypt data
                 resultData = EncryptionServices.DecryptString(variableInput, passphrase);
             }
             else
             {
-                throw new NotImplementedException($"Encryption Service Requested '{v_EncryptionType.ConvertToUserVariable(engine)}' has not been implemented");
+                throw new NotImplementedException($"Encryption Service Requested '{v_EncryptionType.ConvertUserVariableToString(engine)}' has not been implemented");
             }
 
             resultData.StoreInUserVariable(engine, v_OutputUserVariableName);

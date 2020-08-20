@@ -56,7 +56,7 @@ namespace taskt.Commands
             var lastUsedRow = excelSheet.Cells.Find("*", Missing.Value, Missing.Value, Missing.Value, XlSearchOrder.xlByRows, 
                                                     XlSearchDirection.xlPrevious, false, Missing.Value, Missing.Value).Row;
             var targetAddress = "A" + (lastUsedRow + 1);
-            var vTargetText = v_TextToSet.ConvertToUserVariable(engine);
+            var vTargetText = v_TextToSet.ConvertUserVariableToString(engine);
             excelSheet.Range[targetAddress].Value = vTargetText;
         }
 

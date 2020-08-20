@@ -89,7 +89,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             AutomationEngineInstance currentScriptEngine = (AutomationEngineInstance)sender;
-            var childTaskPath = v_taskPath.ConvertToUserVariable(currentScriptEngine);
+            var childTaskPath = v_taskPath.ConvertUserVariableToString(currentScriptEngine);
 
             frmScriptEngine parentEngine = (frmScriptEngine)currentScriptEngine.TasktEngineUI;
             string parentTaskPath = currentScriptEngine.TasktEngineUI.FilePath;
@@ -104,10 +104,10 @@ namespace taskt.Commands
                 var variableName = (string)rw.ItemArray[0];
                 object variableValue;
 
-                if (((string)rw.ItemArray[1]).LookupComplexVariable(currentScriptEngine) != null)
-                    variableValue = ((string)rw.ItemArray[1]).LookupComplexVariable(currentScriptEngine);
+                if (((string)rw.ItemArray[1]).ConvertUserVariableToObject(currentScriptEngine) != null)
+                    variableValue = ((string)rw.ItemArray[1]).ConvertUserVariableToObject(currentScriptEngine);
                 else
-                    variableValue = ((string)rw.ItemArray[1]).ConvertToUserVariable(currentScriptEngine);
+                    variableValue = ((string)rw.ItemArray[1]).ConvertUserVariableToString(currentScriptEngine);
 
                 var variableReturn = (string)rw.ItemArray[2];
 
@@ -270,7 +270,7 @@ namespace taskt.Commands
             AutomationEngineInstance currentScriptEngine = new AutomationEngineInstance(null);
             currentScriptEngine.VariableList.AddRange(variables);
             currentScriptEngine.ElementList.AddRange(elements);
-            var startFile = v_taskPath.ConvertToUserVariable(currentScriptEngine);
+            var startFile = v_taskPath.ConvertUserVariableToString(currentScriptEngine);
             var Sender = (CheckBox)sender;
 
             _assignmentsGridViewHelper.Visible = Sender.Checked;

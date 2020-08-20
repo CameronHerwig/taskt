@@ -64,9 +64,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInputData = v_InputTextData.ConvertToUserVariable(engine);
-            string vRegex = v_RegEx.ConvertToUserVariable(engine);
-            string vReplaceData = v_ReplaceTextData.ConvertToUserVariable(engine);
+            var vInputData = v_InputTextData.ConvertUserVariableToString(engine);
+            string vRegex = v_RegEx.ConvertUserVariableToString(engine);
+            string vReplaceData = v_ReplaceTextData.ConvertUserVariableToString(engine);
             string resultData = Regex.Replace(vInputData, vRegex, vReplaceData);
 
             resultData.StoreInUserVariable(engine, v_OutputUserVariableName);

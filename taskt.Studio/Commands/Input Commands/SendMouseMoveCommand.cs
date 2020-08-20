@@ -67,8 +67,8 @@ namespace taskt.Commands
         {
 
             var engine = (AutomationEngineInstance)sender;
-            var mouseX = v_XMousePosition.ConvertToUserVariable(engine);
-            var mouseY = v_YMousePosition.ConvertToUserVariable(engine);
+            var mouseX = v_XMousePosition.ConvertUserVariableToString(engine);
+            var mouseY = v_YMousePosition.ConvertUserVariableToString(engine);
 
             try
             {
