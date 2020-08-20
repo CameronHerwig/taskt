@@ -111,7 +111,7 @@ namespace taskt.Commands
             {
                 engine.ReportProgress("Starting Loop Number " + (i + 1) + "/" + loopTimes + " From Line " + loopCommand.LineNumber);
                 
-                listToLoop[i].StoreInUserVariable(engine, v_OutputUserVariableName);
+                ((object)listToLoop[i]).StoreInUserVariable(engine, v_OutputUserVariableName);
 
                 foreach (var cmd in parentCommand.AdditionalScriptCommands)
                 {

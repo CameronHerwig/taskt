@@ -132,7 +132,7 @@ namespace taskt.Commands
                         //store user data in variable
                         if (!string.IsNullOrEmpty(targetVariable))
                         {
-                            userInputs[i].StoreInUserVariable(engine, targetVariable);
+                            ((object)userInputs[i]).StoreInUserVariable(engine, targetVariable);
                         }
                     }
                 }

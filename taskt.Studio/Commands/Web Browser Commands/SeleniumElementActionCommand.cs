@@ -437,7 +437,7 @@ namespace taskt.Commands
                         elementList.StoreInUserVariable(engine, variableName);
                     }
                     else
-                        element.StoreInUserVariable(engine, variableName);                    
+                        ((IWebElement)element).StoreInUserVariable(engine, variableName);                    
                     break;
 
                 case "Get Table":

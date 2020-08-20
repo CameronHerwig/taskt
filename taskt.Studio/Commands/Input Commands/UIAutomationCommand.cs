@@ -513,7 +513,7 @@ namespace taskt.Commands
                     var requiredValue = requiredHandle.Current.GetType().GetRuntimeProperty(propertyName)?.GetValue(requiredHandle.Current).ToString();
 
                     //store into variable
-                    requiredValue.StoreInUserVariable(sender, applyToVariable2);
+                    ((object)requiredValue).StoreInUserVariable(engine, applyToVariable2);
                     break;
                 default:
                     throw new NotImplementedException("Automation type '" + v_AutomationType + "' not supported.");

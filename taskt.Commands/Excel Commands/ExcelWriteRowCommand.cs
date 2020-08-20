@@ -83,7 +83,7 @@ namespace taskt.Commands
 
             //Write row
             DataRow row;
-            var loopIndexVariable = "Loop.CurrentIndex".LookupComplexVariable(engine);
+            var loopIndexVariable = "Loop.CurrentIndex".ConvertToUserVariable(engine);
             //check in case of looping through datatable using BeginListLoopCommand
             if (vRow != null && vRow is DataTable && loopIndexVariable != null)
             {

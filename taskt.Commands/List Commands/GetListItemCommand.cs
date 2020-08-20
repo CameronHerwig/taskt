@@ -117,7 +117,7 @@ namespace taskt.Commands
 
             var item = listToIndex[index];
 
-            item.StoreInUserVariable(engine, v_OutputUserVariableName);         
+            ((object)item).StoreInUserVariable(engine, v_OutputUserVariableName);         
         }
         
         public override List<Control> Render(IfrmCommandEditor editor)

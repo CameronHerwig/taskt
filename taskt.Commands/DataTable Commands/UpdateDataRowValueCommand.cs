@@ -70,7 +70,7 @@ namespace taskt.Commands
             var dataRowVariable = v_DataRow.LookupComplexVariable(engine);
 
             DataRow dataRow;
-            var loopIndexVariable = "Loop.CurrentIndex".LookupComplexVariable(engine);
+            var loopIndexVariable = "Loop.CurrentIndex".ConvertToUserVariable(engine);
             //check in case of looping through datatable using BeginListLoopCommand
             if (dataRowVariable is DataTable && loopIndexVariable != null)
             {
