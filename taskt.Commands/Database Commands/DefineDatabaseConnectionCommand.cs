@@ -25,11 +25,11 @@ namespace taskt.Commands
     public class DefineDatabaseConnectionCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Please Enter the instance name")]
-        [InputSpecification("Enter the unique instance name that was specified in the **Create Excel** command")]
-        [SampleUsage("**myInstance** or **seleniumInstance**")]
-        [Remarks("Failure to enter the correct instance name or failure to first call **Create Excel** command will cause an error")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("Database Instance Name")]
+        [InputSpecification("Enter a unique name that will represent the application instance.")]
+        [SampleUsage("MyDatabaseInstance")]
+        [Remarks("This unique name allows you to refer to the instance by name in future commands, " +
+                 "ensuring that the commands you specify run against the correct application.")]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -67,19 +67,18 @@ namespace taskt.Commands
         private TextBox ConnectionStringPassword;
         public DefineDatabaseConnectionCommand()
         {
-            this.CommandName = "DefineDatabaseConnectionCommand";
-            this.SelectionName = "Define Database Connection";
-            this.CommandEnabled = true;
-            this.CustomRendering = true;
-            this.v_InstanceName = "sqlDefault";
-            this.v_TestConnection = "Yes";
+            CommandName = "DefineDatabaseConnectionCommand";
+            SelectionName = "Define Database Connection";
+            CommandEnabled = true;
+            CustomRendering = true;
+            v_InstanceName = "DefaultDatabase";
+            v_TestConnection = "Yes";
         }
 
         public override void RunCommand(object sender)
         {
             //get engine and preference
             var engine = (AutomationEngineInstance)sender;
-            var instance = v_InstanceName.ConvertToUserVariable(engine);
             var testPreference = v_TestConnection.ConvertToUserVariable(engine);
 
             //create connection
@@ -92,7 +91,7 @@ namespace taskt.Commands
                 oleDBConnection.Close();
             }
 
-            engine.AddAppInstance(instance, oleDBConnection);
+            engine.AddAppInstance(v_InstanceName, oleDBConnection);
 
         }
         private OleDbConnection CreateConnection(object sender)

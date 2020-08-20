@@ -24,9 +24,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Browser Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("MyBrowserInstance || {vBrowserInstance}")]
+        [SampleUsage("MyBrowserInstance")]
         [Remarks("Failure to enter the correct instance name or failure to first call the **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; } 
 
         [XmlAttribute]
@@ -64,8 +63,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var browserObject = engine.GetAppInstance(vInstance);
+            var browserObject = engine.GetAppInstance(v_InstanceName);
             var script = v_ScriptCode.ConvertToUserVariable(engine);
             var args = v_Arguments.ConvertToUserVariable(engine);
             var seleniumInstance = (IWebDriver)browserObject;

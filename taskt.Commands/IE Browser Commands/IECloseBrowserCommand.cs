@@ -20,11 +20,10 @@ namespace taskt.Commands
     public class IECloseBrowserCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("IE Instance Name")]
+        [PropertyDescription("Browser Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("IEBrowser || {vIEBrowser}")]
-        [Remarks("Failure to enter the correct instance or failure to first call **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [SampleUsage("MyIEBrowserInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **Create Browser** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         public IECloseBrowserCommand()
@@ -32,7 +31,7 @@ namespace taskt.Commands
             CommandName = "IECloseBrowserCommand";
             SelectionName = "Close Browser";
             CommandEnabled = true;
-            v_InstanceName = "default";
+            v_InstanceName = "DefaultIEBrowser";
             CustomRendering = true;
         }
 
@@ -40,14 +39,12 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-
-            var browserObject = engine.GetAppInstance(vInstance);
+            var browserObject = engine.GetAppInstance(v_InstanceName);
 
             var browserInstance = (InternetExplorer)browserObject;
             browserInstance.Quit();
 
-            engine.RemoveAppInstance(vInstance);
+            engine.RemoveAppInstance(v_InstanceName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

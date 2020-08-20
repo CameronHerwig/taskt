@@ -23,9 +23,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Excel Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Application** command.")]
-        [SampleUsage("MyExcelInstance || {vExcelInstance}")]
+        [SampleUsage("MyExcelInstance")]
         [Remarks("Failure to enter the correct instance or failure to first call the **Create Application** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         public ExcelSaveWorkbookCommand()
@@ -40,8 +39,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var excelObject = engine.GetAppInstance(vInstance);
+            var excelObject = engine.GetAppInstance(v_InstanceName);
             var excelInstance = (Application)excelObject;
 
             //save

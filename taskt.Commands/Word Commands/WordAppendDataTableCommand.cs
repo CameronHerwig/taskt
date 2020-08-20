@@ -29,9 +29,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Word Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Application** command.")]
-        [SampleUsage("MyWordInstance || {vWordInstance}")]
+        [SampleUsage("MyWordInstance")]
         [Remarks("Failure to enter the correct instance or failure to first call the **Create Application** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -53,8 +52,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var wordObject = engine.GetAppInstance(vInstance);
+            var wordObject = engine.GetAppInstance(v_InstanceName);
 
             DataTable dataTable = (DataTable)v_DataTable.LookupComplexVariable(engine);
 

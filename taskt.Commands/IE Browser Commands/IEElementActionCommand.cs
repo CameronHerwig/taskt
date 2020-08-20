@@ -26,11 +26,10 @@ namespace taskt.Commands
     public class IEElementActionCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("IE Instance Name")]
+        [PropertyDescription("Browser Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("IEBrowser || {vIEBrowser}")]
-        [Remarks("Failure to enter the correct instance or failure to first call **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [SampleUsage("MyIEBrowserInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **Create Browser** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         [XmlElement]
@@ -98,7 +97,7 @@ namespace taskt.Commands
             CommandName = "IEElementActionCommand";
             SelectionName = "Element Action";
             CommandEnabled = true;
-            v_InstanceName = "default";
+            v_InstanceName = "DefaultIEBrowser";
             CustomRendering = true;
 
             v_WebSearchParameter = new DataTable();
@@ -134,8 +133,7 @@ namespace taskt.Commands
 
             var engine = (AutomationEngineInstance)sender;
 
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            browserObject = engine.GetAppInstance(vInstance);
+            browserObject = engine.GetAppInstance(v_InstanceName);
             var browserInstance = (InternetExplorer)browserObject;
 
             DataTable searchTable = Common.Clone(v_WebSearchParameter);
