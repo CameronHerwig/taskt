@@ -20,13 +20,6 @@ namespace taskt.Commands
 
     public class CreateDataTableCommand : ScriptCommand
     {
-        [XmlAttribute]
-        [PropertyDescription("New DataTable Name")]
-        [InputSpecification("Indicate a unique reference name for later use.")]
-        [SampleUsage("MyDatatable")]
-        [Remarks("")]
-        public string v_DataTable { get; set; }
-
         [XmlElement]
         [PropertyDescription("Column Names")]
         [InputSpecification("Enter the Column Names required for each column of data.")]
@@ -34,6 +27,13 @@ namespace taskt.Commands
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public DataTable v_ColumnNameDataTable { get; set; }
+
+        [XmlAttribute]
+        [PropertyDescription("Output DataTable Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public CreateDataTableCommand()
         {
@@ -62,22 +62,22 @@ namespace taskt.Commands
                 Dt.Columns.Add(rwColumnName.Field<string>("Column Name").ConvertToUserVariable(engine));
             }
 
-            Dt.StoreInUserVariable(engine, v_DataTable);
+            Dt.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_DataTable", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDataGridViewGroupFor("v_ColumnNameDataTable", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + $" [Create '{v_DataTable}' With {v_ColumnNameDataTable.Rows.Count} Column(s)]";
+            return base.GetDisplayValue() + $" [With {v_ColumnNameDataTable.Rows.Count} Column(s) - Store DataTable in '{v_OutputUserVariableName}']";
         }
     }
 }

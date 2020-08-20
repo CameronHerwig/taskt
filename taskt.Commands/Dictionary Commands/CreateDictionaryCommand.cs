@@ -19,13 +19,6 @@ namespace taskt.Commands
     [Description("This command creates a new Dictionary.")]
     public class CreateDictionaryCommand : ScriptCommand
     {
-        [XmlAttribute]
-        [PropertyDescription("New Dictionary Name")]
-        [InputSpecification("Specify a unique reference name for the new dictionary.")]
-        [SampleUsage("vDictionaryName")]
-        [Remarks("")]
-        public string v_DictionaryName { get; set; }
-
         [XmlElement]
         [PropertyDescription("Keys and Values")]
         [InputSpecification("Enter the Keys and Values required for the new dictionary.")]
@@ -33,6 +26,13 @@ namespace taskt.Commands
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public DataTable v_ColumnNameDataTable { get; set; }
+
+        [XmlAttribute]
+        [PropertyDescription("Output Dictionary Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public CreateDictionaryCommand()
         {
@@ -64,22 +64,22 @@ namespace taskt.Commands
                     rwColumnName.Field<string>("Values").ConvertToUserVariable(engine));
             }
 
-            outputDictionary.StoreInUserVariable(engine, v_DictionaryName);
+            outputDictionary.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
-            //create standard group controls
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_DictionaryName", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDataGridViewGroupFor("v_ColumnNameDataTable", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
+
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + $" [Having Name '{v_DictionaryName}' With {v_ColumnNameDataTable.Rows.Count} Entries]";
+            return base.GetDisplayValue() + $" [With {v_ColumnNameDataTable.Rows.Count} Entries - Store Dictionary in '{v_OutputUserVariableName}']";
         }
     }
 }

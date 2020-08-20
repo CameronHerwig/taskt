@@ -22,7 +22,7 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("New Variable Name")]
         [InputSpecification("Indicate a unique reference name for later use.")]
-        [SampleUsage("vSomeVariable")]
+        [SampleUsage("{vSomeVariable}")]
         [Remarks("")]
         public string v_VariableName { get; set; }
 
@@ -58,13 +58,14 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             var variable = v_VariableName.LookupComplexVariable(engine);
+            var input = v_Input.ConvertToUserVariable(engine);
 
             if (variable == null)
             {
                 //variable does not exist so add to the list
                 try
                 {
-                    v_Input.StoreInUserVariable(engine, v_VariableName);
+                    input.StoreInUserVariable(engine, v_VariableName);
                 }
                 catch (Exception ex)
                 {
@@ -77,7 +78,7 @@ namespace taskt.Commands
                 switch (v_IfExists)
                 {
                     case "Replace If Variable Exists":
-                        v_Input.ConvertToUserVariable(engine).StoreInUserVariable(engine, v_VariableName);
+                        input.StoreInUserVariable(engine, v_VariableName);
                         break;
                     case "Error If Variable Exists":
                         throw new Exception("Attempted to create a variable that already exists! Use 'Set Variable' instead or change the Exception Setting in the 'Add Variable' Command.");
