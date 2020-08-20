@@ -9,6 +9,7 @@ using taskt.Core.Command;
 using taskt.Core.Common;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
@@ -52,7 +53,7 @@ namespace taskt.Commands
 
             //user image to bitmap
             Bitmap capturedBmp = new Bitmap(Common.Base64ToImage(v_ImageCapture));
-            engine.AddVariable(v_OutputUserVariableName, capturedBmp);
+            capturedBmp.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

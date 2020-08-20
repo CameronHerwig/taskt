@@ -83,11 +83,11 @@ namespace taskt.Commands
             {
                 listToIndex = (List<MailItem>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MimeMessage>)
+            else if (listVariable is List<MimeMessage>)
             {
-                listToIndex = (List<MimeMessage>)listVariable.VariableValue;
+                listToIndex = (List<MimeMessage>)listVariable;
             }
-            else if (listVariable.VariableValue is List<IWebElement>)
+            else if (listVariable is List<IWebElement>)
             {
                 listToIndex = (List<IWebElement>)listVariable;
             }

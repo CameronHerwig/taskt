@@ -255,10 +255,10 @@ namespace taskt.Commands
                                                    where rw.Field<string>("Parameter Name") == "Y Adjustment"
                                                    select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
 
-                        var secureStrVariable = VariableMethods.LookupVariable(engine, secureString);
+                        var secureStrVariable = secureString.LookupComplexVariable(engine);
 
-                        if (secureStrVariable.VariableValue is SecureString)
-                            secureString = ((SecureString)secureStrVariable.VariableValue).ConvertSecureStringToString();
+                        if (secureStrVariable is SecureString)
+                            secureString = ((SecureString)secureStrVariable).ConvertSecureStringToString();
                         else
                             throw new ArgumentException("Provided Argument is not a 'Secure String'");
 

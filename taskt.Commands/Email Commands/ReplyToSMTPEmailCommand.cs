@@ -102,7 +102,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MimeMessage vMimeMessageToReply = (MimeMessage)VariableMethods.LookupVariable(engine, v_SMTPMimeMessage).VariableValue;
+            MimeMessage vMimeMessageToReply = (MimeMessage)v_SMTPMimeMessage.LookupComplexVariable(engine);
             string vSMTPHost = v_SMTPHost.ConvertToUserVariable(engine);
             string vSMTPPort = v_SMTPPort.ConvertToUserVariable(engine);
             string vSMTPUserName = v_SMTPUserName.ConvertToUserVariable(engine);

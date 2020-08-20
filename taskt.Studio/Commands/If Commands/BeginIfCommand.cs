@@ -714,11 +714,11 @@ namespace taskt.Commands
                                               where rw.Field<string>("Parameter Name") == "True When"
                                               select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                var imageVariable = VariableMethods.LookupVariable(engine, imageName);
+                var imageVariable = imageName.LookupComplexVariable(engine);
 
                 Bitmap capturedImage;
-                if (imageVariable != null && imageVariable.VariableValue is Bitmap)
-                    capturedImage = (Bitmap)imageVariable.VariableValue;
+                if (imageVariable != null && imageVariable is Bitmap)
+                    capturedImage = (Bitmap)imageVariable;
                 else
                     throw new ArgumentException("Provided Argument is not a 'Bitmap' Image");
 

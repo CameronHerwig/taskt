@@ -121,9 +121,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MimeMessage mimeMessage;
-                            ScriptVariable mimeMessageVariable = VariableMethods.LookupVariable(engine, item.Trim());
-                            if (mimeMessageVariable != null && mimeMessageVariable.VariableValue is MimeMessage)
-                                mimeMessage = (MimeMessage)mimeMessageVariable.VariableValue;
+                            var mimeMessageVariable = item.Trim().LookupComplexVariable(engine);
+                            if (mimeMessageVariable != null && mimeMessageVariable is MimeMessage)
+                                mimeMessage = (MimeMessage)mimeMessageVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<MimeMessage>)vNewList).Add(mimeMessage);

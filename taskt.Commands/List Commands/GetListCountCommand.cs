@@ -68,11 +68,11 @@ namespace taskt.Commands
             {
                 listToCount = (List<MailItem>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MimeMessage>)
+            else if (listVariable is List<MimeMessage>)
             {
-                listToCount = (List<MimeMessage>)listVariable.VariableValue;
+                listToCount = (List<MimeMessage>)listVariable;
             }
-            else if (listVariable.VariableValue is List<IWebElement>)
+            else if (listVariable is List<IWebElement>)
             {
                 listToCount = (List<IWebElement>)listVariable;
             }

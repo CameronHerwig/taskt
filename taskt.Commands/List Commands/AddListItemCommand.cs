@@ -80,17 +80,17 @@ namespace taskt.Commands
                         throw new Exception("Invalid List Item type, please provide valid List Item type.");
                     ((List<MailItem>)vListVariable).Add(mailItem);
                 }
-                else if (vListVariable.VariableValue is List<MimeMessage>)
+                else if (vListVariable is List<MimeMessage>)
                 {
                     MimeMessage mimeMessage;
-                    ScriptVariable mimeMessageVariable = VariableMethods.LookupVariable(engine, v_ListItem.Trim());
-                    if (mimeMessageVariable != null && mimeMessageVariable.VariableValue is MimeMessage)
-                        mimeMessage = (MimeMessage)mimeMessageVariable.VariableValue;
+                    var mimeMessageVariable = v_ListItem.Trim().LookupComplexVariable(engine);
+                    if (mimeMessageVariable != null && mimeMessageVariable is MimeMessage)
+                        mimeMessage = (MimeMessage)mimeMessageVariable;
                     else
                         throw new Exception("Invalid List Item type, please provide valid List Item type.");
-                    ((List<MimeMessage>)vListVariable.VariableValue).Add(mimeMessage);
+                    ((List<MimeMessage>)vListVariable).Add(mimeMessage);
                 }
-                else if (vListVariable.VariableValue is List<IWebElement>)
+                else if (vListVariable is List<IWebElement>)
                 {
                     IWebElement webElement;
                     var webElementVariable = v_ListItem.Trim().LookupComplexVariable(engine);

@@ -104,7 +104,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MimeMessage vMimeMessage = (MimeMessage)VariableMethods.LookupVariable(engine, v_IMAPMimeMessage).VariableValue;
+            MimeMessage vMimeMessage = (MimeMessage)v_IMAPMimeMessage.LookupComplexVariable(engine);
             string vIMAPHost = v_IMAPHost.ConvertToUserVariable(engine);
             string vIMAPPort = v_IMAPPort.ConvertToUserVariable(engine);
             string vIMAPUserName = v_IMAPUserName.ConvertToUserVariable(engine);

@@ -57,14 +57,10 @@ namespace taskt.Commands
             int loopTimes;
             var complexVariable = v_LoopParameter.LookupComplexVariable(engine);           
 
-            //if null then throw exception
-            if (complexVariable == null)
-                complexVariable = engine.VariableList.Where(x => x.VariableName.ApplyVariableFormatting() == v_LoopParameter).FirstOrDefault();
-
             //if still null then throw exception
             if (complexVariable == null)
             {
-                throw new System.Exception("Complex Variable '" + v_LoopParameter + "' or '" + v_LoopParameter.ApplyVariableFormatting() + 
+                throw new System.Exception("Complex Variable '" + v_LoopParameter + 
                     "' not found. Ensure the variable exists before attempting to modify it.");
             }
 
@@ -85,13 +81,13 @@ namespace taskt.Commands
             {
                 listToLoop = (List<MailItem>)complexVariable;
             }
-            else if (complexVariable.VariableValue is List<MimeMessage>)
+            else if (complexVariable is List<MimeMessage>)
             {
-                listToLoop = (List<MimeMessage>)complexVariable.VariableValue;
+                listToLoop = (List<MimeMessage>)complexVariable;
             }
-            else if ((complexVariable.VariableValue.ToString().StartsWith("[")) && 
-                (complexVariable.VariableValue.ToString().EndsWith("]")) && 
-                (complexVariable.VariableValue.ToString().Contains(",")))
+            else if ((complexVariable.ToString().StartsWith("[")) && 
+                (complexVariable.ToString().EndsWith("]")) && 
+                (complexVariable.ToString().Contains(",")))
             {
                 //automatically handle if user has given a json array
                 JArray jsonArray = JsonConvert.DeserializeObject(complexVariable.ToString()) as JArray;
@@ -115,10 +111,7 @@ namespace taskt.Commands
             {
                 engine.ReportProgress("Starting Loop Number " + (i + 1) + "/" + loopTimes + " From Line " + loopCommand.LineNumber);
                 
-                if(listToLoop[i] is string)
-                    ((string)listToLoop[i]).StoreInUserVariable(engine, v_OutputUserVariableName);
-                else
-                    engine.AddVariable(v_OutputUserVariableName, listToLoop[i]);
+                listToLoop[i].StoreInUserVariable(engine, v_OutputUserVariableName);
 
                 foreach (var cmd in parentCommand.AdditionalScriptCommands)
                 {

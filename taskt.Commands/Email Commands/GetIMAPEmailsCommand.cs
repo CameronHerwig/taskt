@@ -217,7 +217,7 @@ namespace taskt.Commands
                         outMail.Add(message);
 
                     }
-                    engine.AddVariable(v_OutputUserVariableName, outMail);
+                    outMail.StoreInUserVariable(engine, v_OutputUserVariableName);
 
                     client.Disconnect(true, cancel.Token);
                     client.ServerCertificateValidationCallback = null;
