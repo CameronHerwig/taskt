@@ -51,11 +51,11 @@
             // lstSteppingCommands
             // 
             this.lstSteppingCommands.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstSteppingCommands.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstSteppingCommands.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstSteppingCommands.ForeColor = System.Drawing.SystemColors.Highlight;
             this.lstSteppingCommands.FormattingEnabled = true;
             this.lstSteppingCommands.ItemHeight = 21;
-            this.lstSteppingCommands.Location = new System.Drawing.Point(9, 69);
+            this.lstSteppingCommands.Location = new System.Drawing.Point(13, 70);
             this.lstSteppingCommands.Margin = new System.Windows.Forms.Padding(4);
             this.lstSteppingCommands.Name = "lstSteppingCommands";
             this.lstSteppingCommands.Size = new System.Drawing.Size(899, 151);
@@ -117,7 +117,6 @@
             this.lblAction.Size = new System.Drawing.Size(83, 25);
             this.lblAction.TabIndex = 19;
             this.lblAction.Text = "Action...";
-            this.lblAction.Visible = false;
             // 
             // uiBtnStepInto
             // 
@@ -197,11 +196,11 @@
             // 
             this.pbBotIcon.BackColor = System.Drawing.Color.Transparent;
             this.pbBotIcon.Image = global::taskt.Properties.Resources.executing;
-            this.pbBotIcon.Location = new System.Drawing.Point(9, 69);
+            this.pbBotIcon.Location = new System.Drawing.Point(16, 69);
             this.pbBotIcon.Margin = new System.Windows.Forms.Padding(4);
             this.pbBotIcon.Name = "pbBotIcon";
-            this.pbBotIcon.Size = new System.Drawing.Size(675, 135);
-            this.pbBotIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbBotIcon.Size = new System.Drawing.Size(896, 154);
+            this.pbBotIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbBotIcon.TabIndex = 18;
             this.pbBotIcon.TabStop = false;
             this.pbBotIcon.Click += new System.EventHandler(this.pbBotIcon_Click);
@@ -211,7 +210,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(925, 304);
+            this.ClientSize = new System.Drawing.Size(925, 290);
             this.Controls.Add(this.uiBtnStepInto);
             this.Controls.Add(this.uiBtnStepOver);
             this.Controls.Add(this.lblAction);

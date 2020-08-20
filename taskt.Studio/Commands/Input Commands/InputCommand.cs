@@ -178,14 +178,14 @@ namespace taskt.Commands
             field.DataPropertyName = "ApplyToVariable";
             UserInputGridViewHelper.Columns.Add(field);
 
-
-            UserInputGridViewHelper.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            UserInputGridViewHelper.ColumnHeadersHeight = 30;
+            UserInputGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             UserInputGridViewHelper.AllowUserToAddRows = false;
             UserInputGridViewHelper.AllowUserToDeleteRows = false;
 
 
             AddRowControl = new CommandItemControl();
-            AddRowControl.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            AddRowControl.Padding = new Padding(10, 0, 0, 0);
             AddRowControl.ForeColor = Color.AliceBlue;
             AddRowControl.Font = new Font("Segoe UI Semilight", 10);
             AddRowControl.CommandImage = Resources.command_input;

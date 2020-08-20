@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Command;
 using taskt.Core.Infrastructure;
-using taskt.UI.CustomControls;
 
 namespace taskt.Commands
 {
@@ -29,8 +28,6 @@ namespace taskt.Commands
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
-
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Comment", this, editor));
 
             return RenderedControls;
         }

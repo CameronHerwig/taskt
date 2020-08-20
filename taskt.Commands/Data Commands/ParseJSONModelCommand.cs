@@ -57,6 +57,7 @@ namespace taskt.Commands
             _parseObjectsGridViewHelper.AllowUserToAddRows = true;
             _parseObjectsGridViewHelper.AllowUserToDeleteRows = true;
             _parseObjectsGridViewHelper.Size = new Size(400, 250);
+            _parseObjectsGridViewHelper.ColumnHeadersHeight = 30;
             _parseObjectsGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _parseObjectsGridViewHelper.DataBindings.Add("DataSource", this, "v_ParseObjects", false, DataSourceUpdateMode.OnPropertyChanged);
         }

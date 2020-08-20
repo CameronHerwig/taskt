@@ -70,8 +70,6 @@ namespace taskt.Commands
             var mouseX = v_XMousePosition.ConvertToUserVariable(engine);
             var mouseY = v_YMousePosition.ConvertToUserVariable(engine);
 
-
-
             try
             {
                 var xLocation = Convert.ToInt32(Math.Floor(Convert.ToDouble(mouseX)));
@@ -79,29 +77,20 @@ namespace taskt.Commands
 
                 User32Functions.SetCursorPosition(xLocation, yLocation);
                 User32Functions.SendMouseClick(v_MouseClick, xLocation, yLocation);
-
-
             }
             catch (Exception ex)
             {
                 throw new Exception("Error parsing input to int type (X: " + v_XMousePosition + ", Y:" + v_YMousePosition + ") " + ex.ToString());
             }
-
-          
-
-
-
         }
+
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_XMousePosition", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_YMousePosition", this, editor));
-
-            //create window name helper control
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_MouseClick", this, editor));
-
 
             return RenderedControls;
 

@@ -16,7 +16,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Outlook Commands")]
-    [Description("This command forwards selected emails in Outlook.")]
+    [Description("This command forwards a selected email in Outlook.")]
 
     public class ForwardOutlookEmailCommand : ScriptCommand
     {

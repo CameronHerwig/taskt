@@ -17,7 +17,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Outlook Commands")]
-    [Description("This command sends emails with attachments in Outlook.")]
+    [Description("This command sends an email with optional attachment(s) in Outlook.")]
 
     public class SendOutlookEmailCommand : ScriptCommand
     {
@@ -86,7 +86,7 @@ namespace taskt.Commands
             if (currentUser.Type == "EX")
             {
                 ExchangeUser manager = currentUser.GetExchangeUser().GetExchangeUserManager();
-                // Add recipient using display name, alias, or smtp address
+
                 foreach (var t in splitRecipients)
                     mail.Recipients.Add(t.ToString());
 
@@ -115,7 +115,7 @@ namespace taskt.Commands
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Recipients", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Subject", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Body", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Body", this, editor, 100, 300));
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_BodyType", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Attachments", this, editor));
 

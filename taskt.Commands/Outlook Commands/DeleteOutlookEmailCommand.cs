@@ -16,7 +16,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Outlook Commands")]
-    [Description("This command deletes selected emails in Outlook.")]
+    [Description("This command deletes a selected email in Outlook.")]
 
     public class DeleteOutlookEmailCommand : ScriptCommand
     {

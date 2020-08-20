@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OneNoteOCRDll;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,18 +17,16 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Image Commands")]
-    [Description("This command allows you to covert an image file into text for parsing.")]
-    [UsesDescription("Use this command when you want to convert an image into text.  You can then use additional commands to parse the data.")]
-    [ImplementationDescription("This command has a dependency on and implements OneNote OCR to achieve automation.")]
+    [Description("This command extracts text from an image file.")]
     public class PerformOCRCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Select Image to OCR")]
+        [PropertyDescription("Image File Path")]
+        [InputSpecification("Select the image to perform OCR text extraction on.")]
+        [SampleUsage(@"C:\temp\myimages.png || {ProjectPath}\myimages.png || {vImageFile}")]
+        [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         [PropertyUIHelper(UIAdditionalHelperType.ShowFileSelectionHelper)]
-        [InputSpecification("Enter or Select the path to the image file.")]
-        [SampleUsage(@"**c:\temp\myimages.png")]
-        [Remarks("")]
         public string v_FilePath { get; set; }
 
         [XmlAttribute]
@@ -49,19 +48,18 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
+            var vFilePath = v_FilePath.ConvertToUserVariable(engine);
 
-            var ocrEngine = new OneNoteOCRDll.OneNoteOCR();
-            var arr = ocrEngine.OcrTexts(v_FilePath.ConvertToUserVariable(engine)).ToArray();
+            OneNoteOCR ocrEngine = new OneNoteOCR();
+            OCRText[] ocrTextArray = ocrEngine.OcrTexts(vFilePath).ToArray();
 
             string endResult = "";
-            foreach (var text in arr)
-            {
+            foreach (var text in ocrTextArray)
                 endResult += text.Text;
-            }
 
-            //apply to user variable
             endResult.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
+
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
@@ -74,7 +72,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return "OCR '" + v_FilePath + "' and apply result to '" + v_OutputUserVariableName + "'";
+            return base.GetDisplayValue() + $" [File '{v_FilePath}' - Store OCR Result in '{v_OutputUserVariableName}']";
         }
     }
 }

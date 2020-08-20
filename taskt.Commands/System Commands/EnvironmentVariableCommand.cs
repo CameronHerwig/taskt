@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -84,8 +85,8 @@ namespace taskt.Commands
             RenderedControls.Add(VariableNameComboBox);
 
             VariableValue = new Label();
-            VariableValue.Font = new System.Drawing.Font("Segoe UI", 12);
-            VariableValue.ForeColor = System.Drawing.Color.White;
+            VariableValue.Font = new Font("Segoe UI Semilight", 10, FontStyle.Bold);
+            VariableValue.ForeColor = Color.White;
 
             RenderedControls.Add(VariableValue);
 

@@ -40,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>taskt_logo_alt.ico</ApplicationIcon>
@@ -78,12 +80,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.5\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.6.10.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.6.10\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -92,6 +102,9 @@
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="MailKit, Version=2.8.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailKit.2.8.0\lib\net48\MailKit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
@@ -121,6 +134,9 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.6.1.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
       <HintPath>..\packages\TaskScheduler.2.6.1\lib\net452\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="MimeKit, Version=2.9.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKit.2.9.1\lib\net48\MimeKit.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -191,6 +207,9 @@
       <HintPath>..\packages\WebSocket4Net.0.15.0\lib\net45\WebSocket4Net.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Engine Commands\ErrorHandlingCommand.cs" />
@@ -202,6 +221,8 @@
     <Compile Include="Commands\Engine Commands\ShowEngineContextCommand.cs" />
     <Compile Include="Commands\Engine Commands\StopwatchCommand.cs" />
     <Compile Include="Commands\Engine Commands\UploadBotStoreDataCommand.cs" />
+    <Compile Include="Commands\Image Commands\CaptureImageCommand.cs" />
+    <Compile Include="Commands\Image Commands\SurfaceAutomationCommand.cs" />
     <Compile Include="Commands\Input Commands\InputCommand.cs" />
     <Compile Include="Commands\Error Handling Commands\BeginRetryCommand.cs" />
     <Compile Include="Commands\Error Handling Commands\EndRetryCommand.cs" />
@@ -228,7 +249,6 @@
     <Compile Include="Commands\If Commands\BeginMutliIfCommand.cs" />
     <Compile Include="Commands\If Commands\ElseCommand.cs" />
     <Compile Include="Commands\If Commands\EndIfCommand.cs" />
-    <Compile Include="Commands\Image Commands\ImageRecognitionCommand.cs" />
     <Compile Include="Commands\Image Commands\PerformOCRCommand.cs" />
     <Compile Include="Commands\Image Commands\TakeScreenshotCommand.cs" />
     <Compile Include="Commands\Input Commands\HTMLInputCommand.cs" />
@@ -248,7 +268,6 @@
     <Compile Include="Commands\Misc Commands\AddCodeCommentCommand.cs" />
     <Compile Include="Commands\Misc Commands\EncryptionCommand.cs" />
     <Compile Include="Commands\Misc Commands\GetClipboardTextCommand.cs" />
-    <Compile Include="Commands\Misc Commands\SendSMTPEmailCommand.cs" />
     <Compile Include="Commands\Misc Commands\SequenceCommand.cs" />
     <Compile Include="Commands\Misc Commands\SetClipboardTextCommand.cs" />
     <Compile Include="Commands\API Commands\ExecuteDLLCommand.cs" />
@@ -567,6 +586,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\frmScheduleManagement.resx">
       <DependentUpon>frmScheduleManagement.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\frmScriptElements.resx">
       <DependentUpon>frmScriptElements.cs</DependentUpon>
@@ -600,6 +620,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\frmCommandEditor.resx">
       <DependentUpon>frmCommandEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\frmScriptEngine.resx">
       <DependentUpon>frmScriptEngine.cs</DependentUpon>
@@ -673,6 +694,7 @@
     <EmbeddedResource Include="UI\Forms\UIForm.resx">
       <DependentUpon>UIForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="LICENSE" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

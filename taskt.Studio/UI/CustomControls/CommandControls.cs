@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using taskt.Commands;
 using taskt.Core.Attributes.PropertyAttributes;
@@ -28,12 +29,12 @@ namespace taskt.UI.CustomControls
     {
         public static frmCommandEditor CurrentEditor { get; set; }
 
-        public static List<Control> CreateDefaultInputGroupFor(string parameterName, ScriptCommand parent, IfrmCommandEditor editor)
+        public static List<Control> CreateDefaultInputGroupFor(string parameterName, ScriptCommand parent, IfrmCommandEditor editor, int height = 30, int width = 300)
         {
             //Todo: Test
             var controlList = new List<Control>();
             var label = CreateDefaultLabelFor(parameterName, parent);
-            var input = CreateDefaultInputFor(parameterName, parent);
+            var input = CreateDefaultInputFor(parameterName, parent, height, width);
             var helpers = CreateUIHelpersFor(parameterName, parent, new Control[] { input }, (frmCommandEditor)editor);
 
             controlList.Add(label);
@@ -160,6 +161,9 @@ namespace taskt.UI.CustomControls
 
             inputBox.Name = parameterName;
             inputBox.KeyDown += InputBox_KeyDown;
+
+            if (parameterName == "v_Comment")
+                inputBox.Margin = new Padding(0, 0, 0, 20);
             return inputBox;
         }
 
@@ -177,9 +181,9 @@ namespace taskt.UI.CustomControls
             checkBox.DataBindings.Add("Checked", parent, parameterName, false, DataSourceUpdateMode.OnPropertyChanged);
             checkBox.Name = parameterName;
             checkBox.AutoSize = true;
-            checkBox.Size = new Size(15, 14);
+            checkBox.Size = new Size(20, 20);
             checkBox.UseVisualStyleBackColor = true;
-
+            checkBox.Margin = new Padding(0, 8, 0, 0);
             return checkBox;
         }
 
@@ -296,7 +300,7 @@ namespace taskt.UI.CustomControls
                         helperControl.Click += (sender, e) => ShowFolderSelector(sender, e, (frmCommandEditor)editor);
                         break;
 
-                    case UIAdditionalHelperType.ShowImageRecogitionHelper:
+                    case UIAdditionalHelperType.ShowImageCaptureHelper:
                         //show file selector
                         helperControl.CommandImage = Resources.command_camera;
                         helperControl.CommandDisplay = "Capture Reference Image";
@@ -309,6 +313,7 @@ namespace taskt.UI.CustomControls
                         testRun.CommandImage = Resources.command_camera;
                         testRun.CommandDisplay = "Run Image Recognition Test";
                         testRun.ForeColor = Color.AliceBlue;
+                        testRun.Font = new Font("Segoe UI Semilight", 10);
                         testRun.Tag = targetControls.FirstOrDefault();
                         testRun.Click += (sender, e) => RunImageCapture(sender, e);
                         controlList.Add(testRun);
@@ -367,9 +372,9 @@ namespace taskt.UI.CustomControls
                         helperControl.CommandDisplay = "Add New Loop Statement";
                         break;
 
-                        //default:
-                        //    MessageBox.Show("Command Helper does not exist for: " + attrib.additionalHelper.ToString());
-                        //    break;
+                    //default:
+                    //    MessageBox.Show("Command Helper does not exist for: " + attrib.additionalHelper.ToString());
+                    //    break;
                 }
 
                 controlList.Add(helperControl);
@@ -384,6 +389,7 @@ namespace taskt.UI.CustomControls
             gridView.AllowUserToAddRows = true;
             gridView.AllowUserToDeleteRows = true;
             gridView.Size = new Size(400, 250);
+            gridView.ColumnHeadersHeight = 30;
             gridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             gridView.DataBindings.Add("DataSource", sourceCommand, dataSourceName, false, DataSourceUpdateMode.OnPropertyChanged);
             gridView.AllowUserToResizeRows = false;
@@ -605,9 +611,8 @@ namespace taskt.UI.CustomControls
                     UIPictureBox targetPictureBox = (UIPictureBox)inputBox.Tag;
                     targetPictureBox.Image = imageCaptureForm.UserSelectedBitmap;
                     var convertedImage = Common.ImageToBase64(imageCaptureForm.UserSelectedBitmap);
-                    var convertedLength = convertedImage.Length;
                     targetPictureBox.EncodedImage = convertedImage;
-                    imageCaptureForm.Show();
+                    imageCaptureForm.Close();
                 }
             }
 
@@ -639,10 +644,10 @@ namespace taskt.UI.CustomControls
             try
             {
                 //run image recognition
-                ImageRecognitionCommand imageRecognitionCommand = new ImageRecognitionCommand();
-                imageRecognitionCommand.v_ImageCapture = imageSource;
-                imageRecognitionCommand.TestMode = true;
-                imageRecognitionCommand.RunCommand(null);
+                SurfaceAutomationCommand surfaceAutomationCommand = new SurfaceAutomationCommand();
+                surfaceAutomationCommand.v_ImageCapture = imageSource;
+                surfaceAutomationCommand.TestMode = true;
+                surfaceAutomationCommand.RunCommand(null);
             }
             catch (Exception ex)
             {
@@ -802,18 +807,42 @@ namespace taskt.UI.CustomControls
 
         public static void ShowAllForms()
         {
-            foreach (Form frm in Application.OpenForms)
+            foreach (Form form in Application.OpenForms)
+                ShowForm(form);
+
+            Thread.Sleep(1000);
+        }
+
+        public delegate void ShowFormDelegate(Form form);
+        public static void ShowForm(Form form)
+        {
+            if (form.InvokeRequired)
             {
-                frm.WindowState = FormWindowState.Normal;
+                var d = new ShowFormDelegate(ShowForm);
+                form.Invoke(d, new object[] { form });
             }
+            else
+                form.WindowState = FormWindowState.Normal;
         }
 
         public static void HideAllForms()
         {
-            foreach (Form frm in Application.OpenForms)
+            foreach (Form form in Application.OpenForms)
+                HideForm(form);
+
+            Thread.Sleep(1000);
+        }
+
+        public delegate void HideFormDelegate(Form form);
+        public static void HideForm(Form form)
+        {
+            if (form.InvokeRequired)
             {
-                frm.WindowState = FormWindowState.Minimized;
+                var d = new HideFormDelegate(HideForm);
+                form.Invoke(d, new object[] { form });
             }
+            else
+                form.WindowState = FormWindowState.Minimized;
         }
 
         public static List<AutomationCommand> GenerateCommandsandControls()

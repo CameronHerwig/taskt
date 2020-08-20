@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Outlook;
+using MimeKit;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,17 @@ namespace taskt.Commands
                         throw new Exception("Invalid List Item type, please provide valid List Item type.");
                     ((List<MailItem>)vListVariable).Add(mailItem);
                 }
-                else if (vListVariable is List<IWebElement>)
+                else if (vListVariable.VariableValue is List<MimeMessage>)
+                {
+                    MimeMessage mimeMessage;
+                    ScriptVariable mimeMessageVariable = VariableMethods.LookupVariable(engine, v_ListItem.Trim());
+                    if (mimeMessageVariable != null && mimeMessageVariable.VariableValue is MimeMessage)
+                        mimeMessage = (MimeMessage)mimeMessageVariable.VariableValue;
+                    else
+                        throw new Exception("Invalid List Item type, please provide valid List Item type.");
+                    ((List<MimeMessage>)vListVariable.VariableValue).Add(mimeMessage);
+                }
+                else if (vListVariable.VariableValue is List<IWebElement>)
                 {
                     IWebElement webElement;
                     var webElementVariable = v_ListItem.Trim().LookupComplexVariable(engine);

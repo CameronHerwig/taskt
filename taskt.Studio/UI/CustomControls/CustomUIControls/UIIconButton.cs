@@ -87,7 +87,7 @@ namespace taskt.UI.CustomControls.CustomUIControls
             }
 
             if (Image != null)
-                e.Graphics.DrawImage(Image, (Width / 2) - 10, (Width / 2) - 10, 20, 20);
+                e.Graphics.DrawImage(Image, (Width / 2) - 11, (Width / 2) - 11, 22, 22);
         }
 
         protected override CreateParams CreateParams

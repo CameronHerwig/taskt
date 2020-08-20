@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Outlook;
+using MimeKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
@@ -82,7 +83,11 @@ namespace taskt.Commands
             {
                 listToIndex = (List<MailItem>)listVariable;
             }
-            else if (listVariable is List<IWebElement>)
+            else if (listVariable.VariableValue is List<MimeMessage>)
+            {
+                listToIndex = (List<MimeMessage>)listVariable.VariableValue;
+            }
+            else if (listVariable.VariableValue is List<IWebElement>)
             {
                 listToIndex = (List<IWebElement>)listVariable;
             }

@@ -263,7 +263,7 @@ namespace taskt.Commands
             _RESTParametersGridViewHelper = new DataGridView();
             _RESTParametersGridViewHelper.Width = 500;
             _RESTParametersGridViewHelper.Height = 140;
-
+            _RESTParametersGridViewHelper.ColumnHeadersHeight = 30;
             _RESTParametersGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _RESTParametersGridViewHelper.AutoGenerateColumns = false;
 
@@ -292,7 +292,7 @@ namespace taskt.Commands
             _advancedRESTParametersGridViewHelper = new DataGridView();
             _advancedRESTParametersGridViewHelper.Width = 500;
             _advancedRESTParametersGridViewHelper.Height = 140;
-
+            _advancedRESTParametersGridViewHelper.ColumnHeadersHeight = 30;
             _advancedRESTParametersGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _advancedRESTParametersGridViewHelper.AutoGenerateColumns = false;
 

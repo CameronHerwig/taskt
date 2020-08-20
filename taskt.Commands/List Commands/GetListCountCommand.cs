@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Outlook;
+using MimeKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
@@ -67,7 +68,11 @@ namespace taskt.Commands
             {
                 listToCount = (List<MailItem>)listVariable;
             }
-            else if (listVariable is List<IWebElement>)
+            else if (listVariable.VariableValue is List<MimeMessage>)
+            {
+                listToCount = (List<MimeMessage>)listVariable.VariableValue;
+            }
+            else if (listVariable.VariableValue is List<IWebElement>)
             {
                 listToCount = (List<IWebElement>)listVariable;
             }

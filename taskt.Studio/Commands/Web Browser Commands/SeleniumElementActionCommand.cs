@@ -107,7 +107,7 @@ namespace taskt.Commands
         [XmlElement]
         [PropertyDescription("Additional Parameters")]
         [InputSpecification("Additional Parameters will be required based on the action settings selected.")]
-        [SampleUsage("data || {vData}, *Variable Name*: vNewVariable")]
+        [SampleUsage("data || {vData} || *Variable Name*: vNewVariable")]
         [Remarks("Additional Parameters range from adding offset coordinates to specifying a variable to apply element text to.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public DataTable v_WebActionParameterTable { get; set; }
@@ -148,6 +148,7 @@ namespace taskt.Commands
             _elementsGridViewHelper.AllowUserToAddRows = true;
             _elementsGridViewHelper.AllowUserToDeleteRows = true;
             _elementsGridViewHelper.Size = new Size(400, 250);
+            _elementsGridViewHelper.ColumnHeadersHeight = 30;
             _elementsGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _elementsGridViewHelper.DataBindings.Add("DataSource", this, "v_WebActionParameterTable", false, DataSourceUpdateMode.OnPropertyChanged);
             _elementsGridViewHelper.AllowUserToAddRows = false;
