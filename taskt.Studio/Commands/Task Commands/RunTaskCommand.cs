@@ -102,18 +102,19 @@ namespace taskt.Commands
             foreach (DataRow rw in v_VariableAssignments.Rows)
             {
                 var variableName = (string)rw.ItemArray[0];
-                object variableValue;
+                object variableValue = null;
 
-                if (((string)rw.ItemArray[1]).ConvertUserVariableToObject(currentScriptEngine) != null)
+                if (((string)rw.ItemArray[1]).StartsWith("{") && ((string)rw.ItemArray[1]).EndsWith("}"))
                     variableValue = ((string)rw.ItemArray[1]).ConvertUserVariableToObject(currentScriptEngine);
-                else
+
+                if (variableValue is string || variableValue == null)
                     variableValue = ((string)rw.ItemArray[1]).ConvertUserVariableToString(currentScriptEngine);
 
                 var variableReturn = (string)rw.ItemArray[2];
 
                 variableList.Add(new ScriptVariable
                 {
-                    VariableName = variableName,
+                    VariableName = variableName.Replace("{", "").Replace("}", ""),
                     VariableValue = variableValue
                 });
 
@@ -121,7 +122,7 @@ namespace taskt.Commands
                 {
                     variableReturnList.Add(new ScriptVariable
                     {
-                        VariableName = variableName,
+                        VariableName = variableName.Replace("{", "").Replace("}", ""),
                         VariableValue = variableValue
                     });
                 }
@@ -282,9 +283,9 @@ namespace taskt.Commands
 
                 foreach (var variable in deserializedScript.Variables)
                 {
-                    DataRow[] foundVariables  = v_VariableAssignments.Select("VariableName = '" + variable.VariableName + "'");
+                    DataRow[] foundVariables  = v_VariableAssignments.Select("VariableName = '" + "{" + variable.VariableName + "}" + "'");
                     if (foundVariables.Length == 0)
-                        v_VariableAssignments.Rows.Add(variable.VariableName, variable.VariableValue);
+                        v_VariableAssignments.Rows.Add("{" + variable.VariableName + "}", variable.VariableValue);
                 }
                 _assignmentsGridViewHelper.DataSource = v_VariableAssignments;
 
@@ -295,6 +296,10 @@ namespace taskt.Commands
                     returnComboBox.Items.Add("No");
                     _assignmentsGridViewHelper.Rows[i].Cells[2] = returnComboBox;
                 }
+            }
+            else if (!Sender.Checked)
+            {
+                v_VariableAssignments.Clear();
             }
         }       
     }
