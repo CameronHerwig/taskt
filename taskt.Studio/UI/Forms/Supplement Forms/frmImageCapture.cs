@@ -3,7 +3,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
+using taskt.Core.Utilities.CommonUtilities;
 
 namespace taskt.UI.Forms.Supplement_Forms
 {
@@ -44,14 +46,10 @@ namespace taskt.UI.Forms.Supplement_Forms
             //Hide the Form
             Hide();
 
-            //Create the Bitmap
-            Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-
-            //Create the Graphic Variable with screen Dimensions
-            Graphics graphics = Graphics.FromImage(printscreen as Image);
+            Thread.Sleep(1000);
 
             //Copy Image from the screen
-            graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
+            Bitmap printscreen = ImageMethods.Screenshot();
 
             //Create a temporal memory stream for the image
             using (MemoryStream s = new MemoryStream())

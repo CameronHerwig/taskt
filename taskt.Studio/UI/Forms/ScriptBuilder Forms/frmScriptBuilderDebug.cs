@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -59,6 +60,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 DataGridView variablesGridViewHelper = new DataGridView();
                 variablesGridViewHelper.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
                 variablesGridViewHelper.Dock = DockStyle.Fill;
+                variablesGridViewHelper.ColumnHeadersHeight = 30;
                 variablesGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 variablesGridViewHelper.AllowUserToAddRows = false;
                 variablesGridViewHelper.AllowUserToDeleteRows = false;
@@ -80,6 +82,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                                 variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
                                     variable.VariableValue);
                                 break;
+                            case "System.Security.SecureString":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
+                                    "*Secure String*");
+                                break;
                             case "System.Data.DataTable":
                                 variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName, 
                                     ConvertDataTableToString((DataTable)variable.VariableValue));
@@ -99,6 +105,10 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                             case "OpenQA.Selenium.Remote.RemoteWebElement":
                                 variableValues.Rows.Add(variable.VariableName, "OpenQA.Selenium.IWebElement",
                                     ConvertIWebElementToString((IWebElement)variable.VariableValue));
+                                break;
+                            case "System.Drawing.Bitmap":
+                                variableValues.Rows.Add(variable.VariableName, variable.VariableValue.GetType().FullName,
+                                    ConvertBitmapToString((Bitmap)variable.VariableValue));
                                 break;
                             case "System.Collections.Generic.List`1[System.String]":
                             case "System.Collections.Generic.List`1[System.Data.DataTable]":
@@ -138,7 +148,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             }
         }
 
-        public string ConvertDataTableToString(DataTable dt)
+        private string ConvertDataTableToString(DataTable dt)
         {
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -162,7 +172,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             return stringBuilder.ToString();
         }
 
-        public string ConvertDataRowToString(DataRow row)
+        private string ConvertDataRowToString(DataRow row)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("[");
@@ -174,7 +184,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             return stringBuilder.ToString();
         }
 
-        public string ConvertMailItemToString(MailItem mail)
+        private string ConvertMailItemToString(MailItem mail)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append($"[Subject: {mail.Subject}, \n" +
@@ -228,7 +238,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             return stringBuilder.ToString();
         }
 
-        public string ConvertIWebElementToString(IWebElement element)
+        private string ConvertIWebElementToString(IWebElement element)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append($"[Text: {element.Text}, \n" +
@@ -241,7 +251,14 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             return stringBuilder.ToString();
         }
 
-        public string ConvertListToString(object list)
+        private string ConvertBitmapToString(Bitmap bitmap)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append($"Size({bitmap.Width}, {bitmap.Height})");
+            return stringBuilder.ToString();
+        }
+
+        private string ConvertListToString(object list)
         {
             StringBuilder stringBuilder = new StringBuilder();
 

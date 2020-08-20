@@ -53,7 +53,7 @@ namespace taskt.Core.Enums
         ShowElementHelper,
         ShowFileSelectionHelper,
         ShowFolderSelectionHelper,
-        ShowImageRecogitionHelper,
+        ShowImageCaptureHelper,
         ShowCodeBuilder,
         ShowMouseCaptureHelper,
         ShowElementRecorder,

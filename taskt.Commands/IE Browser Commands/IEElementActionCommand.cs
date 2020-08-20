@@ -116,6 +116,7 @@ namespace taskt.Commands
             _searchGridViewHelper.AllowUserToAddRows = true;
             _searchGridViewHelper.AllowUserToDeleteRows = true;
             _searchGridViewHelper.Size = new Size(400, 250);
+            _searchGridViewHelper.ColumnHeadersHeight = 30;
             _searchGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _searchGridViewHelper.DataBindings.Add("DataSource", this, "v_WebSearchParameter", false, DataSourceUpdateMode.OnPropertyChanged);
 
@@ -123,6 +124,7 @@ namespace taskt.Commands
             _elementsGridViewHelper.AllowUserToAddRows = true;
             _elementsGridViewHelper.AllowUserToDeleteRows = true;
             _elementsGridViewHelper.Size = new Size(400, 250);
+            _elementsGridViewHelper.ColumnHeadersHeight = 30;
             _elementsGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             _elementsGridViewHelper.DataBindings.Add("DataSource", this, "v_WebActionParameterTable", false, DataSourceUpdateMode.OnPropertyChanged);
         }

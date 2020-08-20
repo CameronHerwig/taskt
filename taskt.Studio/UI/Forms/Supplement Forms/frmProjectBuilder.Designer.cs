@@ -210,7 +210,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(718, 310);
+            this.ClientSize = new System.Drawing.Size(701, 279);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.btnOpenProject);
             this.Controls.Add(this.lblProjectLocation);

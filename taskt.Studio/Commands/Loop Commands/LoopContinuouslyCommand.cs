@@ -6,7 +6,6 @@ using taskt.Core.Command;
 using taskt.Core.Infrastructure;
 using taskt.Core.Script;
 using taskt.Engine;
-using taskt.UI.CustomControls;
 
 namespace taskt.Commands
 {
@@ -58,9 +57,6 @@ namespace taskt.Commands
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
-
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_Comment", this));
-            RenderedControls.Add(CommandControls.CreateDefaultInputFor("v_Comment", this, 100, 300));
 
             return RenderedControls;
         }

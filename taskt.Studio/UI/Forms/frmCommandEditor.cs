@@ -25,6 +25,7 @@ using taskt.Core.Infrastructure;
 using taskt.Core.Script;
 using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
+using taskt.UI.Forms.ScriptBuilder_Forms;
 
 namespace taskt.UI.Forms
 {
@@ -119,11 +120,18 @@ namespace taskt.UI.Forms
                     {
                         var typedControl = (UIPictureBox)c;
 
-                        var cmd = (ImageRecognitionCommand)SelectedCommand;
-
-                        if (!string.IsNullOrEmpty(cmd.v_ImageCapture))
+                        dynamic cmd;
+                        if (SelectedCommand.CommandName == "SurfaceAutomationCommand")
                         {
-                            typedControl.Image = Common.Base64ToImage(cmd.v_ImageCapture);
+                            cmd = (SurfaceAutomationCommand)SelectedCommand;
+                            if (!string.IsNullOrEmpty(cmd.v_ImageCapture))
+                                typedControl.Image = Common.Base64ToImage(cmd.v_ImageCapture);
+                        }
+                        else if (SelectedCommand.CommandName == "CaptureImageCommand")
+                        {
+                            cmd = (CaptureImageCommand)SelectedCommand;
+                            if (!string.IsNullOrEmpty(cmd.v_ImageCapture))
+                                typedControl.Image = Common.Base64ToImage(cmd.v_ImageCapture);
                         }
                     }
                 }
@@ -178,9 +186,9 @@ namespace taskt.UI.Forms
 
             //add each control
             foreach (var ctrl in userSelectedCommand.UIControls)
-            {
                 flw_InputVariables.Controls.Add(ctrl);
-            }
+
+            OnResize(EventArgs.Empty);          
         }
 
         private void CopyPropertiesTo(object fromObject, object toObject)
@@ -225,8 +233,17 @@ namespace taskt.UI.Forms
                 if (ctrl is UIPictureBox)
                 {
                     var typedControl = (UIPictureBox)ctrl;
-                    var cmd = (ImageRecognitionCommand)SelectedCommand;
-                    cmd.v_ImageCapture = typedControl.EncodedImage;
+                    dynamic cmd;
+                    if (SelectedCommand.CommandName == "SurfaceAutomationCommand")
+                    {
+                        cmd = (SurfaceAutomationCommand)SelectedCommand;
+                        cmd.v_ImageCapture = typedControl.EncodedImage;
+                    }
+                    else if (SelectedCommand.CommandName == "CaptureImageCommand")
+                    {
+                        cmd = (CaptureImageCommand)SelectedCommand;
+                        cmd.v_ImageCapture = typedControl.EncodedImage;
+                    }
                 }
             }
             DialogResult = DialogResult.OK;
