@@ -9,7 +9,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -31,19 +30,19 @@ namespace taskt.Commands
         public string v_DataTable { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Filtered DataTable Name")]
-        [InputSpecification("Enter a unique DataTable name for future reference.")]
-        [SampleUsage("FilteredDataTable")]
-        [Remarks("")]
-        public string v_FilteredDataTableName { get; set; }
-
-        [XmlAttribute]
         [PropertyDescription("Filter Tuple")]
         [InputSpecification("Enter a tuple containing the column name and item you would like to filter by.")]
         [SampleUsage("(ColumnName1,Item1),(ColumnName2,Item2) || ({vColumn1},{vItem1}),({vCloumn2},{vItem2}) || {vFilterTuple}")]
         [Remarks("")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_SearchItem { get; set; }
+
+        [XmlAttribute]
+        [PropertyDescription("Output Filtered DataTable Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public FilterDataTableCommand()
         {
@@ -102,7 +101,7 @@ namespace taskt.Commands
                 outputDT.Rows.Add(item.ItemArray);
             }
 
-            outputDT.StoreInUserVariable(engine, v_FilteredDataTableName);
+            outputDT.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -110,15 +109,15 @@ namespace taskt.Commands
             base.Render(editor);
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_DataTable", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_FilteredDataTableName", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_SearchItem", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue()+ $" [Filter Rows With '{v_SearchItem}' From '{v_DataTable}' - Store Filtered DataTable in '{v_FilteredDataTableName}']";
+            return base.GetDisplayValue()+ $" [Filter Rows With '{v_SearchItem}' From '{v_DataTable}' - Store Filtered DataTable in '{v_OutputUserVariableName}']";
         }       
     }
 }

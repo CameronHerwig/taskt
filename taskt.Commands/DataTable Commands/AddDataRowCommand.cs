@@ -111,7 +111,7 @@ namespace taskt.Commands
             selectionForm.lblHeader.Text = "Select a DataTable from the list";
             foreach (var item in _dataTableCreationCommands)
             {
-                selectionForm.lstVariables.Items.Add(item.v_DataTable);
+                selectionForm.lstVariables.Items.Add(item.v_OutputUserVariableName);
             }
 
             var result = selectionForm.ShowDialog();
@@ -119,7 +119,7 @@ namespace taskt.Commands
             if (result == DialogResult.OK)
             {
                 var tableName = selectionForm.lstVariables.SelectedItem.ToString();
-                var schema = _dataTableCreationCommands.Where(f => f.v_DataTable == tableName).FirstOrDefault();
+                var schema = _dataTableCreationCommands.Where(f => f.v_OutputUserVariableName == tableName).FirstOrDefault();
 
                 v_DataRowDataTable.Rows.Clear();
 
