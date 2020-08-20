@@ -29,12 +29,12 @@ namespace taskt.UI.CustomControls
     {
         public static frmCommandEditor CurrentEditor { get; set; }
 
-        public static List<Control> CreateDefaultInputGroupFor(string parameterName, ScriptCommand parent, IfrmCommandEditor editor)
+        public static List<Control> CreateDefaultInputGroupFor(string parameterName, ScriptCommand parent, IfrmCommandEditor editor, int height = 30, int width = 300)
         {
             //Todo: Test
             var controlList = new List<Control>();
             var label = CreateDefaultLabelFor(parameterName, parent);
-            var input = CreateDefaultInputFor(parameterName, parent);
+            var input = CreateDefaultInputFor(parameterName, parent, height, width);
             var helpers = CreateUIHelpersFor(parameterName, parent, new Control[] { input }, (frmCommandEditor)editor);
 
             controlList.Add(label);

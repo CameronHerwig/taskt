@@ -34,7 +34,7 @@ namespace taskt.Commands
         [PropertyDescription("Filter")]
         [InputSpecification("Enter a valid Outlook filter string.")]
         [SampleUsage("[Subject] = 'Hello' || [Subject] = 'Hello' and [SenderName] = 'Jane Doe' || {vFilter} || None")]
-        [Remarks("*Warning* Using 'None' as the Filter will return every MailItem in the selected Mail Folder.")]
+        [Remarks("*Warning* Using 'None' as the Filter will return every email in the selected Mail Folder.")]
         [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_Filter { get; set; }
 

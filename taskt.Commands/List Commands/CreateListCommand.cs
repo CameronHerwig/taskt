@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Outlook;
+using MimeKit;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,8 @@ namespace taskt.Commands
         [PropertyDescription("List Type")]
         [PropertyUISelectionOption("String")]
         [PropertyUISelectionOption("DataTable")]
-        [PropertyUISelectionOption("MailItem")]
+        [PropertyUISelectionOption("MailItem (Outlook)")]
+        [PropertyUISelectionOption("MimeMessage (IMAP/SMTP)")]
         [PropertyUISelectionOption("IWebElement")]
         [InputSpecification("Specify the data type of the List to be created.")]
         [SampleUsage("")]
@@ -98,7 +100,7 @@ namespace taskt.Commands
                         }                           
                     }
                     break;
-                case "MailItem":
+                case "MailItem (Outlook)":
                     vNewList = new List<MailItem>();
                     if (splitListItems != null)
                     {
@@ -111,6 +113,22 @@ namespace taskt.Commands
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<MailItem>)vNewList).Add(mailItem);
+                        }
+                    }
+                    break;
+                case "MimeMessage (IMAP/SMTP)":
+                    vNewList = new List<MimeMessage>();
+                    if (splitListItems != null)
+                    {
+                        foreach (string item in splitListItems)
+                        {
+                            MimeMessage mimeMessage;
+                            ScriptVariable mimeMessageVariable = VariableMethods.LookupVariable(engine, item.Trim());
+                            if (mimeMessageVariable != null && mimeMessageVariable.VariableValue is MimeMessage)
+                                mimeMessage = (MimeMessage)mimeMessageVariable.VariableValue;
+                            else
+                                throw new Exception("Invalid List Item type, please provide valid List Item type.");
+                            ((List<MimeMessage>)vNewList).Add(mimeMessage);
                         }
                     }
                     break;

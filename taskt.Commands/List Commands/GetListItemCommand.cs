@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Outlook;
+using MimeKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
@@ -63,7 +64,7 @@ namespace taskt.Commands
             var itemIndex = v_ItemIndex.ConvertToUserVariable(engine);
             int index = int.Parse(itemIndex);
             //get variable by regular name
-            ScriptVariable listVariable = LookupVariable(engine);
+            ScriptVariable listVariable = VariableMethods.LookupVariable(engine, v_ListName);
 
             //if still null then throw exception
             if (listVariable == null)
@@ -87,6 +88,10 @@ namespace taskt.Commands
             else if (listVariable.VariableValue is List<MailItem>)
             {
                 listToIndex = (List<MailItem>)listVariable.VariableValue;
+            }
+            else if (listVariable.VariableValue is List<MimeMessage>)
+            {
+                listToIndex = (List<MimeMessage>)listVariable.VariableValue;
             }
             else if (listVariable.VariableValue is List<IWebElement>)
             {
@@ -148,26 +153,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [From Index '{v_ItemIndex}' of '{v_ListName}' - Store List Item in '{v_OutputUserVariableName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_ListName).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) &&
-                (v_ListName.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)) &&
-                (v_ListName.EndsWith(sendingInstance.EngineSettings.VariableEndMarker)))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_ListName
-                    .Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                    .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
         }
     }
 }

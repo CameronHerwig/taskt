@@ -386,10 +386,10 @@ namespace taskt.UI.Forms
                     lblAction.Text = text + "..";
                     SteppingCommandsItem commandsItem = new SteppingCommandsItem
                     {
-                        Text = DateTime.Now.ToString("MM/dd/yy hh:mm:ss.fff") + " | " + text + "..",
+                        Text = DateTime.Now.ToString("MM/dd/yy hh:mm:ss.fff") + " | " + text,
                         Color = statusColor ?? SystemColors.Highlight
                     };
-                    //lstSteppingCommands.Items.Add(DateTime.Now.ToString("MM/dd/yy hh:mm:ss.fff") + " | " + text + "..");
+
                     lstSteppingCommands.Items.Add(commandsItem);
                     lstSteppingCommands.SelectedIndex = lstSteppingCommands.Items.Count - 1;
                 }

@@ -16,7 +16,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Outlook Commands")]
-    [Description("This command replies to selected emails in Outlook.")]
+    [Description("This command replies to a selected email in Outlook.")]
 
     public class ReplyToOutlookEmailCommand : ScriptCommand
     {
@@ -97,7 +97,7 @@ namespace taskt.Commands
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_MailItem", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_OperationType", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Body", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Body", this, editor, 100, 300));
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_BodyType", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_Attachments", this, editor));
 
