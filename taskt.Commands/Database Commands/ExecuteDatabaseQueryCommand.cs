@@ -221,6 +221,7 @@ namespace taskt.Commands
             QueryParametersGridView.AllowUserToAddRows = true;
             QueryParametersGridView.AllowUserToDeleteRows = true;
             QueryParametersGridView.Size = new Size(400, 250);
+            QueryParametersGridView.ColumnHeadersHeight = 30;
             QueryParametersGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             QueryParametersGridView.AutoGenerateColumns = false;
         

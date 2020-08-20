@@ -113,6 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Excel Commands\ExcelExportToPDFCommand.cs" />
     <Compile Include="List Commands\AddListItemCommand.cs" />
     <Compile Include="Data Commands\DateCalculationCommand.cs" />
     <Compile Include="Data Commands\FormatDataCommand.cs" />

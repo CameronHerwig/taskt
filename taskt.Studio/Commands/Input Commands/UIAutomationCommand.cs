@@ -464,11 +464,11 @@ namespace taskt.Commands
                         //determine search result
                         if (requiredHandle == null)
                         {
-                            searchResult = "FALSE";
+                            searchResult = "False";
                         }
                         else
                         {
-                            searchResult = "TRUE";
+                            searchResult = "True";
                         }
 
                     }
@@ -551,8 +551,8 @@ namespace taskt.Commands
             propertyValue.HeaderText = "Parameter Value";
             propertyValue.DataPropertyName = "Parameter Value";
             SearchParametersGridViewHelper.Columns.Add(propertyValue);
-
-            SearchParametersGridViewHelper.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            SearchParametersGridViewHelper.ColumnHeadersHeight = 30;
+            SearchParametersGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             SearchParametersGridViewHelper.AllowUserToAddRows = false;
             SearchParametersGridViewHelper.AllowUserToDeleteRows = false;
 
@@ -573,7 +573,8 @@ namespace taskt.Commands
             propertyValue.DataPropertyName = "Parameter Value";
             ActionParametersGridViewHelper.Columns.Add(propertyValue);
 
-            ActionParametersGridViewHelper.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            ActionParametersGridViewHelper.ColumnHeadersHeight = 30;
+            ActionParametersGridViewHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ActionParametersGridViewHelper.AllowUserToAddRows = false;
             ActionParametersGridViewHelper.AllowUserToDeleteRows = false;
 

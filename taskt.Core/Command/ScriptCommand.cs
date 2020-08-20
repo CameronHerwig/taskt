@@ -3,7 +3,9 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
+using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Infrastructure;
 using taskt.Core.Script;
 
@@ -20,16 +22,16 @@ namespace taskt.Core.Command
         public bool PauseBeforeExecution { get; set; }
         public bool CommandEnabled { get; set; }
 
-        [Attributes.PropertyAttributes.PropertyDescription("Private (Optional)")]
-        [Attributes.PropertyAttributes.InputSpecification("Optional field to mark the command as private (data sensitive) in order to avoid its logging.")]
-        [Attributes.PropertyAttributes.SampleUsage("")]
-        [Attributes.PropertyAttributes.Remarks("")]
+        [PropertyDescription("Private (Optional)")]
+        [InputSpecification("Optional field to mark the command as private (data sensitive) in order to avoid its logging.")]
+        [SampleUsage("")]
+        [Remarks("")]
         public bool v_IsPrivate { get; set; }
 
-        [Attributes.PropertyAttributes.PropertyDescription("Comment Field (Optional)")]
-        [Attributes.PropertyAttributes.InputSpecification("Optional field to enter a custom comment which could potentially describe this command or the need for this command, if required.")]
-        [Attributes.PropertyAttributes.SampleUsage("I am using this command to ...")]
-        [Attributes.PropertyAttributes.Remarks("Optional")]
+        [PropertyDescription("Comment Field (Optional)")]
+        [InputSpecification("Optional field to enter a custom comment which could potentially describe this command or the need for this command, if required.")]
+        [SampleUsage("I am using this command to ...")]
+        [Remarks("Optional")]
         public string v_Comment { get; set; }
 
         [JsonIgnore]
@@ -71,24 +73,20 @@ namespace taskt.Core.Command
 
         public virtual void RunCommand(object sender)
         {
-            System.Threading.Thread.Sleep(DefaultPause);
+            Thread.Sleep(DefaultPause);
         }
 
         public virtual void RunCommand(object sender, ScriptAction command)
         {
-            System.Threading.Thread.Sleep(DefaultPause);
+            Thread.Sleep(DefaultPause);
         }
 
         public virtual string GetDisplayValue()
         {
-            if (String.IsNullOrEmpty(v_Comment))
-            {
+            if (string.IsNullOrEmpty(v_Comment))
                 return SelectionName;
-            }
             else
-            {
-                return SelectionName + " [" + v_Comment + "]";
-            }
+                return SelectionName + $" [{v_Comment}]";
         }
 
         public virtual List<Control> Render(IfrmCommandEditor editor)

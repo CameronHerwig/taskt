@@ -15,6 +15,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using taskt.Core.Enums;
+using taskt.Properties;
 
 namespace taskt.UI.CustomControls
 {
@@ -23,23 +24,23 @@ namespace taskt.UI.CustomControls
         public CommandItemControl()
         {
             InitializeComponent();
-            this.CommandImage = Properties.Resources.command_comment;
+            CommandImage = Resources.command_comment;
         }
         public UIAdditionalHelperType HelperType { get; set; }
         public object DataSource { get; set; }
         public string FunctionalDescription { get; set; }
         public string ImplementationDescription { get; set; }
-        private string commandDisplay;
+        private string _commandDisplay;
         public string CommandDisplay
         {
             get
             {
-                return commandDisplay;
+                return _commandDisplay;
             }
             set
             {
-                commandDisplay = value;
-                this.Invalidate();
+                _commandDisplay = value;
+                Invalidate();
             }
         }
         private Image commandImage;
@@ -52,23 +53,23 @@ namespace taskt.UI.CustomControls
             set
             {
                 commandImage = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
         private void CommandItemControl_MouseEnter(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.Hand;
+            Cursor = Cursors.Hand;
         }
         private void CommandItemControl_MouseLeave(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.Arrow;
+            Cursor = Cursors.Arrow;
         }
 
         private void CommandItemControl_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawImage(this.CommandImage, 0, 0, 16, 16);
-            e.Graphics.DrawString(this.CommandDisplay, this.Font, new SolidBrush(this.ForeColor), 18, 0);
+            e.Graphics.DrawImage(CommandImage, 0, 0, 20, 20);
+            e.Graphics.DrawString(CommandDisplay, Font, new SolidBrush(ForeColor), 18, 0);
         }
 
         private void CommandItemControl_Load(object sender, EventArgs e)

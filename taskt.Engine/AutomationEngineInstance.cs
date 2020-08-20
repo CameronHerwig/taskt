@@ -68,8 +68,12 @@ namespace taskt.Engine
         public AutomationEngineInstance(Logger engineLogger)
         {
             //initialize logger
-            EngineLogger = engineLogger;
-            EngineLogger.Information("Engine Class has been initialized");
+            if (engineLogger != null)
+            {
+                EngineLogger = engineLogger;
+                EngineLogger.Information("Engine Class has been initialized");
+            }
+            
             _privateCommandLog = "Can't log display value as the command contains sensitive data";
 
             //initialize error tracking list

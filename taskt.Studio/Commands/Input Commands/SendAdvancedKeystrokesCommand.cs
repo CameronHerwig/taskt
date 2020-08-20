@@ -174,7 +174,8 @@ namespace taskt.Commands
             propertyValue.DataPropertyName = "Action";
             KeystrokeGridHelper.Columns.Add(propertyValue);
 
-            KeystrokeGridHelper.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            KeystrokeGridHelper.ColumnHeadersHeight = 30;
+            KeystrokeGridHelper.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             KeystrokeGridHelper.AllowUserToAddRows = true;
             KeystrokeGridHelper.AllowUserToDeleteRows = true;
 

@@ -89,13 +89,13 @@ namespace taskt.UI.CustomControls.CustomUIControls
             }
 
             if (Image != null)
-                e.Graphics.DrawImage(Image, (Width / 2) - 16, 3, 32, 32);
+                e.Graphics.DrawImage(Image, (Width / 2) - 20, 3, 40, 40);
 
             if (DisplayText != null)
             {
                 var stringSize = e.Graphics.MeasureString(DisplayText, new Font("Segoe UI Bold", 8, FontStyle.Bold), 200);
                 e.Graphics.DrawString(DisplayText, new Font("Segoe UI", 8, FontStyle.Bold),
-                                      new SolidBrush(DisplayTextBrush), ((Width / 2) - (stringSize.Width / 2)), Height - 14);
+                                      new SolidBrush(DisplayTextBrush), ((Width / 2) - (stringSize.Width / 2)), Height - 18);
             }
         }
 

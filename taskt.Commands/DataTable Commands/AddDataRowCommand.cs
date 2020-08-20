@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -89,6 +90,7 @@ namespace taskt.Commands
 
             CommandItemControl loadSchemaControl = new CommandItemControl();
             loadSchemaControl.ForeColor = System.Drawing.Color.White;
+            loadSchemaControl.Font = new Font("Segoe UI Semilight", 10);
             loadSchemaControl.CommandDisplay = "Load Column Names From Existing DataTable";
             loadSchemaControl.Click += LoadSchemaControl_Click;
             RenderedControls.Add(loadSchemaControl);
