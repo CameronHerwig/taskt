@@ -45,9 +45,10 @@
             this.cboSelectedScript.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboSelectedScript.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboSelectedScript.FormattingEnabled = true;
-            this.cboSelectedScript.Location = new System.Drawing.Point(59, 13);
+            this.cboSelectedScript.Location = new System.Drawing.Point(74, 16);
+            this.cboSelectedScript.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboSelectedScript.Name = "cboSelectedScript";
-            this.cboSelectedScript.Size = new System.Drawing.Size(334, 28);
+            this.cboSelectedScript.Size = new System.Drawing.Size(444, 33);
             this.cboSelectedScript.TabIndex = 0;
             // 
             // tmrBackColorFlash
@@ -64,11 +65,13 @@
             this.uiBtnClose.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnClose.Image = global::taskt.Properties.Resources.command_exitloop;
             this.uiBtnClose.IsMouseOver = false;
-            this.uiBtnClose.Location = new System.Drawing.Point(4, 2);
+            this.uiBtnClose.Location = new System.Drawing.Point(5, 4);
+            this.uiBtnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnClose.Name = "uiBtnClose";
-            this.uiBtnClose.Size = new System.Drawing.Size(48, 50);
+            this.uiBtnClose.Size = new System.Drawing.Size(60, 62);
             this.uiBtnClose.TabIndex = 14;
             this.uiBtnClose.TabStop = false;
+            this.uiBtnClose.Text = "Close";
             this.uiBtnClose.Click += new System.EventHandler(this.uiBtnClose_Click);
             // 
             // uiBtnRun
@@ -80,11 +83,13 @@
             this.uiBtnRun.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnRun.Image = global::taskt.Properties.Resources.action_bar_run;
             this.uiBtnRun.IsMouseOver = false;
-            this.uiBtnRun.Location = new System.Drawing.Point(398, 2);
+            this.uiBtnRun.Location = new System.Drawing.Point(527, 4);
+            this.uiBtnRun.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnRun.Name = "uiBtnRun";
-            this.uiBtnRun.Size = new System.Drawing.Size(48, 50);
+            this.uiBtnRun.Size = new System.Drawing.Size(60, 62);
             this.uiBtnRun.TabIndex = 13;
             this.uiBtnRun.TabStop = false;
+            this.uiBtnRun.Text = "Run";
             this.uiBtnRun.Click += new System.EventHandler(this.uiBtnRun_Click);
             // 
             // attendedScriptWatcher
@@ -95,15 +100,16 @@
             // 
             // frmAttendedMode
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
-            this.ClientSize = new System.Drawing.Size(445, 57);
+            this.ClientSize = new System.Drawing.Size(593, 70);
             this.Controls.Add(this.uiBtnClose);
             this.Controls.Add(this.uiBtnRun);
             this.Controls.Add(this.cboSelectedScript);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmAttendedMode";
             this.Text = "taskt Attended Mode";
             this.TopMost = true;

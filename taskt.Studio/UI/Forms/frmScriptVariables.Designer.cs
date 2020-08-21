@@ -52,9 +52,10 @@
             this.lblMainLogo.BackColor = System.Drawing.Color.Transparent;
             this.lblMainLogo.Font = new System.Drawing.Font("Segoe UI Semilight", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMainLogo.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblMainLogo.Location = new System.Drawing.Point(-2, -2);
+            this.lblMainLogo.Location = new System.Drawing.Point(-3, -2);
+            this.lblMainLogo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMainLogo.Name = "lblMainLogo";
-            this.lblMainLogo.Size = new System.Drawing.Size(138, 45);
+            this.lblMainLogo.Size = new System.Drawing.Size(173, 54);
             this.lblMainLogo.TabIndex = 7;
             this.lblMainLogo.Text = "variables";
             // 
@@ -67,9 +68,10 @@
             this.uiBtnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnCancel.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnCancel.Image")));
             this.uiBtnCancel.IsMouseOver = false;
-            this.uiBtnCancel.Location = new System.Drawing.Point(55, 1);
+            this.uiBtnCancel.Location = new System.Drawing.Point(70, 1);
+            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(48, 48);
+            this.uiBtnCancel.Size = new System.Drawing.Size(60, 59);
             this.uiBtnCancel.TabIndex = 15;
             this.uiBtnCancel.TabStop = false;
             this.uiBtnCancel.Text = "Cancel";
@@ -84,9 +86,10 @@
             this.uiBtnOK.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOK.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOK.Image")));
             this.uiBtnOK.IsMouseOver = false;
-            this.uiBtnOK.Location = new System.Drawing.Point(3, 1);
+            this.uiBtnOK.Location = new System.Drawing.Point(10, 1);
+            this.uiBtnOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnOK.Name = "uiBtnOK";
-            this.uiBtnOK.Size = new System.Drawing.Size(48, 48);
+            this.uiBtnOK.Size = new System.Drawing.Size(60, 59);
             this.uiBtnOK.TabIndex = 14;
             this.uiBtnOK.TabStop = false;
             this.uiBtnOK.Text = "Ok";
@@ -102,13 +105,14 @@
             this.tlpVariables.Controls.Add(this.pnlBottom, 0, 2);
             this.tlpVariables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpVariables.Location = new System.Drawing.Point(0, 0);
+            this.tlpVariables.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tlpVariables.Name = "tlpVariables";
             this.tlpVariables.RowCount = 3;
-            this.tlpVariables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.tlpVariables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 119F));
             this.tlpVariables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpVariables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
-            this.tlpVariables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpVariables.Size = new System.Drawing.Size(649, 526);
+            this.tlpVariables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 63F));
+            this.tlpVariables.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tlpVariables.Size = new System.Drawing.Size(865, 647);
             this.tlpVariables.TabIndex = 17;
             // 
             // tvScriptVariables
@@ -118,10 +122,11 @@
             this.tvScriptVariables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvScriptVariables.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvScriptVariables.ForeColor = System.Drawing.Color.White;
-            this.tvScriptVariables.Location = new System.Drawing.Point(3, 100);
+            this.tvScriptVariables.Location = new System.Drawing.Point(4, 123);
+            this.tvScriptVariables.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tvScriptVariables.Name = "tvScriptVariables";
             this.tvScriptVariables.ShowLines = false;
-            this.tvScriptVariables.Size = new System.Drawing.Size(643, 372);
+            this.tvScriptVariables.Size = new System.Drawing.Size(857, 457);
             this.tvScriptVariables.TabIndex = 18;
             this.tvScriptVariables.DoubleClick += new System.EventHandler(this.tvScriptVariables_DoubleClick);
             this.tvScriptVariables.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvScriptVariables_KeyDown);
@@ -136,7 +141,7 @@
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(649, 97);
+            this.pnlTop.Size = new System.Drawing.Size(865, 119);
             this.pnlTop.TabIndex = 18;
             // 
             // lblDefineName
@@ -145,9 +150,10 @@
             this.lblDefineName.BackColor = System.Drawing.Color.Transparent;
             this.lblDefineName.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDefineName.ForeColor = System.Drawing.Color.LightSteelBlue;
-            this.lblDefineName.Location = new System.Drawing.Point(55, 49);
+            this.lblDefineName.Location = new System.Drawing.Point(73, 60);
+            this.lblDefineName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDefineName.Name = "lblDefineName";
-            this.lblDefineName.Size = new System.Drawing.Size(270, 40);
+            this.lblDefineName.Size = new System.Drawing.Size(346, 50);
             this.lblDefineName.TabIndex = 16;
             this.lblDefineName.Text = "Double-Click to edit existing variables\r\nPress \'DEL\' key to delete existing varia" +
     "bles";
@@ -161,9 +167,10 @@
             this.uiBtnNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.uiBtnNew.Image = global::taskt.Properties.Resources.action_bar_new;
             this.uiBtnNew.IsMouseOver = false;
-            this.uiBtnNew.Location = new System.Drawing.Point(5, 45);
+            this.uiBtnNew.Location = new System.Drawing.Point(10, 55);
+            this.uiBtnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnNew.Name = "uiBtnNew";
-            this.uiBtnNew.Size = new System.Drawing.Size(48, 49);
+            this.uiBtnNew.Size = new System.Drawing.Size(60, 60);
             this.uiBtnNew.TabIndex = 13;
             this.uiBtnNew.TabStop = false;
             this.uiBtnNew.Text = "Add";
@@ -175,22 +182,22 @@
             this.pnlBottom.Controls.Add(this.uiBtnOK);
             this.pnlBottom.Controls.Add(this.uiBtnCancel);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 475);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 584);
             this.pnlBottom.Margin = new System.Windows.Forms.Padding(0);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(649, 51);
+            this.pnlBottom.Size = new System.Drawing.Size(865, 63);
             this.pnlBottom.TabIndex = 19;
             this.pnlBottom.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlBottom_Paint);
             // 
             // frmScriptVariables
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(649, 526);
+            this.ClientSize = new System.Drawing.Size(865, 647);
             this.Controls.Add(this.tlpVariables);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "frmScriptVariables";
             this.Text = "Variables";
             this.Load += new System.EventHandler(this.frmScriptVariables_Load);

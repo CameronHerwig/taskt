@@ -307,7 +307,7 @@
             this.uiBtnOpen.Location = new System.Drawing.Point(4, 908);
             this.uiBtnOpen.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnOpen.Name = "uiBtnOpen";
-            this.uiBtnOpen.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnOpen.Size = new System.Drawing.Size(60, 60);
             this.uiBtnOpen.TabIndex = 13;
             this.uiBtnOpen.TabStop = false;
             this.uiBtnOpen.Text = "Ok";
@@ -1000,7 +1000,7 @@
             this.tabServerSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabServerSettings.Name = "tabServerSettings";
             this.tabServerSettings.Padding = new System.Windows.Forms.Padding(4);
-            this.tabServerSettings.Size = new System.Drawing.Size(835, 805);
+            this.tabServerSettings.Size = new System.Drawing.Size(838, 769);
             this.tabServerSettings.TabIndex = 2;
             this.tabServerSettings.Text = "Server";
             // 
@@ -1199,7 +1199,7 @@
             this.tabLocalListener.Margin = new System.Windows.Forms.Padding(4);
             this.tabLocalListener.Name = "tabLocalListener";
             this.tabLocalListener.Padding = new System.Windows.Forms.Padding(4);
-            this.tabLocalListener.Size = new System.Drawing.Size(1048, 961);
+            this.tabLocalListener.Size = new System.Drawing.Size(838, 769);
             this.tabLocalListener.TabIndex = 3;
             this.tabLocalListener.Text = "Local Listener";
             // 
@@ -1392,6 +1392,7 @@
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 86F));
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
+            this.tlpSettings.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpSettings.Size = new System.Drawing.Size(854, 978);
             this.tlpSettings.TabIndex = 26;
             // 

@@ -53,7 +53,7 @@
             this.cboSelectedCommand.Location = new System.Drawing.Point(6, 5);
             this.cboSelectedCommand.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.cboSelectedCommand.Name = "cboSelectedCommand";
-            this.cboSelectedCommand.Size = new System.Drawing.Size(619, 28);
+            this.cboSelectedCommand.Size = new System.Drawing.Size(619, 33);
             this.cboSelectedCommand.TabIndex = 2;
             this.cboSelectedCommand.SelectionChangeCommitted += new System.EventHandler(this.cboSelectedCommand_SelectionChangeCommitted);
             // 
@@ -115,7 +115,7 @@
             this.uiBtnAdd.Location = new System.Drawing.Point(6, 5);
             this.uiBtnAdd.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.uiBtnAdd.Name = "uiBtnAdd";
-            this.uiBtnAdd.Size = new System.Drawing.Size(60, 54);
+            this.uiBtnAdd.Size = new System.Drawing.Size(60, 61);
             this.uiBtnAdd.TabIndex = 14;
             this.uiBtnAdd.TabStop = false;
             this.uiBtnAdd.Text = "Ok";
@@ -133,7 +133,7 @@
             this.uiBtnCancel.Location = new System.Drawing.Point(78, 5);
             this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(60, 54);
+            this.uiBtnCancel.Size = new System.Drawing.Size(60, 61);
             this.uiBtnCancel.TabIndex = 15;
             this.uiBtnCancel.TabStop = false;
             this.uiBtnCancel.Text = "Cancel";
@@ -141,7 +141,7 @@
             // 
             // frmCommandEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.SteelBlue;
