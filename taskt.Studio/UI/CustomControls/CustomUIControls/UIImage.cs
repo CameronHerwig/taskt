@@ -202,7 +202,7 @@ namespace taskt.UI.CustomControls.CustomUIControls
         {
             Dictionary<string, Image> imageIcons = UIImageDictionary();
             ImageList uiImages = new ImageList();
-            uiImages.ImageSize = new Size(20, 20);
+            uiImages.ImageSize = new Size(18, 18);
 
             foreach (var icon in imageIcons)
             {

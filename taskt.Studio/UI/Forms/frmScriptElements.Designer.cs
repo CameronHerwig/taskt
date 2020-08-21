@@ -52,10 +52,9 @@
             this.lblMainLogo.BackColor = System.Drawing.Color.Transparent;
             this.lblMainLogo.Font = new System.Drawing.Font("Segoe UI Semilight", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMainLogo.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblMainLogo.Location = new System.Drawing.Point(-3, -2);
-            this.lblMainLogo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMainLogo.Location = new System.Drawing.Point(-2, -2);
             this.lblMainLogo.Name = "lblMainLogo";
-            this.lblMainLogo.Size = new System.Drawing.Size(180, 54);
+            this.lblMainLogo.Size = new System.Drawing.Size(143, 45);
             this.lblMainLogo.TabIndex = 7;
             this.lblMainLogo.Text = "elements";
             // 
@@ -68,10 +67,9 @@
             this.uiBtnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnCancel.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnCancel.Image")));
             this.uiBtnCancel.IsMouseOver = false;
-            this.uiBtnCancel.Location = new System.Drawing.Point(73, 1);
-            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnCancel.Location = new System.Drawing.Point(55, 1);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnCancel.Size = new System.Drawing.Size(48, 48);
             this.uiBtnCancel.TabIndex = 15;
             this.uiBtnCancel.TabStop = false;
             this.uiBtnCancel.Text = "Cancel";
@@ -86,10 +84,9 @@
             this.uiBtnOK.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOK.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOK.Image")));
             this.uiBtnOK.IsMouseOver = false;
-            this.uiBtnOK.Location = new System.Drawing.Point(4, 1);
-            this.uiBtnOK.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnOK.Location = new System.Drawing.Point(3, 1);
             this.uiBtnOK.Name = "uiBtnOK";
-            this.uiBtnOK.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnOK.Size = new System.Drawing.Size(48, 48);
             this.uiBtnOK.TabIndex = 14;
             this.uiBtnOK.TabStop = false;
             this.uiBtnOK.Text = "Ok";
@@ -105,14 +102,13 @@
             this.tlpElements.Controls.Add(this.pnlBottom, 0, 2);
             this.tlpElements.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpElements.Location = new System.Drawing.Point(0, 0);
-            this.tlpElements.Margin = new System.Windows.Forms.Padding(4);
             this.tlpElements.Name = "tlpElements";
             this.tlpElements.RowCount = 3;
-            this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 119F));
+            this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 97F));
             this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 63F));
-            this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tlpElements.Size = new System.Drawing.Size(862, 638);
+            this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
+            this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpElements.Size = new System.Drawing.Size(646, 518);
             this.tlpElements.TabIndex = 17;
             // 
             // tvScriptElements
@@ -120,13 +116,12 @@
             this.tvScriptElements.BackColor = System.Drawing.Color.DimGray;
             this.tvScriptElements.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvScriptElements.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvScriptElements.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tvScriptElements.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvScriptElements.ForeColor = System.Drawing.Color.White;
-            this.tvScriptElements.Location = new System.Drawing.Point(4, 123);
-            this.tvScriptElements.Margin = new System.Windows.Forms.Padding(4);
+            this.tvScriptElements.Location = new System.Drawing.Point(3, 100);
             this.tvScriptElements.Name = "tvScriptElements";
             this.tvScriptElements.ShowLines = false;
-            this.tvScriptElements.Size = new System.Drawing.Size(854, 448);
+            this.tvScriptElements.Size = new System.Drawing.Size(640, 364);
             this.tvScriptElements.TabIndex = 18;
             this.tvScriptElements.DoubleClick += new System.EventHandler(this.tvScriptElements_DoubleClick);
             this.tvScriptElements.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvScriptElements_KeyDown);
@@ -141,7 +136,7 @@
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(862, 119);
+            this.pnlTop.Size = new System.Drawing.Size(646, 97);
             this.pnlTop.TabIndex = 18;
             // 
             // lblDefineName
@@ -150,10 +145,9 @@
             this.lblDefineName.BackColor = System.Drawing.Color.Transparent;
             this.lblDefineName.Font = new System.Drawing.Font("Segoe UI Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDefineName.ForeColor = System.Drawing.Color.LightSteelBlue;
-            this.lblDefineName.Location = new System.Drawing.Point(73, 60);
-            this.lblDefineName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDefineName.Location = new System.Drawing.Point(55, 49);
             this.lblDefineName.Name = "lblDefineName";
-            this.lblDefineName.Size = new System.Drawing.Size(350, 50);
+            this.lblDefineName.Size = new System.Drawing.Size(273, 40);
             this.lblDefineName.TabIndex = 16;
             this.lblDefineName.Text = "Double-Click to edit existing elements\r\nPress \'DEL\' key to delete existing elemen" +
     "ts";
@@ -167,10 +161,9 @@
             this.uiBtnNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.uiBtnNew.Image = global::taskt.Properties.Resources.action_bar_new;
             this.uiBtnNew.IsMouseOver = false;
-            this.uiBtnNew.Location = new System.Drawing.Point(7, 55);
-            this.uiBtnNew.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnNew.Location = new System.Drawing.Point(5, 45);
             this.uiBtnNew.Name = "uiBtnNew";
-            this.uiBtnNew.Size = new System.Drawing.Size(64, 60);
+            this.uiBtnNew.Size = new System.Drawing.Size(48, 49);
             this.uiBtnNew.TabIndex = 13;
             this.uiBtnNew.TabStop = false;
             this.uiBtnNew.Text = "Add";
@@ -182,22 +175,22 @@
             this.pnlBottom.Controls.Add(this.uiBtnOK);
             this.pnlBottom.Controls.Add(this.uiBtnCancel);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 575);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 467);
             this.pnlBottom.Margin = new System.Windows.Forms.Padding(0);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(862, 63);
+            this.pnlBottom.Size = new System.Drawing.Size(646, 51);
             this.pnlBottom.TabIndex = 19;
             this.pnlBottom.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlBottom_Paint);
             // 
             // frmScriptElements
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(862, 638);
+            this.ClientSize = new System.Drawing.Size(646, 518);
             this.Controls.Add(this.tlpElements);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmScriptElements";
             this.Text = "Elements";
             this.TopMost = true;

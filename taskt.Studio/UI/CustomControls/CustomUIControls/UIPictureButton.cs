@@ -53,7 +53,7 @@ namespace taskt.UI.CustomControls.CustomUIControls
         {
             Image = Resources.logo;
             DisplayTextBrush = Color.White;
-            Size = new Size(48, 48);
+            Size = new Size(45, 45);
             DisplayText = "Text";
             Font = new Font("Segoe UI", 8, FontStyle.Bold);
             MouseEnter += UIPictureButton_MouseEnter;
@@ -89,13 +89,13 @@ namespace taskt.UI.CustomControls.CustomUIControls
             }
 
             if (Image != null)
-                e.Graphics.DrawImage(Image, (Width / 2) - 20, 3, 40, 40);
+                e.Graphics.DrawImage(Image, (Width / 2) - (Width / 3), Height / 15, (Width/3 * 2), (Height / 3 * 2));
 
             if (DisplayText != null)
             {
                 var stringSize = e.Graphics.MeasureString(DisplayText, new Font("Segoe UI Bold", 8, FontStyle.Bold), 200);
                 e.Graphics.DrawString(DisplayText, new Font("Segoe UI", 8, FontStyle.Bold),
-                                      new SolidBrush(DisplayTextBrush), ((Width / 2) - (stringSize.Width / 2)), Height - 18);
+                                      new SolidBrush(DisplayTextBrush), (Width / 2) - (stringSize.Width / 2), Height - stringSize.Height);
             }
         }
 
