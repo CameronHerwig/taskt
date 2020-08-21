@@ -285,7 +285,7 @@ namespace taskt.Commands
                 {
                     DataRow[] foundVariables  = v_VariableAssignments.Select("VariableName = '" + "{" + variable.VariableName + "}" + "'");
                     if (foundVariables.Length == 0)
-                        v_VariableAssignments.Rows.Add("{" + variable.VariableName + "}", variable.VariableValue);
+                        v_VariableAssignments.Rows.Add("{" + variable.VariableName + "}", variable.VariableValue, "No");
                 }
                 _assignmentsGridViewHelper.DataSource = v_VariableAssignments;
 
