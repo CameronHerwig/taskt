@@ -43,7 +43,7 @@
             this.lstVariables.FormattingEnabled = true;
             this.lstVariables.ItemHeight = 28;
             this.lstVariables.Location = new System.Drawing.Point(16, 50);
-            this.lstVariables.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstVariables.Margin = new System.Windows.Forms.Padding(4);
             this.lstVariables.Name = "lstVariables";
             this.lstVariables.Size = new System.Drawing.Size(436, 172);
             this.lstVariables.TabIndex = 0;
@@ -102,13 +102,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(471, 322);
             this.Controls.Add(this.uiBtnOk);
             this.Controls.Add(this.uiBtnCancel);
             this.Controls.Add(this.lblHeader);
             this.Controls.Add(this.lstVariables);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "frmVariableSelector";
             this.Text = "Insert a Variable";
             this.Load += new System.EventHandler(this.frmVariableSelector_Load);

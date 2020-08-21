@@ -43,7 +43,7 @@
             this.lstElements.FormattingEnabled = true;
             this.lstElements.ItemHeight = 28;
             this.lstElements.Location = new System.Drawing.Point(16, 50);
-            this.lstElements.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstElements.Margin = new System.Windows.Forms.Padding(4);
             this.lstElements.Name = "lstElements";
             this.lstElements.Size = new System.Drawing.Size(436, 172);
             this.lstElements.TabIndex = 0;
@@ -102,13 +102,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(471, 322);
             this.Controls.Add(this.uiBtnOk);
             this.Controls.Add(this.uiBtnCancel);
             this.Controls.Add(this.lblHeader);
             this.Controls.Add(this.lstElements);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "frmElementSelector";
             this.Text = "Insert a Element";
             this.Load += new System.EventHandler(this.frmElementSelector_Load);
