@@ -167,10 +167,10 @@
             this.btnOpenProject.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnOpenProject.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenProject.Image")));
             this.btnOpenProject.IsMouseOver = false;
-            this.btnOpenProject.Location = new System.Drawing.Point(615, 205);
+            this.btnOpenProject.Location = new System.Drawing.Point(626, 207);
             this.btnOpenProject.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.btnOpenProject.Name = "btnOpenProject";
-            this.btnOpenProject.Size = new System.Drawing.Size(71, 60);
+            this.btnOpenProject.Size = new System.Drawing.Size(60, 60);
             this.btnOpenProject.TabIndex = 28;
             this.btnOpenProject.TabStop = false;
             this.btnOpenProject.Text = "Open";
@@ -185,10 +185,10 @@
             this.btnCreateProject.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCreateProject.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateProject.Image")));
             this.btnCreateProject.IsMouseOver = false;
-            this.btnCreateProject.Location = new System.Drawing.Point(265, 205);
+            this.btnCreateProject.Location = new System.Drawing.Point(276, 207);
             this.btnCreateProject.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.btnCreateProject.Name = "btnCreateProject";
-            this.btnCreateProject.Size = new System.Drawing.Size(71, 60);
+            this.btnCreateProject.Size = new System.Drawing.Size(60, 60);
             this.btnCreateProject.TabIndex = 21;
             this.btnCreateProject.TabStop = false;
             this.btnCreateProject.Text = "Create";

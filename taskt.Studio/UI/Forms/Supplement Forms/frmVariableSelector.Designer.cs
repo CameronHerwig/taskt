@@ -41,10 +41,11 @@
             // 
             this.lstVariables.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstVariables.FormattingEnabled = true;
-            this.lstVariables.ItemHeight = 21;
-            this.lstVariables.Location = new System.Drawing.Point(12, 41);
+            this.lstVariables.ItemHeight = 28;
+            this.lstVariables.Location = new System.Drawing.Point(16, 50);
+            this.lstVariables.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstVariables.Name = "lstVariables";
-            this.lstVariables.Size = new System.Drawing.Size(328, 151);
+            this.lstVariables.Size = new System.Drawing.Size(436, 172);
             this.lstVariables.TabIndex = 0;
             this.lstVariables.DoubleClick += new System.EventHandler(this.lstVariables_DoubleClick);
             // 
@@ -54,9 +55,10 @@
             this.lblHeader.BackColor = System.Drawing.Color.Transparent;
             this.lblHeader.Font = new System.Drawing.Font("Segoe UI Light", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHeader.ForeColor = System.Drawing.Color.White;
-            this.lblHeader.Location = new System.Drawing.Point(7, 4);
+            this.lblHeader.Location = new System.Drawing.Point(9, 5);
+            this.lblHeader.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(301, 32);
+            this.lblHeader.Size = new System.Drawing.Size(373, 41);
             this.lblHeader.TabIndex = 1;
             this.lblHeader.Text = "Insert a variable from the list";
             // 
@@ -69,10 +71,10 @@
             this.uiBtnOk.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOk.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOk.Image")));
             this.uiBtnOk.IsMouseOver = false;
-            this.uiBtnOk.Location = new System.Drawing.Point(12, 205);
-            this.uiBtnOk.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.uiBtnOk.Location = new System.Drawing.Point(15, 250);
+            this.uiBtnOk.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.uiBtnOk.Name = "uiBtnOk";
-            this.uiBtnOk.Size = new System.Drawing.Size(88, 49);
+            this.uiBtnOk.Size = new System.Drawing.Size(60, 60);
             this.uiBtnOk.TabIndex = 18;
             this.uiBtnOk.TabStop = false;
             this.uiBtnOk.Text = "Ok";
@@ -87,10 +89,10 @@
             this.uiBtnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnCancel.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnCancel.Image")));
             this.uiBtnCancel.IsMouseOver = false;
-            this.uiBtnCancel.Location = new System.Drawing.Point(106, 205);
-            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.uiBtnCancel.Location = new System.Drawing.Point(75, 250);
+            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(88, 49);
+            this.uiBtnCancel.Size = new System.Drawing.Size(60, 60);
             this.uiBtnCancel.TabIndex = 19;
             this.uiBtnCancel.TabStop = false;
             this.uiBtnCancel.Text = "Cancel";
@@ -98,14 +100,15 @@
             // 
             // frmVariableSelector
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(353, 262);
+            this.ClientSize = new System.Drawing.Size(471, 322);
             this.Controls.Add(this.uiBtnOk);
             this.Controls.Add(this.uiBtnCancel);
             this.Controls.Add(this.lblHeader);
             this.Controls.Add(this.lstVariables);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "frmVariableSelector";
             this.Text = "Insert a Variable";
             this.Load += new System.EventHandler(this.frmVariableSelector_Load);
