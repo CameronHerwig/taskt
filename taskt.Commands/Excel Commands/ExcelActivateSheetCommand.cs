@@ -50,7 +50,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             string vSheetToDelete = v_SheetName.ConvertUserVariableToString(engine);
 
-            var excelObject = engine.GetAppInstance(v_InstanceName);
+            var excelObject = v_InstanceName.GetAppInstance(engine);
             var excelInstance = (Application)excelObject;      
             var workSheet = excelInstance.Sheets[vSheetToDelete] as Worksheet;
             workSheet.Select(); 

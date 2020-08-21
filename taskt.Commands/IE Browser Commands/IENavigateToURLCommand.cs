@@ -47,7 +47,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            var browserObject = engine.GetAppInstance(v_InstanceName);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
             var browserInstance = (InternetExplorer)browserObject;
 
             browserInstance.Navigate(v_URL.ConvertUserVariableToString(engine));

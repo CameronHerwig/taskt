@@ -60,7 +60,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var browserObject = engine.GetAppInstance(v_InstanceName);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
             var seleniumInstance = (IWebDriver)browserObject;
             var requestedInfo = v_InfoType.ConvertUserVariableToString(engine);
             string info;

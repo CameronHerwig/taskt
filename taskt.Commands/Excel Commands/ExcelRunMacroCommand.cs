@@ -48,7 +48,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vMacro = v_MacroName.ConvertUserVariableToString(engine);
-            var excelObject = engine.GetAppInstance(v_InstanceName);         
+            var excelObject = v_InstanceName.GetAppInstance(engine);
             var excelInstance = (Application)excelObject;
             excelInstance.Run(vMacro);           
         }

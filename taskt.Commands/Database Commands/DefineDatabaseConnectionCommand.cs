@@ -91,7 +91,7 @@ namespace taskt.Commands
                 oleDBConnection.Close();
             }
 
-            engine.AddAppInstance(v_InstanceName, oleDBConnection);
+            oleDBConnection.AddAppInstance(engine, v_InstanceName);
 
         }
         private OleDbConnection CreateConnection(object sender)

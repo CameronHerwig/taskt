@@ -59,7 +59,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var vFolderPath = v_FolderPath.ConvertUserVariableToString(engine);
             var vFileName = v_FileName.ConvertUserVariableToString(engine);
-            var excelObject = engine.GetAppInstance(v_InstanceName);
+            var excelObject = v_InstanceName.GetAppInstance(engine);
             var excelInstance = (Application)excelObject;
 
             //overwrite and save

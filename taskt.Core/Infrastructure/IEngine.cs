@@ -47,9 +47,6 @@ namespace taskt.Core.Infrastructure
         void ExecuteScriptAsync(string filePath);
         void ExecuteScriptJson(string jsonData);
         void ExecuteCommand(ScriptAction command);
-        void AddAppInstance(string instanceName, object appObject);
-        object GetAppInstance(string instanceName);
-        void RemoveAppInstance(string instanceName);
         string GetEngineContext();
     }
 }

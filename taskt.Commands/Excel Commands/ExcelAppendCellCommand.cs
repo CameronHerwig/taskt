@@ -49,7 +49,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var excelObject = engine.GetAppInstance(v_InstanceName);
+            var excelObject = v_InstanceName.GetAppInstance(engine);
             var excelInstance = (Application)excelObject;
             Worksheet excelSheet = excelInstance.ActiveSheet;
   

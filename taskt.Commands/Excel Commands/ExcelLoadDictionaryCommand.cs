@@ -83,9 +83,9 @@ namespace taskt.Commands
             var vValueColumn = v_ValueColumn.ConvertUserVariableToString(engine);
 
             var newExcelSession = new Application{ Visible = false };
-            engine.AddAppInstance(vInstance, newExcelSession);
+            newExcelSession.AddAppInstance(engine, vInstance);
 
-            var excelObject = engine.GetAppInstance(vInstance);
+            var excelObject = vInstance.GetAppInstance(engine);
             var excelInstance = (Application)excelObject;
 
             var excelWorkbook = newExcelSession.Workbooks.Open(vFilePath);
@@ -139,7 +139,7 @@ namespace taskt.Commands
             excelInstance.Quit();
 
             //remove instance
-            engine.RemoveAppInstance(vInstance);
+            vInstance.RemoveAppInstance(engine);
 
             outputDictionary.StoreInUserVariable(engine, v_OutputUserVariableName);
         }

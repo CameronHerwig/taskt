@@ -98,7 +98,7 @@ namespace taskt.Commands
             else
                 newExcelSession.Visible = false;
 
-            engine.AddAppInstance(v_InstanceName, newExcelSession); 
+            newExcelSession.AddAppInstance(engine, v_InstanceName); 
 
             if (v_NewOpenWorkbook == "New Workbook")
             {

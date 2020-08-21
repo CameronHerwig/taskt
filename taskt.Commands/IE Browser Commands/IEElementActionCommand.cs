@@ -135,7 +135,7 @@ namespace taskt.Commands
 
             var engine = (AutomationEngineInstance)sender;
 
-            browserObject = engine.GetAppInstance(v_InstanceName);
+            browserObject = v_InstanceName.GetAppInstance(engine);
             var browserInstance = (InternetExplorer)browserObject;
 
             DataTable searchTable = Common.Clone(v_WebSearchParameter);

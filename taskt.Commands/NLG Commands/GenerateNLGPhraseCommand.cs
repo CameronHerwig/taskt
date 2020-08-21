@@ -46,7 +46,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var p = (SPhraseSpec)engine.GetAppInstance(v_InstanceName);
+            var p = (SPhraseSpec)v_InstanceName.GetAppInstance(engine);
 
             Lexicon lexicon = Lexicon.getDefaultLexicon();
             Realiser realiser = new Realiser(lexicon);

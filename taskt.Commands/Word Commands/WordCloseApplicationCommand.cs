@@ -6,6 +6,7 @@ using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Infrastructure;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
 using Application = Microsoft.Office.Interop.Word.Application;
@@ -47,7 +48,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var wordObject = engine.GetAppInstance(v_InstanceName);
+            var wordObject = v_InstanceName.GetAppInstance(engine);
             Application wordInstance = (Application)wordObject;
             bool saveOnExit;
             if (v_WordSaveOnExit == "Yes")
@@ -63,7 +64,7 @@ namespace taskt.Commands
             wordInstance.Quit();
 
             //remove instance
-            engine.RemoveAppInstance(v_InstanceName);
+            v_InstanceName.RemoveAppInstance(engine);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

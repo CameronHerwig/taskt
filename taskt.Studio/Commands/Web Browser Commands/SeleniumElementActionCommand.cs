@@ -162,7 +162,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             //convert to user variable -- https://github.com/saucepleez/taskt/issues/66
             var seleniumSearchParam = v_SeleniumSearchParameter.ConvertUserVariableToString(engine);
-            var browserObject = engine.GetAppInstance(v_InstanceName);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
             var seleniumInstance = (IWebDriver)browserObject;
             dynamic element = null;
 
@@ -551,11 +551,8 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             var seleniumSearchParam = elementName.ConvertUserVariableToString(engine);
 
-            //get instance name
-            var vInstance = v_InstanceName.ConvertUserVariableToString(engine);
-
             //get stored app object
-            var browserObject = engine.GetAppInstance(vInstance);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
 
             //get selenium instance driver
             var seleniumInstance = (ChromeDriver)browserObject;

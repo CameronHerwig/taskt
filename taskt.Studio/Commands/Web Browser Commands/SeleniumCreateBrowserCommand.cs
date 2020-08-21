@@ -112,7 +112,7 @@ namespace taskt.Commands
             }
 
             //add app instance
-            engine.AddAppInstance(v_InstanceName, webDriver);
+            webDriver.AddAppInstance(engine, v_InstanceName);
 
             //handle app instance tracking
             if (v_InstanceTracking == "Keep Instance Alive")

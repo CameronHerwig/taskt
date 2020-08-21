@@ -49,7 +49,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var wordObject = engine.GetAppInstance(v_InstanceName);
+            var wordObject = v_InstanceName.GetAppInstance(engine);
 
             DataTable dataTable = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
 

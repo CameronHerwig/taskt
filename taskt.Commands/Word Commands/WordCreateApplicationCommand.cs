@@ -100,7 +100,7 @@ namespace taskt.Commands
             else
                 newWordSession.Visible = false;
 
-            engine.AddAppInstance(v_InstanceName, newWordSession);
+            newWordSession.AddAppInstance(engine, v_InstanceName);
 
             if (v_NewOpenDocument == "New Document")
             {

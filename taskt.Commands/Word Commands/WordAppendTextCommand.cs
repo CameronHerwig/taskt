@@ -108,7 +108,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vText = v_TextToSet.ConvertUserVariableToString(engine);
-            var wordObject = engine.GetAppInstance(v_InstanceName);
+            var wordObject = v_InstanceName.GetAppInstance(engine);
 
             Application wordInstance = (Application)wordObject;
             Document wordDocument = wordInstance.ActiveDocument;

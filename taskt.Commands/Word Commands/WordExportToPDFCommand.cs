@@ -62,7 +62,7 @@ namespace taskt.Commands
             var vFolderPath = v_FolderPath.ConvertUserVariableToString(engine);
 
             //get word app object
-            var wordObject = engine.GetAppInstance(v_InstanceName);
+            var wordObject = v_InstanceName.GetAppInstance(engine);
 
             //convert object
             Application wordInstance = (Application)wordObject;

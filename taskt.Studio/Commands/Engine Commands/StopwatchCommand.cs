@@ -80,7 +80,7 @@ namespace taskt.Commands
                 case "Start Stopwatch":
                     //start a new stopwatch
                     stopwatch = new System.Diagnostics.Stopwatch();
-                    engine.AddAppInstance(v_InstanceName, stopwatch);
+                    stopwatch.AddAppInstance(engine, v_InstanceName);
                     stopwatch.Start();
                     break;
                 case "Stop Stopwatch":

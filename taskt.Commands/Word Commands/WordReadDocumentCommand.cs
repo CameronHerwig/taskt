@@ -46,7 +46,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var wordObject = engine.GetAppInstance(v_InstanceName);
+            var wordObject = v_InstanceName.GetAppInstance(engine);
 
             Application wordInstance = (Application)wordObject;
             Document wordDocument = wordInstance.ActiveDocument;

@@ -99,7 +99,7 @@ namespace taskt.Commands
             var query = v_Query.ConvertUserVariableToString(engine);
 
             //define connection
-            var databaseConnection = (OleDbConnection)engine.GetAppInstance(v_InstanceName);
+            var databaseConnection = (OleDbConnection)v_InstanceName.GetAppInstance(engine);
             var queryExecutionType = v_QueryType.ConvertUserVariableToString(engine);
 
             //define commad

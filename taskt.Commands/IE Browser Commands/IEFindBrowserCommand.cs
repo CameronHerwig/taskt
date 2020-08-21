@@ -56,7 +56,7 @@ namespace taskt.Commands
             {
                 if ((shellWindow.Document is HTMLDocument) && (v_IEBrowserName==null || shellWindow.Document.Title == v_IEBrowserName))
                 {
-                    engine.AddAppInstance(v_InstanceName, shellWindow.Application);
+                    shellWindow.Application.AddAppInstance(engine, v_InstanceName);
                     browserFound = true;
                     break;
                 }
@@ -71,7 +71,7 @@ namespace taskt.Commands
                         ((shellWindow.Document.Title.Contains(v_IEBrowserName) || 
                         shellWindow.Document.Url.Contains(v_IEBrowserName))))
                     {
-                        engine.AddAppInstance(v_InstanceName, shellWindow.Application);
+                        shellWindow.Application.AddAppInstance(engine, v_InstanceName);
                         browserFound = true;
                         break;
                     }

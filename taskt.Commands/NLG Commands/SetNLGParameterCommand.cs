@@ -61,7 +61,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var p = (SPhraseSpec)engine.GetAppInstance(v_InstanceName);
+            var p = (SPhraseSpec)v_InstanceName.GetAppInstance(engine);
 
             var userInput = v_Parameter.ConvertUserVariableToString(engine);
 
@@ -99,7 +99,7 @@ namespace taskt.Commands
             engine.AppInstances.Remove(v_InstanceName);
 
             //add to app instance to track
-            engine.AddAppInstance(v_InstanceName, p);
+            p.AddAppInstance(engine, v_InstanceName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

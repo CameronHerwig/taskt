@@ -59,7 +59,7 @@ namespace taskt.Commands
             var vReplaceWithText = v_ReplaceWithText.ConvertUserVariableToString(engine);
 
             //get word app object
-            var wordObject = engine.GetAppInstance(v_InstanceName);
+            var wordObject = v_InstanceName.GetAppInstance(engine);
 
             //convert object
             Application wordInstance = (Application)wordObject;

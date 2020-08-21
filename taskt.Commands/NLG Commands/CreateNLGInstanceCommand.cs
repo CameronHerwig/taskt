@@ -7,6 +7,7 @@ using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Infrastructure;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
 
@@ -44,7 +45,7 @@ namespace taskt.Commands
             NLGFactory nlgFactory = new NLGFactory(lexicon);
             SPhraseSpec p = nlgFactory.createClause();
 
-            engine.AddAppInstance(v_InstanceName, p);
+            p.AddAppInstance(engine, v_InstanceName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

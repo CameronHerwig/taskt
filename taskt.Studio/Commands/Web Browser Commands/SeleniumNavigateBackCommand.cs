@@ -39,7 +39,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vInstance = v_InstanceName.ConvertUserVariableToString(engine);
-            var browserObject = engine.GetAppInstance(v_InstanceName);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
             var seleniumInstance = (IWebDriver)browserObject;
             seleniumInstance.Navigate().Back();
         }

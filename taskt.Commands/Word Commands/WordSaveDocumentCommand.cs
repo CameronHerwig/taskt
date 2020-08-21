@@ -6,6 +6,7 @@ using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Infrastructure;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
 using Application = Microsoft.Office.Interop.Word.Application;
@@ -39,7 +40,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get word app object
-            var wordObject = engine.GetAppInstance(v_InstanceName);
+            var wordObject = v_InstanceName.GetAppInstance(engine);
 
             //convert object
             Application wordInstance = (Application)wordObject;

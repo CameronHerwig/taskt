@@ -57,8 +57,8 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vColumnLetter = v_ColumnLetter.ConvertUserVariableToString(engine);
-            var excelObject = engine.GetAppInstance(v_InstanceName);
-            
+            var excelObject = v_InstanceName.GetAppInstance(engine);
+
             var excelInstance = (Application)excelObject;
             var excelSheet = excelInstance.ActiveSheet;
             var lastRow = (int)excelSheet.Cells(excelSheet.Rows.Count, vColumnLetter).End(XlDirection.xlUp).Row;
