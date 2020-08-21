@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -10,7 +8,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -32,10 +29,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output List Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public ParseJSONArrayCommand()
@@ -51,7 +47,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variablized input
-            var variableInput = v_JsonArrayName.ConvertToUserVariable(engine);
+            var variableInput = v_JsonArrayName.ConvertUserVariableToString(engine);
 
             //create objects
             JArray arr;
@@ -73,23 +69,7 @@ namespace taskt.Commands
                 resultList.Add(result.ToString());
             }
 
-            //get variable
-            var requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_OutputUserVariableName).FirstOrDefault();
-
-            //create if var does not exist
-            if (requiredComplexVariable == null)
-            {
-                engine.VariableList.Add(
-                    new ScriptVariable() 
-                    { 
-                        VariableName = v_OutputUserVariableName, 
-                        CurrentPosition = 0 
-                    });
-                requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_OutputUserVariableName).FirstOrDefault();
-            }
-
-            //assign value to variable
-            requiredComplexVariable.VariableValue = resultList;
+            resultList.StoreInUserVariable(engine, v_OutputUserVariableName);           
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

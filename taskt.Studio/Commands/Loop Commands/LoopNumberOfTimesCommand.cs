@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -50,24 +49,20 @@ namespace taskt.Commands
             LoopNumberOfTimesCommand loopCommand = (LoopNumberOfTimesCommand)parentCommand.ScriptCommand;
             var engine = (AutomationEngineInstance)sender;
 
-            if (!engine.VariableList.Any(f => f.VariableName == "Loop.CurrentIndex"))
-            {
-                engine.VariableList.Add(new ScriptVariable() { VariableName = "Loop.CurrentIndex", VariableValue = "0" });
-            }
+            var currentIndex = "Loop.CurrentIndex".ConvertUserVariableToString(engine);
+
+            if (currentIndex == null)
+                "0".StoreInUserVariable(engine, "Loop.CurrentIndex");
 
             int loopTimes;
-            ScriptVariable complexVarible = null;
 
-            var loopParameter = loopCommand.v_LoopParameter.ConvertToUserVariable(engine);
+            var loopParameter = loopCommand.v_LoopParameter.ConvertUserVariableToString(engine);
             loopTimes = int.Parse(loopParameter);
 
-            int startIndex = 0;
-            int.TryParse(v_LoopStart.ConvertToUserVariable(engine), out startIndex);
+            int.TryParse(v_LoopStart.ConvertUserVariableToString(engine), out int startIndex);
 
             for (int i = startIndex; i < loopTimes; i++)
             {
-                if (complexVarible != null)
-                    complexVarible.CurrentPosition = i;
 
               //  (i + 1).ToString().StoreInUserVariable(engine, "Loop.CurrentIndex");
 

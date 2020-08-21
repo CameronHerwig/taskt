@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -9,7 +8,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -40,10 +38,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output DataRow Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public GetDataRowCommand()
@@ -57,15 +54,14 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataSetVariable = LookupVariable(engine);
-            DataTable dataTable = (DataTable)dataSetVariable.VariableValue;
+            DataTable dataTable = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
 
-            var rowIndex = v_DataRowIndex.ConvertToUserVariable(engine);
+            var rowIndex = v_DataRowIndex.ConvertUserVariableToString(engine);
             int index = int.Parse(rowIndex);
 
             DataRow row = dataTable.Rows[index];
 
-            engine.AddVariable(v_OutputUserVariableName, row);
+            row.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -82,24 +78,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Get Row '{v_DataRowIndex}' From '{v_DataTable}' - Store DataRow in '{v_OutputUserVariableName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataTable).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataTable.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)
-                                         && v_DataTable.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataTable.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                     .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }        
     }
 }

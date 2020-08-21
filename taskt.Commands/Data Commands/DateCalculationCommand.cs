@@ -62,10 +62,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Date Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public DateCalculationCommand()
@@ -84,7 +83,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variablized string
-            var variableDateTime = v_InputDate.ConvertToUserVariable(engine);
+            var variableDateTime = v_InputDate.ConvertUserVariableToString(engine);
 
             //convert to date time
             DateTime requiredDateTime;
@@ -95,7 +94,7 @@ namespace taskt.Commands
 
             //get increment value
             double requiredInterval;
-            var variableIncrement = v_Increment.ConvertToUserVariable(engine);
+            var variableIncrement = v_Increment.ConvertUserVariableToString(engine);
 
             //convert to double
             if (!Double.TryParse(variableIncrement, out requiredInterval))
@@ -141,7 +140,7 @@ namespace taskt.Commands
             }
 
             //handle if formatter is required
-            var formatting = v_ToStringFormat.ConvertToUserVariable(engine);
+            var formatting = v_ToStringFormat.ConvertUserVariableToString(engine);
             var stringDateFormatted = requiredDateTime.ToString(formatting);
 
             //store string (Result) in variable

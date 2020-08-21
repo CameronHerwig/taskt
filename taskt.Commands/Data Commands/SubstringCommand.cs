@@ -44,10 +44,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Substring Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public SubstringCommand()
@@ -62,9 +61,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var inputText = v_InputText.ConvertToUserVariable(engine);
-            var startIndex = int.Parse(v_StartIndex.ConvertToUserVariable(engine));
-            var stringLength = int.Parse(v_StringLength.ConvertToUserVariable(engine));
+            var inputText = v_InputText.ConvertUserVariableToString(engine);
+            var startIndex = int.Parse(v_StartIndex.ConvertUserVariableToString(engine));
+            var stringLength = int.Parse(v_StringLength.ConvertUserVariableToString(engine));
 
             //apply substring
             if (stringLength >= 0)

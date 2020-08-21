@@ -6,7 +6,6 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -37,10 +36,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Collection Item Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public LoopCollectionCommand()
@@ -57,49 +55,42 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             int loopTimes;
-            ScriptVariable complexVariable = null;
-
-            //get variable by regular name
-            complexVariable = engine.VariableList.Where(x => x.VariableName == v_LoopParameter).FirstOrDefault();
-
-            //user may potentially include brackets []
-            if (complexVariable == null)
-                complexVariable = engine.VariableList.Where(x => x.VariableName.ApplyVariableFormatting() == v_LoopParameter).FirstOrDefault();
+            var complexVariable = v_LoopParameter.ConvertUserVariableToObject(engine);           
 
             //if still null then throw exception
             if (complexVariable == null)
             {
-                throw new System.Exception("Complex Variable '" + v_LoopParameter + "' or '" + v_LoopParameter.ApplyVariableFormatting() + 
+                throw new System.Exception("Complex Variable '" + v_LoopParameter + 
                     "' not found. Ensure the variable exists before attempting to modify it.");
             }
 
             dynamic listToLoop;
-            if (complexVariable.VariableValue is List<string>)
+            if (complexVariable is List<string>)
             {
-                listToLoop = (List<string>)complexVariable.VariableValue;
+                listToLoop = (List<string>)complexVariable;
             }
-            else if (complexVariable.VariableValue is List<IWebElement>)
+            else if (complexVariable is List<IWebElement>)
             {
-                listToLoop = (List<IWebElement>)complexVariable.VariableValue;
+                listToLoop = (List<IWebElement>)complexVariable;
             }
-            else if (complexVariable.VariableValue is DataTable)
+            else if (complexVariable is DataTable)
             {
-                listToLoop = ((DataTable)complexVariable.VariableValue).Rows;
+                listToLoop = ((DataTable)complexVariable).Rows;
             }
-            else if (complexVariable.VariableValue is List<MailItem>)
+            else if (complexVariable is List<MailItem>)
             {
-                listToLoop = (List<MailItem>)complexVariable.VariableValue;
+                listToLoop = (List<MailItem>)complexVariable;
             }
-            else if (complexVariable.VariableValue is List<MimeMessage>)
+            else if (complexVariable is List<MimeMessage>)
             {
-                listToLoop = (List<MimeMessage>)complexVariable.VariableValue;
+                listToLoop = (List<MimeMessage>)complexVariable;
             }
-            else if ((complexVariable.VariableValue.ToString().StartsWith("[")) && 
-                (complexVariable.VariableValue.ToString().EndsWith("]")) && 
-                (complexVariable.VariableValue.ToString().Contains(",")))
+            else if ((complexVariable.ToString().StartsWith("[")) && 
+                (complexVariable.ToString().EndsWith("]")) && 
+                (complexVariable.ToString().Contains(",")))
             {
                 //automatically handle if user has given a json array
-                JArray jsonArray = JsonConvert.DeserializeObject(complexVariable.VariableValue.ToString()) as JArray;
+                JArray jsonArray = JsonConvert.DeserializeObject(complexVariable.ToString()) as JArray;
 
                var itemList = new List<string>();
                 foreach (var item in jsonArray)
@@ -108,7 +99,7 @@ namespace taskt.Commands
                     itemList.Add(value.ToString());
                 }
 
-                complexVariable.VariableValue = itemList;
+                itemList.StoreInUserVariable(engine, v_LoopParameter);
                 listToLoop = itemList;
             }
             else
@@ -120,10 +111,7 @@ namespace taskt.Commands
             {
                 engine.ReportProgress("Starting Loop Number " + (i + 1) + "/" + loopTimes + " From Line " + loopCommand.LineNumber);
                 
-                if(listToLoop[i] is string)
-                    ((string)listToLoop[i]).StoreInUserVariable(engine, v_OutputUserVariableName);
-                else
-                    engine.AddVariable(v_OutputUserVariableName, listToLoop[i]);
+                ((object)listToLoop[i]).StoreInUserVariable(engine, v_OutputUserVariableName);
 
                 foreach (var cmd in parentCommand.AdditionalScriptCommands)
                 {

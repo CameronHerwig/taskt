@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
-using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
@@ -20,11 +19,10 @@ namespace taskt.Commands
     public class IECloseBrowserCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("IE Instance Name")]
-        [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("IEBrowser || {vIEBrowser}")]
-        [Remarks("Failure to enter the correct instance or failure to first call **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("IE Browser Instance Name")]
+        [InputSpecification("Enter the unique instance that was specified in the **IE Create Browser** command.")]
+        [SampleUsage("MyIEBrowserInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **IE Create Browser** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         public IECloseBrowserCommand()
@@ -32,7 +30,7 @@ namespace taskt.Commands
             CommandName = "IECloseBrowserCommand";
             SelectionName = "Close Browser";
             CommandEnabled = true;
-            v_InstanceName = "default";
+            v_InstanceName = "DefaultIEBrowser";
             CustomRendering = true;
         }
 
@@ -40,14 +38,12 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-
-            var browserObject = engine.GetAppInstance(vInstance);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
 
             var browserInstance = (InternetExplorer)browserObject;
             browserInstance.Quit();
 
-            engine.RemoveAppInstance(vInstance);
+            v_InstanceName.RemoveAppInstance(engine);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

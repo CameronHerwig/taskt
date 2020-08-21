@@ -28,9 +28,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Excel Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Application** command.")]
-        [SampleUsage("MyExcelInstance || {vExcelInstance}")]
+        [SampleUsage("MyExcelInstance")]
         [Remarks("Failure to enter the correct instance or failure to first call the **Create Application** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -69,10 +68,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output DataTable List Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public ExcelSplitRangeByColumnCommand()
@@ -89,11 +87,10 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var vExcelObject = engine.GetAppInstance(vInstance);
-            var vRange = v_Range.ConvertToUserVariable(engine);
-            var vColumnName = v_ColumnName.ConvertToUserVariable(engine);
-            var vOutputDirectory = v_OutputDirectory.ConvertToUserVariable(engine);
+            var vExcelObject = v_InstanceName.GetAppInstance(engine);
+            var vRange = v_Range.ConvertUserVariableToString(engine);
+            var vColumnName = v_ColumnName.ConvertUserVariableToString(engine);
+            var vOutputDirectory = v_OutputDirectory.ConvertUserVariableToString(engine);
             var excelInstance = (Application)vExcelObject;
 
             excelInstance.DisplayAlerts = false;
@@ -165,7 +162,7 @@ namespace taskt.Commands
                                        .ToList();
 
             //add list of datatables to output variable
-            engine.AddVariable(v_OutputUserVariableName, result);
+            result.StoreInUserVariable(engine, v_OutputUserVariableName);
 
             //save split datatables in individual workbooks labeled by selected column data
             if (Directory.Exists(vOutputDirectory))

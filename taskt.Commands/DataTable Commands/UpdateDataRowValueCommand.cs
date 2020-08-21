@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -9,7 +8,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -67,23 +65,22 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataRowValue = v_DataRowValue.ConvertToUserVariable(engine);
+            var dataRowValue = v_DataRowValue.ConvertUserVariableToString(engine);
 
-            var dataRowVariable = LookupVariable(engine);
-            var variableList = engine.VariableList;
+            var dataRowVariable = v_DataRow.ConvertUserVariableToObject(engine);
+
             DataRow dataRow;
-
+            var loopIndexVariable = "Loop.CurrentIndex".ConvertUserVariableToString(engine);
             //check in case of looping through datatable using BeginListLoopCommand
-            if (dataRowVariable.VariableValue is DataTable && engine.VariableList.Exists(x => x.VariableName == "Loop.CurrentIndex"))
+            if (dataRowVariable is DataTable && loopIndexVariable != null)
             {
-                var loopIndexVariable = engine.VariableList.Where(x => x.VariableName == "Loop.CurrentIndex").FirstOrDefault();
-                int loopIndex = int.Parse(loopIndexVariable.VariableValue.ToString());
-                dataRow = ((DataTable)dataRowVariable.VariableValue).Rows[loopIndex - 1];
+                int loopIndex = int.Parse(loopIndexVariable.ToString());
+                dataRow = ((DataTable)dataRowVariable).Rows[loopIndex - 1];
             }
 
-            else dataRow = (DataRow)dataRowVariable.VariableValue;
+            else dataRow = (DataRow)dataRowVariable;
 
-            var valueIndex = v_DataValueIndex.ConvertToUserVariable(engine);
+            var valueIndex = v_DataValueIndex.ConvertUserVariableToString(engine);
 
             if (v_Option == "Column Index")
             {
@@ -113,24 +110,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Write '{v_DataRowValue}' to Column '{v_DataValueIndex}' in '{v_DataRow}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataRow).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataRow.StartsWith(sendingInstance.EngineSettings.VariableStartMarker) 
-                                         && v_DataRow.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataRow.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                   .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

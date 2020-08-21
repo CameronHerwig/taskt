@@ -62,7 +62,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var exceptionMessage = v_ExceptionMessage.ConvertToUserVariable(engine);
+            var exceptionMessage = v_ExceptionMessage.ConvertUserVariableToString(engine);
 
             Exception ex;
             switch(v_ExceptionType)

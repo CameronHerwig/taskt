@@ -47,10 +47,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Data Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public RunCustomCodeCommand()
@@ -64,7 +63,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var customCode = v_Code.ConvertToUserVariable(engine);
+            var customCode = v_Code.ConvertUserVariableToString(engine);
 
             if (customCode.Contains("static void Main"))
             {
@@ -120,7 +119,7 @@ namespace taskt.Commands
 
                 if(v_OutputUserVariableName.Length != 0)
                 {
-                    engine.AddVariable(v_OutputUserVariableName, result);
+                    ((object)result).StoreInUserVariable(engine, v_OutputUserVariableName);
                 }
             }
         }
@@ -157,7 +156,7 @@ namespace taskt.Commands
             }
             else
             {
-                var arguments = v_Args.ConvertToUserVariable(engine);
+                var arguments = v_Args.ConvertUserVariableToString(engine);
 
                 //run code, taskt will wait for the app to exit before resuming
                 using (Process scriptProc = new Process())

@@ -14,10 +14,7 @@ namespace taskt.Core.Settings
         public bool ShowDebugWindow { get; set; }
         public bool AutoCloseDebugWindow { get; set; }
         public bool ShowAdvancedDebugOutput { get; set; }
-        public bool CreateMissingVariablesDuringExecution { get; set; }
         public bool TrackExecutionMetrics { get; set; }
-        public string VariableStartMarker { get; set; }
-        public string VariableEndMarker { get; set; }
         public Keys CancellationKey { get; set; }
         public int DelayBetweenCommands { get; set; }
         public bool OverrideExistingAppInstances { get; set; }
@@ -37,10 +34,7 @@ namespace taskt.Core.Settings
             ShowDebugWindow = true;
             AutoCloseDebugWindow = false;
             ShowAdvancedDebugOutput = true;
-            CreateMissingVariablesDuringExecution = true;
             TrackExecutionMetrics = true;
-            VariableStartMarker = "{";
-            VariableEndMarker = "}";
             CancellationKey = Keys.Pause;
             DelayBetweenCommands = 250;
             OverrideExistingAppInstances = false;

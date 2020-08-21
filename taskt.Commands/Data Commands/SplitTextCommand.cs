@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -9,7 +8,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -39,10 +37,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output List Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public SplitTextCommand()
@@ -56,12 +53,12 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var stringVariable = v_InputText.ConvertToUserVariable(engine);
+            var stringVariable = v_InputText.ConvertUserVariableToString(engine);
             var splitCharacter = v_SplitCharacter;
 
             if(v_SplitCharacter != "[crLF]" && v_SplitCharacter != "[chars]")
             {
-                splitCharacter = v_SplitCharacter.ConvertToUserVariable(engine);
+                splitCharacter = v_SplitCharacter.ConvertUserVariableToString(engine);
             }
             List<string> splitString;
             if (splitCharacter == "[crLF]")
@@ -81,21 +78,8 @@ namespace taskt.Commands
             {
                 splitString = stringVariable.Split(new string[] { splitCharacter }, StringSplitOptions.None).ToList();
             }
-            
-            var v_receivingVariable = v_OutputUserVariableName
-                .Replace(engine.EngineSettings.VariableStartMarker, "")
-                .Replace(engine.EngineSettings.VariableEndMarker, "");
 
-            //get complex variable from engine and assign
-            var requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_receivingVariable).FirstOrDefault();
-
-            if (requiredComplexVariable == null)
-            {
-                engine.VariableList.Add(new ScriptVariable() { VariableName = v_receivingVariable, CurrentPosition = 0 });
-                requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == v_receivingVariable).FirstOrDefault();
-            }
-
-            requiredComplexVariable.VariableValue = splitString;
+            splitString.StoreInUserVariable(engine, v_OutputUserVariableName);           
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

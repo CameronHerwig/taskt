@@ -67,8 +67,8 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get text to log and log file name       
-            var textToLog = v_LogText.ConvertToUserVariable(engine);
-            var loggerFilePath = v_LogFile.ConvertToUserVariable(engine);
+            var textToLog = v_LogText.ConvertUserVariableToString(engine);
+            var loggerFilePath = v_LogFile.ConvertUserVariableToString(engine);
 
             //determine log file
             if (v_LogFile == "Engine Logs")

@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
-using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
@@ -23,9 +22,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Browser Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("MyBrowserInstance || {vBrowserInstance}")]
+        [SampleUsage("MyBrowserInstance")]
         [Remarks("Failure to enter the correct instance name or failure to first call the **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         public SeleniumCloseBrowserCommand()
@@ -40,13 +38,12 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var browserObject = engine.GetAppInstance(vInstance);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
             var seleniumInstance = (IWebDriver)browserObject;
             seleniumInstance.Quit();
             seleniumInstance.Dispose();
 
-            engine.RemoveAppInstance(vInstance);
+            v_InstanceName.RemoveAppInstance(engine);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

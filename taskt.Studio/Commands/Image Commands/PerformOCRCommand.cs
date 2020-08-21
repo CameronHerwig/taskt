@@ -31,10 +31,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output OCR Result Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public PerformOCRCommand()
@@ -49,7 +48,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vFilePath = v_FilePath.ConvertToUserVariable(engine);
+            var vFilePath = v_FilePath.ConvertUserVariableToString(engine);
 
             OneNoteOCR ocrEngine = new OneNoteOCR();
             OCRText[] ocrTextArray = ocrEngine.OcrTexts(vFilePath).ToArray();

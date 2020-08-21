@@ -59,10 +59,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Dictionary Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public LoadDictionaryCommand()
@@ -78,15 +77,15 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             var vInstance = DateTime.Now.ToString();
-            var vFilePath = v_FilePath.ConvertToUserVariable(engine);
-            var vSheetName = v_SheetName.ConvertToUserVariable(engine);
-            var vKeyColumn = v_KeyColumn.ConvertToUserVariable(engine);
-            var vValueColumn = v_ValueColumn.ConvertToUserVariable(engine);
+            var vFilePath = v_FilePath.ConvertUserVariableToString(engine);
+            var vSheetName = v_SheetName.ConvertUserVariableToString(engine);
+            var vKeyColumn = v_KeyColumn.ConvertUserVariableToString(engine);
+            var vValueColumn = v_ValueColumn.ConvertUserVariableToString(engine);
 
             var newExcelSession = new Application{ Visible = false };
-            engine.AddAppInstance(vInstance, newExcelSession);
+            newExcelSession.AddAppInstance(engine, vInstance);
 
-            var excelObject = engine.GetAppInstance(vInstance);
+            var excelObject = vInstance.GetAppInstance(engine);
             var excelInstance = (Application)excelObject;
 
             var excelWorkbook = newExcelSession.Workbooks.Open(vFilePath);
@@ -140,9 +139,9 @@ namespace taskt.Commands
             excelInstance.Quit();
 
             //remove instance
-            engine.RemoveAppInstance(vInstance);
+            vInstance.RemoveAppInstance(engine);
 
-            engine.AddVariable(v_OutputUserVariableName, outputDictionary);
+            outputDictionary.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
         
         public override List<Control> Render(IfrmCommandEditor editor)

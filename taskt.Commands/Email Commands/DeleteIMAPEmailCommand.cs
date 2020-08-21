@@ -86,11 +86,11 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MimeMessage vMimeMessage = (MimeMessage)VariableMethods.LookupVariable(engine, v_IMAPMimeMessage).VariableValue;
-            string vIMAPHost = v_IMAPHost.ConvertToUserVariable(engine);
-            string vIMAPPort = v_IMAPPort.ConvertToUserVariable(engine);
-            string vIMAPUserName = v_IMAPUserName.ConvertToUserVariable(engine);
-            string vIMAPPassword = v_IMAPPassword.ConvertToUserVariable(engine);
+            MimeMessage vMimeMessage = (MimeMessage)v_IMAPMimeMessage.ConvertUserVariableToObject(engine);
+            string vIMAPHost = v_IMAPHost.ConvertUserVariableToString(engine);
+            string vIMAPPort = v_IMAPPort.ConvertUserVariableToString(engine);
+            string vIMAPUserName = v_IMAPUserName.ConvertUserVariableToString(engine);
+            string vIMAPPassword = v_IMAPPassword.ConvertUserVariableToString(engine);
 
             using (var client = new ImapClient())
             {

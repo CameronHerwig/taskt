@@ -27,7 +27,7 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Browser Instance Name")]
         [InputSpecification("Enter a unique name that will represent the application instance.")]
-        [SampleUsage("MyExcelInstance")]
+        [SampleUsage("MyBrowserInstance")]
         [Remarks("This unique name allows you to refer to the instance by name in future commands, " +
                  "ensuring that the commands you specify run against the correct application.")]
         public string v_InstanceName { get; set; }
@@ -98,7 +98,7 @@ namespace taskt.Commands
 
                 if (!string.IsNullOrEmpty(v_SeleniumOptions))
                 {
-                    var convertedOptions = v_SeleniumOptions.ConvertToUserVariable(engine);
+                    var convertedOptions = v_SeleniumOptions.ConvertUserVariableToString(engine);
                     options.AddArguments(convertedOptions);
                 }
 
@@ -112,7 +112,7 @@ namespace taskt.Commands
             }
 
             //add app instance
-            engine.AddAppInstance(v_InstanceName, webDriver);
+            webDriver.AddAppInstance(engine, v_InstanceName);
 
             //handle app instance tracking
             if (v_InstanceTracking == "Keep Instance Alive")

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -40,7 +39,7 @@ namespace taskt.Commands
         {
             //get engine
             var engine = (AutomationEngineInstance)sender;
-            var vSwitchValue = v_SwitchValue.ConvertToUserVariable(engine);
+            var vSwitchValue = v_SwitchValue.ConvertUserVariableToString(engine);
 
             //get indexes of commands
             var caseIndices = FindAllCaseIndices(parentCommand.AdditionalScriptCommands);

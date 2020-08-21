@@ -65,20 +65,19 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataSetVariable = LookupVariable(engine);
 
-            DataTable Dt = (DataTable)dataSetVariable.VariableValue;
+            DataTable Dt = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
             var newRow = Dt.NewRow();
 
             foreach (DataRow rw in v_DataRowDataTable.Rows)
             {
-                var columnName = rw.Field<string>("Column Name").ConvertToUserVariable(engine);
-                var data = rw.Field<string>("Data").ConvertToUserVariable(engine);
+                var columnName = rw.Field<string>("Column Name").ConvertUserVariableToString(engine);
+                var data = rw.Field<string>("Data").ConvertUserVariableToString(engine);
                 newRow.SetField(columnName, data);
             }
             Dt.Rows.Add(newRow);
 
-            dataSetVariable.VariableValue = Dt;
+            Dt.StoreInUserVariable(engine, v_DataTable);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -107,23 +106,6 @@ namespace taskt.Commands
             return base.GetDisplayValue() + $" [Add {v_DataRowDataTable.Rows.Count} Field(s) to '{v_DataTable}']";
         }
 
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataTable).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataTable.StartsWith(sendingInstance.EngineSettings.VariableStartMarker) 
-                                         && v_DataTable.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataTable.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                     .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-            return requiredVariable;
-        }
-
         private void LoadSchemaControl_Click(object sender, EventArgs e)
         {
             frmVariableSelector selectionForm = new frmVariableSelector();
@@ -131,7 +113,7 @@ namespace taskt.Commands
             selectionForm.lblHeader.Text = "Select a DataTable from the list";
             foreach (var item in _dataTableCreationCommands)
             {
-                selectionForm.lstVariables.Items.Add(item.v_DataTable);
+                selectionForm.lstVariables.Items.Add(item.v_OutputUserVariableName);
             }
 
             var result = selectionForm.ShowDialog();
@@ -139,7 +121,7 @@ namespace taskt.Commands
             if (result == DialogResult.OK)
             {
                 var tableName = selectionForm.lstVariables.SelectedItem.ToString();
-                var schema = _dataTableCreationCommands.Where(f => f.v_DataTable == tableName).FirstOrDefault();
+                var schema = _dataTableCreationCommands.Where(f => f.v_OutputUserVariableName == tableName).FirstOrDefault();
 
                 v_DataRowDataTable.Rows.Clear();
 

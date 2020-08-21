@@ -7,9 +7,7 @@ using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
-using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
 
@@ -21,11 +19,11 @@ namespace taskt.Commands
     public class IEFindBrowserCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("IE Instance Name")]
-        [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("IEBrowser || {vIEBrowser}")]
-        [Remarks("Failure to enter the correct instance or failure to first call **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("IE Browser Instance Name")]
+        [InputSpecification("Enter a unique name that will represent the application instance.")]
+        [SampleUsage("MyIEBrowserInstance")]
+        [Remarks("This unique name allows you to refer to the instance by name in future commands, " +
+                 "ensuring that the commands you specify run against the correct application.")]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -43,7 +41,7 @@ namespace taskt.Commands
         {
             CommandName = "IEFindBrowserCommand";
             SelectionName = "Find Browser";
-            v_InstanceName = "default";
+            v_InstanceName = "DefaultIEBrowser";
             CommandEnabled = true;
             CustomRendering = true;
         }
@@ -52,15 +50,13 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            var instanceName = v_InstanceName.ConvertToUserVariable(engine);
-
             bool browserFound = false;
             var shellWindows = new ShellWindows();
             foreach (IWebBrowser2 shellWindow in shellWindows)
             {
                 if ((shellWindow.Document is HTMLDocument) && (v_IEBrowserName==null || shellWindow.Document.Title == v_IEBrowserName))
                 {
-                    engine.AddAppInstance(instanceName, shellWindow.Application);
+                    shellWindow.Application.AddAppInstance(engine, v_InstanceName);
                     browserFound = true;
                     break;
                 }
@@ -75,7 +71,7 @@ namespace taskt.Commands
                         ((shellWindow.Document.Title.Contains(v_IEBrowserName) || 
                         shellWindow.Document.Url.Contains(v_IEBrowserName))))
                     {
-                        engine.AddAppInstance(instanceName, shellWindow.Application);
+                        shellWindow.Application.AddAppInstance(engine, v_InstanceName);
                         browserFound = true;
                         break;
                     }

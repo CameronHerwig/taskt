@@ -51,10 +51,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Text Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         [XmlIgnore]
@@ -82,7 +81,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //get variablized input
-            var variableInput = v_InputText.ConvertToUserVariable(engine);
+            var variableInput = v_InputText.ConvertUserVariableToString(engine);
 
             string variableLeading, variableTrailing, skipOccurences, extractedText;
 
@@ -91,21 +90,21 @@ namespace taskt.Commands
             {
                 case "Extract All After Text":
                     //extract trailing texts            
-                    variableLeading = GetParameterValue("Leading Text").ConvertToUserVariable(engine);
-                    skipOccurences = GetParameterValue("Skip Past Occurences").ConvertToUserVariable(engine);
+                    variableLeading = GetParameterValue("Leading Text").ConvertUserVariableToString(engine);
+                    skipOccurences = GetParameterValue("Skip Past Occurences").ConvertUserVariableToString(engine);
                     extractedText = ExtractLeadingText(variableInput, variableLeading, skipOccurences);
                     break;
                 case "Extract All Before Text":
                     //extract leading text
-                    variableTrailing = GetParameterValue("Trailing Text").ConvertToUserVariable(engine);
-                    skipOccurences = GetParameterValue("Skip Past Occurences").ConvertToUserVariable(engine);
+                    variableTrailing = GetParameterValue("Trailing Text").ConvertUserVariableToString(engine);
+                    skipOccurences = GetParameterValue("Skip Past Occurences").ConvertUserVariableToString(engine);
                     extractedText = ExtractTrailingText(variableInput, variableTrailing, skipOccurences);
                     break;
                 case "Extract All Between Text":
                     //extract leading and then trailing which gives the items between
-                    variableLeading = GetParameterValue("Leading Text").ConvertToUserVariable(engine);
-                    variableTrailing = GetParameterValue("Trailing Text").ConvertToUserVariable(engine);
-                    skipOccurences = GetParameterValue("Skip Past Occurences").ConvertToUserVariable(engine);
+                    variableLeading = GetParameterValue("Leading Text").ConvertUserVariableToString(engine);
+                    variableTrailing = GetParameterValue("Trailing Text").ConvertUserVariableToString(engine);
+                    skipOccurences = GetParameterValue("Skip Past Occurences").ConvertUserVariableToString(engine);
 
                     //extract leading
                     extractedText = ExtractLeadingText(variableInput, variableLeading, skipOccurences);

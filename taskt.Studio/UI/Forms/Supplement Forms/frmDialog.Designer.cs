@@ -29,14 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            taskt.Utilities.Theme theme1 = new taskt.Utilities.Theme();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDialog));
             this.autoCloseTimer = new System.Windows.Forms.Timer(this.components);
             this.lblAutoClose = new System.Windows.Forms.Label();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.txtMessage = new System.Windows.Forms.RichTextBox();
             this.pnlControlContainer = new taskt.UI.CustomControls.CustomUIControls.UIPanel();
             this.uiBtnOk = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
             this.uiBtnCancel = new taskt.UI.CustomControls.CustomUIControls.UIPictureButton();
-            this.txtMessage = new System.Windows.Forms.RichTextBox();
             this.tlpMain.SuspendLayout();
             this.pnlControlContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uiBtnOk)).BeginInit();
@@ -54,9 +55,10 @@
             this.lblAutoClose.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAutoClose.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAutoClose.ForeColor = System.Drawing.Color.DarkOrange;
-            this.lblAutoClose.Location = new System.Drawing.Point(3, 0);
+            this.lblAutoClose.Location = new System.Drawing.Point(4, 0);
+            this.lblAutoClose.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAutoClose.Name = "lblAutoClose";
-            this.lblAutoClose.Size = new System.Drawing.Size(662, 23);
+            this.lblAutoClose.Size = new System.Drawing.Size(883, 28);
             this.lblAutoClose.TabIndex = 19;
             this.lblAutoClose.Text = "auto close label";
             this.lblAutoClose.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -72,25 +74,14 @@
             this.tlpMain.Controls.Add(this.txtMessage, 0, 1);
             this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMain.Location = new System.Drawing.Point(0, 0);
+            this.tlpMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 3;
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
-            this.tlpMain.Size = new System.Drawing.Size(668, 373);
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
+            this.tlpMain.Size = new System.Drawing.Size(891, 459);
             this.tlpMain.TabIndex = 20;
-            // 
-            // pnlControlContainer
-            // 
-            this.pnlControlContainer.BackColor = System.Drawing.Color.SteelBlue;
-            this.pnlControlContainer.Controls.Add(this.uiBtnOk);
-            this.pnlControlContainer.Controls.Add(this.uiBtnCancel);
-            this.pnlControlContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlControlContainer.Location = new System.Drawing.Point(0, 311);
-            this.pnlControlContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlControlContainer.Name = "pnlControlContainer";
-            this.pnlControlContainer.Size = new System.Drawing.Size(668, 62);
-            this.pnlControlContainer.TabIndex = 19;
             // 
             // txtMessage
             // 
@@ -98,12 +89,28 @@
             this.txtMessage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMessage.ForeColor = System.Drawing.Color.SteelBlue;
-            this.txtMessage.Location = new System.Drawing.Point(3, 26);
+            this.txtMessage.Location = new System.Drawing.Point(4, 32);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(662, 282);
+            this.txtMessage.Size = new System.Drawing.Size(883, 347);
             this.txtMessage.TabIndex = 20;
             this.txtMessage.Text = "";
             this.txtMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyDown);
+            // 
+            // pnlControlContainer
+            // 
+            this.pnlControlContainer.BackColor = System.Drawing.Color.SteelBlue;
+            this.pnlControlContainer.Controls.Add(this.uiBtnOk);
+            this.pnlControlContainer.Controls.Add(this.uiBtnCancel);
+            this.pnlControlContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlControlContainer.Location = new System.Drawing.Point(0, 383);
+            this.pnlControlContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlControlContainer.Name = "pnlControlContainer";
+            this.pnlControlContainer.Size = new System.Drawing.Size(891, 76);
+            this.pnlControlContainer.TabIndex = 19;
+            theme1.BgGradientEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(50)))), ((int)(((byte)(178)))));
+            theme1.BgGradientStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(136)))), ((int)(((byte)(204)))));
+            this.pnlControlContainer.Theme = theme1;
             // 
             // uiBtnOk
             // 
@@ -114,12 +121,13 @@
             this.uiBtnOk.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOk.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOk.Image")));
             this.uiBtnOk.IsMouseOver = false;
-            this.uiBtnOk.Location = new System.Drawing.Point(1, 3);
-            this.uiBtnOk.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.uiBtnOk.Location = new System.Drawing.Point(10, 8);
+            this.uiBtnOk.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.uiBtnOk.Name = "uiBtnOk";
-            this.uiBtnOk.Size = new System.Drawing.Size(88, 49);
+            this.uiBtnOk.Size = new System.Drawing.Size(60, 60);
             this.uiBtnOk.TabIndex = 16;
             this.uiBtnOk.TabStop = false;
+            this.uiBtnOk.Text = "Ok";
             this.uiBtnOk.Click += new System.EventHandler(this.uiBtnOk_Click);
             // 
             // uiBtnCancel
@@ -131,22 +139,24 @@
             this.uiBtnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnCancel.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnCancel.Image")));
             this.uiBtnCancel.IsMouseOver = false;
-            this.uiBtnCancel.Location = new System.Drawing.Point(95, 3);
-            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.uiBtnCancel.Location = new System.Drawing.Point(70, 8);
+            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(88, 49);
+            this.uiBtnCancel.Size = new System.Drawing.Size(60, 60);
             this.uiBtnCancel.TabIndex = 17;
             this.uiBtnCancel.TabStop = false;
+            this.uiBtnCancel.Text = "Cancel";
             this.uiBtnCancel.Click += new System.EventHandler(this.uiBtnCancel_Click);
             // 
             // frmDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(668, 373);
+            this.ClientSize = new System.Drawing.Size(891, 459);
             this.Controls.Add(this.tlpMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmDialog";
             this.Text = "Dialog";
             this.TopMost = true;

@@ -30,12 +30,11 @@ namespace taskt.Commands
         public string v_OSVariableName { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Please select the variable to receive output")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_applyToVariableName { get; set; }
+        [PropertyDescription("Output OS Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         [XmlIgnore]
         [NonSerialized]
@@ -55,7 +54,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var systemVariable = (string)v_OSVariableName.ConvertToUserVariable(engine);
+            var systemVariable = (string)v_OSVariableName.ConvertUserVariableToString(engine);
 
             ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
@@ -68,7 +67,7 @@ namespace taskt.Commands
                     if (prop.Name == systemVariable.ToString())
                     {
                         var sysValue = prop.Value.ToString();
-                        sysValue.StoreInUserVariable(engine, v_applyToVariableName);
+                        sysValue.StoreInUserVariable(engine, v_OutputUserVariableName);
                         return;
                     }
                 }
@@ -112,7 +111,7 @@ namespace taskt.Commands
             RenderedControls.Add(VariableValue);
 
 
-            RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_applyToVariableName", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
             
 
             return RenderedControls;
@@ -150,7 +149,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Apply '" + v_OSVariableName + "' to Variable '" + v_applyToVariableName + "']";
+            return base.GetDisplayValue() + " [Apply '" + v_OSVariableName + "' to Variable '" + v_OutputUserVariableName + "']";
         }
     }
 

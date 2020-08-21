@@ -50,7 +50,7 @@
             this.cboIEWindow.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboIEWindow.FormattingEnabled = true;
             this.cboIEWindow.Location = new System.Drawing.Point(16, 85);
-            this.cboIEWindow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboIEWindow.Margin = new System.Windows.Forms.Padding(4);
             this.cboIEWindow.Name = "cboIEWindow";
             this.cboIEWindow.Size = new System.Drawing.Size(529, 33);
             this.cboIEWindow.TabIndex = 0;
@@ -70,7 +70,7 @@
             this.dgvSearchParameters.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSearchParameters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSearchParameters.Location = new System.Drawing.Point(16, 162);
-            this.dgvSearchParameters.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvSearchParameters.Margin = new System.Windows.Forms.Padding(4);
             this.dgvSearchParameters.Name = "dgvSearchParameters";
             this.dgvSearchParameters.RowHeadersWidth = 51;
             this.dgvSearchParameters.Size = new System.Drawing.Size(688, 222);
@@ -112,7 +112,7 @@
             this.uiBtnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnRefresh.Image")));
             this.uiBtnRefresh.IsMouseOver = false;
             this.uiBtnRefresh.Location = new System.Drawing.Point(555, 71);
-            this.uiBtnRefresh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.uiBtnRefresh.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnRefresh.Name = "uiBtnRefresh";
             this.uiBtnRefresh.Size = new System.Drawing.Size(64, 59);
             this.uiBtnRefresh.TabIndex = 9;
@@ -129,10 +129,10 @@
             this.uiBtnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnCancel.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnCancel.Image")));
             this.uiBtnCancel.IsMouseOver = false;
-            this.uiBtnCancel.Location = new System.Drawing.Point(84, 391);
-            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.uiBtnCancel.Location = new System.Drawing.Point(70, 390);
+            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnCancel.Size = new System.Drawing.Size(60, 59);
             this.uiBtnCancel.TabIndex = 17;
             this.uiBtnCancel.TabStop = false;
             this.uiBtnCancel.Text = "Cancel";
@@ -147,10 +147,10 @@
             this.uiBtnOK.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOK.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOK.Image")));
             this.uiBtnOK.IsMouseOver = false;
-            this.uiBtnOK.Location = new System.Drawing.Point(16, 391);
-            this.uiBtnOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.uiBtnOK.Location = new System.Drawing.Point(10, 390);
+            this.uiBtnOK.Margin = new System.Windows.Forms.Padding(4);
             this.uiBtnOK.Name = "uiBtnOK";
-            this.uiBtnOK.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnOK.Size = new System.Drawing.Size(60, 59);
             this.uiBtnOK.TabIndex = 16;
             this.uiBtnOK.TabStop = false;
             this.uiBtnOK.Text = "Ok";
@@ -184,7 +184,7 @@
             this.Controls.Add(this.dgvSearchParameters);
             this.Controls.Add(this.cboIEWindow);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmBrowserElementBuilder";
             this.Text = "Web Element Builder";
             this.Load += new System.EventHandler(this.frmBrowserElementBuilder_Load);

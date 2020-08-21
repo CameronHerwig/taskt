@@ -41,10 +41,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Text Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public GetPDFTextCommand()
@@ -60,7 +59,7 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
 
             //get variable path or URL to source file
-            var vSourceFilePath = v_FilePath.ConvertToUserVariable(engine);
+            var vSourceFilePath = v_FilePath.ConvertUserVariableToString(engine);
 
             if (v_FileSourceType == "File URL")
             {

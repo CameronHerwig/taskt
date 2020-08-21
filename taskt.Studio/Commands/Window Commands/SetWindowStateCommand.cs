@@ -54,7 +54,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //convert window name
-            string windowName = v_WindowName.ConvertToUserVariable(engine);
+            string windowName = v_WindowName.ConvertUserVariableToString(engine);
 
             var targetWindows = User32Functions.FindTargetWindows(windowName);
 

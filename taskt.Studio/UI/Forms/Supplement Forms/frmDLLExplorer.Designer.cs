@@ -46,10 +46,11 @@
             // 
             this.lstClasses.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstClasses.FormattingEnabled = true;
-            this.lstClasses.ItemHeight = 21;
-            this.lstClasses.Location = new System.Drawing.Point(12, 116);
+            this.lstClasses.ItemHeight = 28;
+            this.lstClasses.Location = new System.Drawing.Point(16, 143);
+            this.lstClasses.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstClasses.Name = "lstClasses";
-            this.lstClasses.Size = new System.Drawing.Size(517, 88);
+            this.lstClasses.Size = new System.Drawing.Size(688, 88);
             this.lstClasses.TabIndex = 0;
             this.lstClasses.SelectedIndexChanged += new System.EventHandler(this.lstClasses_SelectedIndexChanged);
             // 
@@ -57,10 +58,11 @@
             // 
             this.lstMethods.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstMethods.FormattingEnabled = true;
-            this.lstMethods.ItemHeight = 21;
-            this.lstMethods.Location = new System.Drawing.Point(12, 242);
+            this.lstMethods.ItemHeight = 28;
+            this.lstMethods.Location = new System.Drawing.Point(16, 298);
+            this.lstMethods.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstMethods.Name = "lstMethods";
-            this.lstMethods.Size = new System.Drawing.Size(517, 88);
+            this.lstMethods.Size = new System.Drawing.Size(688, 88);
             this.lstMethods.TabIndex = 1;
             this.lstMethods.SelectedIndexChanged += new System.EventHandler(this.lstMethods_SelectedIndexChanged);
             // 
@@ -68,10 +70,11 @@
             // 
             this.lstParameters.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstParameters.FormattingEnabled = true;
-            this.lstParameters.ItemHeight = 21;
-            this.lstParameters.Location = new System.Drawing.Point(12, 368);
+            this.lstParameters.ItemHeight = 28;
+            this.lstParameters.Location = new System.Drawing.Point(16, 453);
+            this.lstParameters.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstParameters.Name = "lstParameters";
-            this.lstParameters.Size = new System.Drawing.Size(517, 88);
+            this.lstParameters.Size = new System.Drawing.Size(688, 88);
             this.lstParameters.TabIndex = 2;
             // 
             // lblLoadDLL
@@ -80,9 +83,10 @@
             this.lblLoadDLL.BackColor = System.Drawing.Color.Transparent;
             this.lblLoadDLL.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLoadDLL.ForeColor = System.Drawing.Color.White;
-            this.lblLoadDLL.Location = new System.Drawing.Point(7, 9);
+            this.lblLoadDLL.Location = new System.Drawing.Point(9, 11);
+            this.lblLoadDLL.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLoadDLL.Name = "lblLoadDLL";
-            this.lblLoadDLL.Size = new System.Drawing.Size(424, 25);
+            this.lblLoadDLL.Size = new System.Drawing.Size(538, 32);
             this.lblLoadDLL.TabIndex = 3;
             this.lblLoadDLL.Text = "Load a DLL and explore methods and parameters";
             // 
@@ -92,9 +96,10 @@
             this.lblClasses.BackColor = System.Drawing.Color.Transparent;
             this.lblClasses.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblClasses.ForeColor = System.Drawing.Color.White;
-            this.lblClasses.Location = new System.Drawing.Point(7, 88);
+            this.lblClasses.Location = new System.Drawing.Point(9, 108);
+            this.lblClasses.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblClasses.Name = "lblClasses";
-            this.lblClasses.Size = new System.Drawing.Size(73, 25);
+            this.lblClasses.Size = new System.Drawing.Size(91, 32);
             this.lblClasses.TabIndex = 4;
             this.lblClasses.Text = "Classes";
             // 
@@ -104,9 +109,10 @@
             this.lblMethods.BackColor = System.Drawing.Color.Transparent;
             this.lblMethods.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMethods.ForeColor = System.Drawing.Color.White;
-            this.lblMethods.Location = new System.Drawing.Point(7, 214);
+            this.lblMethods.Location = new System.Drawing.Point(9, 263);
+            this.lblMethods.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMethods.Name = "lblMethods";
-            this.lblMethods.Size = new System.Drawing.Size(90, 25);
+            this.lblMethods.Size = new System.Drawing.Size(115, 32);
             this.lblMethods.TabIndex = 5;
             this.lblMethods.Text = "Methods:";
             // 
@@ -116,9 +122,10 @@
             this.lblParameters.BackColor = System.Drawing.Color.Transparent;
             this.lblParameters.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblParameters.ForeColor = System.Drawing.Color.White;
-            this.lblParameters.Location = new System.Drawing.Point(12, 340);
+            this.lblParameters.Location = new System.Drawing.Point(16, 418);
+            this.lblParameters.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblParameters.Name = "lblParameters";
-            this.lblParameters.Size = new System.Drawing.Size(110, 25);
+            this.lblParameters.Size = new System.Drawing.Size(137, 32);
             this.lblParameters.TabIndex = 6;
             this.lblParameters.Text = "Parameters:";
             // 
@@ -131,9 +138,10 @@
             this.upbLoadDLL.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
             this.upbLoadDLL.Image = global::taskt.Properties.Resources.command_run_code;
             this.upbLoadDLL.IsMouseOver = false;
-            this.upbLoadDLL.Location = new System.Drawing.Point(12, 37);
+            this.upbLoadDLL.Location = new System.Drawing.Point(15, 46);
+            this.upbLoadDLL.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.upbLoadDLL.Name = "upbLoadDLL";
-            this.upbLoadDLL.Size = new System.Drawing.Size(55, 48);
+            this.upbLoadDLL.Size = new System.Drawing.Size(59, 60);
             this.upbLoadDLL.TabIndex = 8;
             this.upbLoadDLL.TabStop = false;
             this.upbLoadDLL.Text = "Load DLL";
@@ -148,20 +156,21 @@
             this.uiBtnOk.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOk.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOk.Image")));
             this.uiBtnOk.IsMouseOver = false;
-            this.uiBtnOk.Location = new System.Drawing.Point(11, 464);
-            this.uiBtnOk.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.uiBtnOk.Location = new System.Drawing.Point(15, 570);
+            this.uiBtnOk.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.uiBtnOk.Name = "uiBtnOk";
-            this.uiBtnOk.Size = new System.Drawing.Size(48, 49);
+            this.uiBtnOk.Size = new System.Drawing.Size(60, 60);
             this.uiBtnOk.TabIndex = 17;
             this.uiBtnOk.TabStop = false;
+            this.uiBtnOk.Text = "Ok";
             this.uiBtnOk.Click += new System.EventHandler(this.uiBtnOk_Click);
             // 
             // frmDLLExplorer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundChangeIndex = 247;
-            this.ClientSize = new System.Drawing.Size(543, 519);
+            this.ClientSize = new System.Drawing.Size(724, 639);
             this.Controls.Add(this.uiBtnOk);
             this.Controls.Add(this.upbLoadDLL);
             this.Controls.Add(this.lblParameters);
@@ -172,6 +181,7 @@
             this.Controls.Add(this.lstMethods);
             this.Controls.Add(this.lstClasses);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmDLLExplorer";
             this.Text = "DLL Explorer";
             ((System.ComponentModel.ISupportInitialize)(this.upbLoadDLL)).EndInit();

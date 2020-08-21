@@ -50,7 +50,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            string shortName = v_ProgramName.ConvertToUserVariable(engine);
+            string shortName = v_ProgramName.ConvertUserVariableToString(engine);
             var processes = Process.GetProcessesByName(shortName);
 
             foreach (var prc in processes)

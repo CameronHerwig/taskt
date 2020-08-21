@@ -89,7 +89,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             AutomationEngineInstance currentScriptEngine = (AutomationEngineInstance)sender;
-            var childTaskPath = v_taskPath.ConvertToUserVariable(currentScriptEngine);
+            var childTaskPath = v_taskPath.ConvertUserVariableToString(currentScriptEngine);
 
             frmScriptEngine parentEngine = (frmScriptEngine)currentScriptEngine.TasktEngineUI;
             string parentTaskPath = currentScriptEngine.TasktEngineUI.FilePath;
@@ -102,18 +102,19 @@ namespace taskt.Commands
             foreach (DataRow rw in v_VariableAssignments.Rows)
             {
                 var variableName = (string)rw.ItemArray[0];
-                object variableValue;
+                object variableValue = null;
 
-                if (LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]) != null)
-                    variableValue = LookupVariable(currentScriptEngine, (string)rw.ItemArray[1]).VariableValue;
-                else
-                    variableValue = ((string)rw.ItemArray[1]).ConvertToUserVariable(currentScriptEngine);
+                if (((string)rw.ItemArray[1]).StartsWith("{") && ((string)rw.ItemArray[1]).EndsWith("}"))
+                    variableValue = ((string)rw.ItemArray[1]).ConvertUserVariableToObject(currentScriptEngine);
+
+                if (variableValue is string || variableValue == null)
+                    variableValue = ((string)rw.ItemArray[1]).ConvertUserVariableToString(currentScriptEngine);
 
                 var variableReturn = (string)rw.ItemArray[2];
 
                 variableList.Add(new ScriptVariable
                 {
-                    VariableName = variableName,
+                    VariableName = variableName.Replace("{", "").Replace("}", ""),
                     VariableValue = variableValue
                 });
 
@@ -121,7 +122,7 @@ namespace taskt.Commands
                 {
                     variableReturnList.Add(new ScriptVariable
                     {
-                        VariableName = variableName,
+                        VariableName = variableName.Replace("{", "").Replace("}", ""),
                         VariableValue = variableValue
                     });
                 }
@@ -270,7 +271,7 @@ namespace taskt.Commands
             AutomationEngineInstance currentScriptEngine = new AutomationEngineInstance(null);
             currentScriptEngine.VariableList.AddRange(variables);
             currentScriptEngine.ElementList.AddRange(elements);
-            var startFile = v_taskPath.ConvertToUserVariable(currentScriptEngine);
+            var startFile = v_taskPath.ConvertUserVariableToString(currentScriptEngine);
             var Sender = (CheckBox)sender;
 
             _assignmentsGridViewHelper.Visible = Sender.Checked;
@@ -282,9 +283,9 @@ namespace taskt.Commands
 
                 foreach (var variable in deserializedScript.Variables)
                 {
-                    DataRow[] foundVariables  = v_VariableAssignments.Select("VariableName = '" + variable.VariableName + "'");
+                    DataRow[] foundVariables  = v_VariableAssignments.Select("VariableName = '" + "{" + variable.VariableName + "}" + "'");
                     if (foundVariables.Length == 0)
-                        v_VariableAssignments.Rows.Add(variable.VariableName, variable.VariableValue);
+                        v_VariableAssignments.Rows.Add("{" + variable.VariableName + "}", variable.VariableValue, "No");
                 }
                 _assignmentsGridViewHelper.DataSource = v_VariableAssignments;
 
@@ -296,24 +297,10 @@ namespace taskt.Commands
                     _assignmentsGridViewHelper.Rows[i].Cells[2] = returnComboBox;
                 }
             }
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance, string lookupVariable)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == lookupVariable).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) && lookupVariable.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)
-                                           && lookupVariable.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
+            else if (!Sender.Checked)
             {
-                //reformat and attempt
-                var reformattedVariable = lookupVariable.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                        .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
+                v_VariableAssignments.Clear();
             }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

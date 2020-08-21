@@ -1,17 +1,4 @@
-﻿//Copyright (c) 2019 Jason Bayldon
-//
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -53,11 +40,11 @@ namespace taskt.Commands
         public string v_DataOption { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Select the variable to receive the output")]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_applyToVariableName { get; set; }
+        [PropertyDescription("Output Result Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public GetBotStoreDataCommand()
         {
@@ -69,40 +56,28 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-
-            var keyName = v_KeyName.ConvertToUserVariable(engine);
-            var dataOption = v_DataOption.ConvertToUserVariable(engine);
+            var keyName = v_KeyName.ConvertUserVariableToString(engine);
+            var dataOption = v_DataOption.ConvertUserVariableToString(engine);
 
             BotStoreRequestType requestType;
             if (dataOption == "Retrieve Entire Record")
-            {
                 requestType = BotStoreRequestType.BotStoreModel;
-            }
             else
-            {
                 requestType = BotStoreRequestType.BotStoreValue;
-            }
 
-            
             try
             {
                 var result = HttpServerClient.GetData(keyName, requestType);
 
                 if (requestType == BotStoreRequestType.BotStoreValue)
-                {
                     result = JsonConvert.DeserializeObject<string>(result);
-                }
 
-
-                result.StoreInUserVariable(engine, v_applyToVariableName);
+                result.StoreInUserVariable(engine, v_OutputUserVariableName);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
-
-
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -116,11 +91,7 @@ namespace taskt.Commands
             RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_DataOption", this, new Control[] { dropdown }, editor));
             RenderedControls.Add(dropdown);
 
-
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_applyToVariableName", this));
-            var VariableNameControl = CommandControls.CreateStandardComboboxFor("v_applyToVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_applyToVariableName", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }

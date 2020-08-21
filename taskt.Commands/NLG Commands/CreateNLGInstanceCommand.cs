@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
-using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
@@ -22,11 +21,11 @@ namespace taskt.Commands
     public class CreateNLGInstanceCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Please Enter the instance name")]
-        [InputSpecification("Enter the unique instance name that was specified in the **Create NLG Instance** command")]
-        [SampleUsage("**nlgDefaultInstance** or **myInstance**")]
-        [Remarks("Failure to enter the correct instance name or failure to first call **Create NLG Instance** command will cause an error")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("NLG Instance Name")]
+        [InputSpecification("Enter a unique name that will represent the application instance.")]
+        [SampleUsage("MyNLGInstance")]
+        [Remarks("This unique name allows you to refer to the instance by name in future commands, " +
+                 "ensuring that the commands you specify run against the correct application.")]
         public string v_InstanceName { get; set; }
 
         public CreateNLGInstanceCommand()
@@ -35,7 +34,7 @@ namespace taskt.Commands
             SelectionName = "Create NLG Instance";
             CommandEnabled = true;
             CustomRendering = true;
-            v_InstanceName = "nlgDefaultInstance";
+            v_InstanceName = "DefaultNLG";
         }
 
         public override void RunCommand(object sender)
@@ -46,11 +45,9 @@ namespace taskt.Commands
             NLGFactory nlgFactory = new NLGFactory(lexicon);
             SPhraseSpec p = nlgFactory.createClause();
 
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-
-            engine.AddAppInstance(vInstance, p);
-
+            p.AddAppInstance(engine, v_InstanceName);
         }
+
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);

@@ -107,7 +107,8 @@ namespace taskt.Commands
             _imageGridViewHelper.DataBindings.Add("DataSource", this, "v_ImageActionParameterTable", false, DataSourceUpdateMode.OnPropertyChanged);
             _imageGridViewHelper.AllowUserToAddRows = false;
             _imageGridViewHelper.AllowUserToDeleteRows = false;
-            _imageGridViewHelper.AllowUserToResizeRows = false;
+            //_imageGridViewHelper.AllowUserToResizeRows = false;
+            _imageGridViewHelper.MouseEnter += ImageGridViewHelper_MouseEnter;
         }
 
         public override void RunCommand(object sender)
@@ -119,7 +120,7 @@ namespace taskt.Commands
             double accuracy;
             try
             {
-                accuracy = double.Parse(v_MatchAccuracy.ConvertToUserVariable(engine));
+                accuracy = double.Parse(v_MatchAccuracy.ConvertUserVariableToString(engine));
                 if (accuracy > 1 || accuracy < 0)
                     throw new ArgumentOutOfRangeException("Accuracy value is out of range (0-1)");
             }
@@ -141,7 +142,7 @@ namespace taskt.Commands
                                    where rw.Field<string>("Parameter Name") == "Timeout (Seconds)"
                                    select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                timeoutText = timeoutText.ConvertToUserVariable(engine);
+                timeoutText = timeoutText.ConvertUserVariableToString(engine);
                 int timeOut = Convert.ToInt32(timeoutText);
                 var timeToEnd = DateTime.Now.AddSeconds(timeOut);
 
@@ -187,10 +188,10 @@ namespace taskt.Commands
                                                 select rw.Field<string>("Parameter Value")).FirstOrDefault();
                         xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                         Point clickPositionPoint = GetClickPosition(clickPosition, element); 
 
@@ -208,16 +209,16 @@ namespace taskt.Commands
                     case "Set Text":
                         string textToSet = (from rw in v_ImageActionParameterTable.AsEnumerable()
                                             where rw.Field<string>("Parameter Name") == "Text To Set"
-                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine);
                         clickPosition = (from rw in v_ImageActionParameterTable.AsEnumerable()
                                          where rw.Field<string>("Parameter Name") == "Click Position"
                                          select rw.Field<string>("Parameter Value")).FirstOrDefault();
                         xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         string encryptedData = (from rw in v_ImageActionParameterTable.AsEnumerable()
                                                 where rw.Field<string>("Parameter Name") == "Encrypted Text"
                                                 select rw.Field<string>("Parameter Value")).FirstOrDefault();
@@ -250,15 +251,15 @@ namespace taskt.Commands
                                          select rw.Field<string>("Parameter Value")).FirstOrDefault();
                         xAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
                         yAdjust = Convert.ToInt32((from rw in v_ImageActionParameterTable.AsEnumerable()
                                                    where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                   select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
-                        var secureStrVariable = VariableMethods.LookupVariable(engine, secureString);
+                        var secureStrVariable = secureString.ConvertUserVariableToObject(engine);
 
-                        if (secureStrVariable.VariableValue is SecureString)
-                            secureString = ((SecureString)secureStrVariable.VariableValue).ConvertSecureStringToString();
+                        if (secureStrVariable is SecureString)
+                            secureString = ((SecureString)secureStrVariable).ConvertSecureStringToString();
                         else
                             throw new ArgumentException("Provided Argument is not a 'Secure String'");
 
@@ -512,46 +513,43 @@ namespace taskt.Commands
 
                     if (sender != null)
                     {
-                        actionParameters.Rows.Add("Click Type", "");
-                        actionParameters.Rows.Add("Click Position", "");
+                        actionParameters.Rows.Add("Click Type", "Left Click");
+                        actionParameters.Rows.Add("Click Position", "Center");
                         actionParameters.Rows.Add("X Adjustment", 0);
-                        actionParameters.Rows.Add("Y Adjustment", 0);
-
-                        _imageGridViewHelper.Rows[0].Cells[1].Value = "Left Click";
-                        _imageGridViewHelper.Rows[1].Cells[1].Value = "Center";
-                        _imageGridViewHelper.Rows[0].Cells[1] = mouseClickTypeBox;
-                        _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
+                        actionParameters.Rows.Add("Y Adjustment", 0);                      
                     }
-                  
+
+                    _imageGridViewHelper.Rows[0].Cells[1] = mouseClickTypeBox;
+                    _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
+
                     break;
 
                 case "Set Text":
                     foreach (var ctrl in _imageParameterControls)
                         ctrl.Show();
 
+                    DataGridViewComboBoxCell encryptedBox = new DataGridViewComboBoxCell();
+                    encryptedBox.Items.Add("Not Encrypted");
+                    encryptedBox.Items.Add("Encrypted");
+
                     if (sender != null)
                     {
                         actionParameters.Rows.Add("Text To Set");
-                        actionParameters.Rows.Add("Click Position", "");
+                        actionParameters.Rows.Add("Click Position", "Center");
                         actionParameters.Rows.Add("X Adjustment", 0);
                         actionParameters.Rows.Add("Y Adjustment", 0);
-                        actionParameters.Rows.Add("Encrypted Text");
-                        actionParameters.Rows.Add("Optional - Click to Encrypt 'Text To Set'");
-
-                        _imageGridViewHelper.Rows[1].Cells[1].Value = "Center";
-                        _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
-
-                        DataGridViewComboBoxCell encryptedBox = new DataGridViewComboBoxCell();
-                        encryptedBox.Items.Add("Not Encrypted");
-                        encryptedBox.Items.Add("Encrypted");
-                        _imageGridViewHelper.Rows[4].Cells[1] = encryptedBox;
-                        _imageGridViewHelper.Rows[4].Cells[1].Value = "Not Encrypted";
+                        actionParameters.Rows.Add("Encrypted Text", "Not Encrypted");
+                        actionParameters.Rows.Add("Optional - Click to Encrypt 'Text To Set'");                     
 
                         var buttonCell = new DataGridViewButtonCell();
                         _imageGridViewHelper.Rows[5].Cells[1] = buttonCell;
                         _imageGridViewHelper.Rows[5].Cells[1].Value = "Encrypt Text";
                         _imageGridViewHelper.CellContentClick += ImageGridViewHelper_CellContentClick;
                     }
+
+                    _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
+                    _imageGridViewHelper.Rows[4].Cells[1] = encryptedBox;
+
                     break;
 
                 case "Set Secure Text":
@@ -561,13 +559,13 @@ namespace taskt.Commands
                     if (sender != null)
                     {
                         actionParameters.Rows.Add("Secure String Variable");
-                        actionParameters.Rows.Add("Click Position", "");
+                        actionParameters.Rows.Add("Click Position", "Center");
                         actionParameters.Rows.Add("X Adjustment", 0);
-                        actionParameters.Rows.Add("Y Adjustment", 0);
-
-                        _imageGridViewHelper.Rows[1].Cells[1].Value = "Center";
-                        _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
+                        actionParameters.Rows.Add("Y Adjustment", 0);                       
                     }
+
+                    _imageGridViewHelper.Rows[1].Cells[1] = mouseClickPositionBox;
+
                     break;
 
                 case "Check If Image Exists":
@@ -609,7 +607,7 @@ namespace taskt.Commands
                 if (warning == DialogResult.Yes)
                 {
                     targetElement.Value = EncryptionServices.EncryptString(targetElement.Value.ToString(), "TASKT");
-                    _imageGridViewHelper.Rows[2].Cells[1].Value = "Encrypted";
+                    _imageGridViewHelper.Rows[4].Cells[1].Value = "Encrypted";
                 }
             }
         }
@@ -658,6 +656,10 @@ namespace taskt.Commands
                     break;
             }
             return new Point(clickPositionX, clickPositionY);
+        }
+        private void ImageGridViewHelper_MouseEnter(object sender, EventArgs e)
+        {
+            ImageAction_SelectionChangeCommitted(null, null);
         }
     }
 }

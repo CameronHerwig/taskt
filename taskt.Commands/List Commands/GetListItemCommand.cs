@@ -6,7 +6,6 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -14,7 +13,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -44,10 +42,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output List Item Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public GetListItemCommand()
@@ -61,50 +58,47 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var itemIndex = v_ItemIndex.ConvertToUserVariable(engine);
+            var itemIndex = v_ItemIndex.ConvertUserVariableToString(engine);
             int index = int.Parse(itemIndex);
             //get variable by regular name
-            ScriptVariable listVariable = VariableMethods.LookupVariable(engine, v_ListName);
+            var listVariable = v_ListName.ConvertUserVariableToObject(engine);
 
             //if still null then throw exception
             if (listVariable == null)
             {
-                throw new System.Exception(
-                    "Complex Variable '" + v_ListName + "' or '" + 
-                    v_ListName.ApplyVariableFormatting() + 
-                    "' not found. Ensure the variable exists before attempting to modify it."
-                    );
+                throw new System.Exception("Complex Variable '" + v_ListName + 
+                    "' not found. Ensure the variable exists before attempting to modify it.");
             }
 
             dynamic listToIndex;
-            if (listVariable.VariableValue is List<string>)
+            if (listVariable is List<string>)
             {
-                listToIndex = (List<string>)listVariable.VariableValue;
+                listToIndex = (List<string>)listVariable;
             }
-            else if (listVariable.VariableValue is List<DataTable>)
+            else if (listVariable is List<DataTable>)
             {
-                listToIndex = (List<DataTable>)listVariable.VariableValue;
+                listToIndex = (List<DataTable>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MailItem>)
+            else if (listVariable is List<MailItem>)
             {
-                listToIndex = (List<MailItem>)listVariable.VariableValue;
+                listToIndex = (List<MailItem>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MimeMessage>)
+            else if (listVariable is List<MimeMessage>)
             {
-                listToIndex = (List<MimeMessage>)listVariable.VariableValue;
+                listToIndex = (List<MimeMessage>)listVariable;
             }
-            else if (listVariable.VariableValue is List<IWebElement>)
+            else if (listVariable is List<IWebElement>)
             {
-                listToIndex = (List<IWebElement>)listVariable.VariableValue;
+                listToIndex = (List<IWebElement>)listVariable;
             }
             else if (
-                (listVariable.VariableValue.ToString().StartsWith("[")) && 
-                (listVariable.VariableValue.ToString().EndsWith("]")) && 
-                (listVariable.VariableValue.ToString().Contains(","))
+                (listVariable.ToString().StartsWith("[")) && 
+                (listVariable.ToString().EndsWith("]")) && 
+                (listVariable.ToString().Contains(","))
                 )
             {
                 //automatically handle if user has given a json array
-                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.VariableValue.ToString()) as JArray;
+                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.ToString()) as JArray;
 
                 var itemList = new List<string>();
                 foreach (var jsonItem in jsonArray)
@@ -113,7 +107,7 @@ namespace taskt.Commands
                     itemList.Add(value.ToString());
                 }
 
-                listVariable.VariableValue = itemList;
+                itemList.StoreInUserVariable(engine, v_ListName);
                 listToIndex = itemList;
             }
             else
@@ -123,20 +117,7 @@ namespace taskt.Commands
 
             var item = listToIndex[index];
 
-            ScriptVariable newListItem = new ScriptVariable
-            {
-                VariableName = v_OutputUserVariableName,
-                VariableValue = item
-            };
-
-            //Overwrites variable if it already exists
-            if (engine.VariableList.Exists(x => x.VariableName == newListItem.VariableName))
-            {
-                ScriptVariable temp = engine.VariableList.Where(x => x.VariableName == newListItem.VariableName).FirstOrDefault();
-                engine.VariableList.Remove(temp);
-            }
-
-            engine.VariableList.Add(newListItem);
+            ((object)item).StoreInUserVariable(engine, v_OutputUserVariableName);         
         }
         
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -153,6 +134,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [From Index '{v_ItemIndex}' of '{v_ListName}' - Store List Item in '{v_OutputUserVariableName}']";
-        }
+        }       
     }
 }

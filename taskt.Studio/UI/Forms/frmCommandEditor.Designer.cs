@@ -115,7 +115,7 @@
             this.uiBtnAdd.Location = new System.Drawing.Point(6, 5);
             this.uiBtnAdd.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.uiBtnAdd.Name = "uiBtnAdd";
-            this.uiBtnAdd.Size = new System.Drawing.Size(60, 62);
+            this.uiBtnAdd.Size = new System.Drawing.Size(60, 61);
             this.uiBtnAdd.TabIndex = 14;
             this.uiBtnAdd.TabStop = false;
             this.uiBtnAdd.Text = "Ok";
@@ -133,7 +133,7 @@
             this.uiBtnCancel.Location = new System.Drawing.Point(78, 5);
             this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(60, 62);
+            this.uiBtnCancel.Size = new System.Drawing.Size(60, 61);
             this.uiBtnCancel.TabIndex = 15;
             this.uiBtnCancel.TabStop = false;
             this.uiBtnCancel.Text = "Cancel";

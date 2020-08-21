@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -11,7 +10,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -29,9 +27,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Excel Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Application** command.")]
-        [SampleUsage("MyExcelInstance || {vExcelInstance}")]
+        [SampleUsage("MyExcelInstance")]
         [Remarks("Failure to enter the correct instance or failure to first call the **Create Application** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -54,9 +51,8 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vRow = LookupVariable(engine);
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var excelObject = engine.GetAppInstance(vInstance);
+            var vRow = v_RowToSet.ConvertUserVariableToObject(engine);
+            var excelObject = v_InstanceName.GetAppInstance(engine);
             var excelInstance = (Application)excelObject;
             Worksheet excelSheet = excelInstance.ActiveSheet;
 
@@ -73,12 +69,12 @@ namespace taskt.Commands
             }
 
             DataRow row;
+            var loopIndexVariable = "Loop.CurrentIndex".ConvertUserVariableToString(engine);
             //check in case of looping through datatable using BeginListLoopCommand
-            if (vRow != null && vRow.VariableValue is DataTable && engine.VariableList.Exists(x => x.VariableName == "Loop.CurrentIndex"))
+            if (vRow != null && vRow is DataTable && loopIndexVariable != null)
             {
-                var loopIndexVariable = engine.VariableList.Where(x => x.VariableName == "Loop.CurrentIndex").FirstOrDefault();
-                int loopIndex = int.Parse(loopIndexVariable.VariableValue.ToString());
-                row = ((DataTable)vRow.VariableValue).Rows[loopIndex - 1];
+                int loopIndex = int.Parse(loopIndexVariable.ToString());
+                row = ((DataTable)vRow).Rows[loopIndex - 1];
 
                 string cellValue;
                 for (int j = 0; j < row.ItemArray.Length; j++)
@@ -92,9 +88,9 @@ namespace taskt.Commands
                     i++;
                 }
             }
-            else if (vRow != null && vRow.VariableValue is DataRow)
+            else if (vRow != null && vRow is DataRow)
             {
-                row = (DataRow)vRow.VariableValue;
+                row = (DataRow)vRow;
 
                 string cellValue;
                 for (int j = 0; j < row.ItemArray.Length; j++)
@@ -110,7 +106,7 @@ namespace taskt.Commands
             }
             else
             {
-                string vRowString = v_RowToSet.ConvertToUserVariable(engine);
+                string vRowString = v_RowToSet.ConvertUserVariableToString(engine);
                 var splittext = vRowString.Split(',');
                 string cellValue;
                 foreach (var item in splittext)
@@ -139,24 +135,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Append '{v_RowToSet}' - Instance Name '{v_InstanceName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_RowToSet).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_RowToSet.StartsWith(sendingInstance.EngineSettings.VariableStartMarker) 
-                                         && v_RowToSet.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_RowToSet.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                    .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }        
     }
 }

@@ -9,7 +9,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -58,10 +57,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataSetVariable = LookupVariable(engine);
-            var vSearchItem = v_SearchItem.ConvertToUserVariable(engine);
+            var vSearchItem = v_SearchItem.ConvertUserVariableToString(engine);
 
-            DataTable Dt = (DataTable)dataSetVariable.VariableValue;
+            DataTable Dt = (DataTable)v_DataTable.ConvertUserVariableToObject(engine);
             var t = new List<Tuple<string, string>>();
             var listPairs = vSearchItem.Split(')');
             int i = 0;
@@ -107,7 +105,7 @@ namespace taskt.Commands
                     Dt.Rows.Remove(item);
                 }
                 Dt.AcceptChanges();
-                dataSetVariable.VariableValue = Dt;
+                Dt.StoreInUserVariable(engine, v_DataTable);
             }
 
             //If And operation is checked
@@ -136,7 +134,7 @@ namespace taskt.Commands
                 Dt.AcceptChanges();
 
                 //Assigns Datatable to newly updated Datatable
-                dataSetVariable.VariableValue = Dt;
+                Dt.StoreInUserVariable(engine, v_DataTable);
             }
         }
 
@@ -154,24 +152,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Remove Rows With '{v_SearchItem}' From '{v_DataTable}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataTable).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataTable.StartsWith(sendingInstance.EngineSettings.VariableStartMarker) 
-                                         && v_DataTable.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataTable.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                     .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }       
     }
 }

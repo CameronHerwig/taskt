@@ -44,18 +44,14 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var input = v_InputValue.ConvertToUserVariable(engine);
+            var input = v_InputValue.ConvertUserVariableToString(engine);
             User32Functions.SetClipboardText(input);
         }
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
-            //create window name helper control
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_InputValue", this));
-            VariableNameControl = CommandControls.CreateStandardComboboxFor("v_InputValue", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_InputValue", this, new Control[] { VariableNameControl }, editor));
-            RenderedControls.Add(VariableNameControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_InputValue", this, editor));
 
             return RenderedControls;
 

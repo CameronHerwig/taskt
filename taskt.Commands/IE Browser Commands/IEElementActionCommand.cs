@@ -26,11 +26,10 @@ namespace taskt.Commands
     public class IEElementActionCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("IE Instance Name")]
-        [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("IEBrowser || {vIEBrowser}")]
-        [Remarks("Failure to enter the correct instance or failure to first call **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("IE Browser Instance Name")]
+        [InputSpecification("Enter the unique instance that was specified in the **IE Create Browser** command.")]
+        [SampleUsage("MyIEBrowserInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **IE Create Browser** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         [XmlElement]
@@ -98,7 +97,7 @@ namespace taskt.Commands
             CommandName = "IEElementActionCommand";
             SelectionName = "Element Action";
             CommandEnabled = true;
-            v_InstanceName = "default";
+            v_InstanceName = "DefaultIEBrowser";
             CustomRendering = true;
 
             v_WebSearchParameter = new DataTable();
@@ -136,8 +135,7 @@ namespace taskt.Commands
 
             var engine = (AutomationEngineInstance)sender;
 
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            browserObject = engine.GetAppInstance(vInstance);
+            browserObject = v_InstanceName.GetAppInstance(engine);
             var browserInstance = (InternetExplorer)browserObject;
 
             DataTable searchTable = Common.Clone(v_WebSearchParameter);
@@ -153,7 +151,7 @@ namespace taskt.Commands
             foreach (DataRow seachCriteria in elementSearchProperties)
             {
                 string searchPropertyValue = seachCriteria.Field<string>("Property Value");
-                searchPropertyValue = searchPropertyValue.ConvertToUserVariable(engine);
+                searchPropertyValue = searchPropertyValue.ConvertUserVariableToString(engine);
                 seachCriteria.SetField<string>("Property Value", searchPropertyValue);
             }
 
@@ -415,11 +413,11 @@ namespace taskt.Commands
 
                     int userXAdjust = Convert.ToInt32((from rw in v_WebActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                     int userYAdjust = Convert.ToInt32((from rw in v_WebActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                     var ieClientLocation = User32Functions.GetWindowPosition(new IntPtr(browserInstance.HWND));
 
@@ -439,7 +437,7 @@ namespace taskt.Commands
                                          where rw.Field<string>("Parameter Name") == "Value To Set"
                                          select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                    valueToSet = valueToSet.ConvertToUserVariable(engine);
+                    valueToSet = valueToSet.ConvertUserVariableToString(engine);
 
                     element.setAttribute(setAttributeName, valueToSet);
                     break;
@@ -450,7 +448,7 @@ namespace taskt.Commands
                                         where rw.Field<string>("Parameter Name") == "Text To Set"
                                         select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                    textToSet = textToSet.ConvertToUserVariable(engine);
+                    textToSet = textToSet.ConvertUserVariableToString(engine);
 
                     element.setAttribute(setTextAttributeName, textToSet);
                     break;

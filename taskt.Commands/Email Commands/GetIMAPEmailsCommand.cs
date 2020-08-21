@@ -122,10 +122,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output MimeMessage List Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
         [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                " to pre-define your variables; however, it is highly recommended.")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public GetIMAPEmailsCommand()
@@ -144,14 +143,14 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            string vIMAPHost = v_IMAPHost.ConvertToUserVariable(engine);
-            string vIMAPPort = v_IMAPPort.ConvertToUserVariable(engine);
-            string vIMAPUserName = v_IMAPUserName.ConvertToUserVariable(engine);
-            string vIMAPPassword = v_IMAPPassword.ConvertToUserVariable(engine);
-            string vIMAPSourceFolder = v_IMAPSourceFolder.ConvertToUserVariable(engine);
-            string vIMAPFilter = v_IMAPFilter.ConvertToUserVariable(engine);
-            string vIMAPMessageDirectory = v_IMAPMessageDirectory.ConvertToUserVariable(engine);
-            string vIMAPAttachmentDirectory = v_IMAPAttachmentDirectory.ConvertToUserVariable(engine);
+            string vIMAPHost = v_IMAPHost.ConvertUserVariableToString(engine);
+            string vIMAPPort = v_IMAPPort.ConvertUserVariableToString(engine);
+            string vIMAPUserName = v_IMAPUserName.ConvertUserVariableToString(engine);
+            string vIMAPPassword = v_IMAPPassword.ConvertUserVariableToString(engine);
+            string vIMAPSourceFolder = v_IMAPSourceFolder.ConvertUserVariableToString(engine);
+            string vIMAPFilter = v_IMAPFilter.ConvertUserVariableToString(engine);
+            string vIMAPMessageDirectory = v_IMAPMessageDirectory.ConvertUserVariableToString(engine);
+            string vIMAPAttachmentDirectory = v_IMAPAttachmentDirectory.ConvertUserVariableToString(engine);
 
             using (var client = new ImapClient())
             {
@@ -217,7 +216,7 @@ namespace taskt.Commands
                         outMail.Add(message);
 
                     }
-                    engine.AddVariable(v_OutputUserVariableName, outMail);
+                    outMail.StoreInUserVariable(engine, v_OutputUserVariableName);
 
                     client.Disconnect(true, cancel.Token);
                     client.ServerCertificateValidationCallback = null;

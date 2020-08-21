@@ -62,7 +62,7 @@ namespace taskt.Commands
             if (engine.TasktEngineUI == null)
             {
                 engine.ReportProgress("HTML UserInput Supported With UI Only");
-                System.Windows.Forms.MessageBox.Show("HTML UserInput Supported With UI Only", "UserInput Command", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                MessageBox.Show("HTML UserInput Supported With UI Only", "UserInput Command", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 return;
             }
 
@@ -70,7 +70,7 @@ namespace taskt.Commands
             var result = ((frmScriptEngine)engine.TasktEngineUI).Invoke(new Action(() =>
             {
                 //sample for temp testing
-                var htmlInput = v_InputHTML.ConvertToUserVariable(engine);
+                var htmlInput = v_InputHTML.ConvertUserVariableToString(engine);
 
                 var variables = engine.TasktEngineUI.ShowHTMLInput(htmlInput);
 

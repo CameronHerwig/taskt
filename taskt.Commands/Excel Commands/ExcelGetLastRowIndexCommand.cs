@@ -24,9 +24,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Excel Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Application** command.")]
-        [SampleUsage("MyExcelInstance || {vExcelInstance}")]
+        [SampleUsage("MyExcelInstance")]
         [Remarks("Failure to enter the correct instance or failure to first call the **Create Application** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -39,10 +38,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Last Row Index Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public ExcelGetLastRowIndexCommand()
@@ -58,10 +56,9 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var vColumnLetter = v_ColumnLetter.ConvertToUserVariable(engine);
-            var excelObject = engine.GetAppInstance(vInstance);
-            
+            var vColumnLetter = v_ColumnLetter.ConvertUserVariableToString(engine);
+            var excelObject = v_InstanceName.GetAppInstance(engine);
+
             var excelInstance = (Application)excelObject;
             var excelSheet = excelInstance.ActiveSheet;
             var lastRow = (int)excelSheet.Cells(excelSheet.Rows.Count, vColumnLetter).End(XlDirection.xlUp).Row;

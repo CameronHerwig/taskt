@@ -60,10 +60,7 @@ namespace taskt.UI.Forms
             chkAutoCloseWindow.DataBindings.Add("Checked", engineSettings, "AutoCloseDebugWindow", false, DataSourceUpdateMode.OnPropertyChanged);
             chkEnableLogging.DataBindings.Add("Checked", engineSettings, "EnableDiagnosticLogging", false, DataSourceUpdateMode.OnPropertyChanged);
             chkAdvancedDebug.DataBindings.Add("Checked", engineSettings, "ShowAdvancedDebugOutput", false, DataSourceUpdateMode.OnPropertyChanged);
-            chkCreateMissingVariables.DataBindings.Add("Checked", engineSettings, "CreateMissingVariablesDuringExecution", false, DataSourceUpdateMode.OnPropertyChanged);
             chkTrackMetrics.DataBindings.Add("Checked", engineSettings, "TrackExecutionMetrics", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtVariableStartMarker.DataBindings.Add("Text", engineSettings, "VariableStartMarker", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtVariableEndMarker.DataBindings.Add("Text", engineSettings, "VariableEndMarker", false, DataSourceUpdateMode.OnPropertyChanged);
             txtCommandDelay.DataBindings.Add("Text", engineSettings, "DelayBetweenCommands", false, DataSourceUpdateMode.OnPropertyChanged);
             chkOverrideInstances.DataBindings.Add("Checked", engineSettings, "OverrideExistingAppInstances", false, DataSourceUpdateMode.OnPropertyChanged);
             chkAutoCalcVariables.DataBindings.Add("Checked", engineSettings, "AutoCalcVariables", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -379,11 +376,6 @@ namespace taskt.UI.Forms
             DocumentationGeneration docGeneration = new DocumentationGeneration();
             var docsRoot = docGeneration.GenerateMarkdownFiles();
             Process.Start(docsRoot);
-        }
-
-        private void txtVariableStartMarker_TextChanged(object sender, EventArgs e)
-        {
-            lblVariableDisplay.Text = txtVariableStartMarker.Text + "myVariable" + txtVariableEndMarker.Text;
         }
 
         private void btnLaunchAttendedMode_Click(object sender, EventArgs e)

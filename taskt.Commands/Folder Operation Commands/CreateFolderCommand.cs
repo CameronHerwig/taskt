@@ -58,8 +58,8 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //apply variable logic
-            var destinationDirectory = v_DestinationDirectory.ConvertToUserVariable(engine);
-            var newFolder = v_NewFolderName.ConvertToUserVariable(engine);
+            var destinationDirectory = v_DestinationDirectory.ConvertUserVariableToString(engine);
+            var newFolder = v_NewFolderName.ConvertUserVariableToString(engine);
 
             var finalPath = Path.Combine(destinationDirectory, newFolder);
             //delete folder if it exists AND the delete option is selected 

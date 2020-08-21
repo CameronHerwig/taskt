@@ -82,7 +82,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vFilePath = v_FilePath.ConvertToUserVariable(engine);
+            var vFilePath = v_FilePath.ConvertUserVariableToString(engine);
 
             if (v_CloseAllInstances == "Yes")
             {
@@ -100,7 +100,7 @@ namespace taskt.Commands
             else
                 newWordSession.Visible = false;
 
-            engine.AddAppInstance(v_InstanceName, newWordSession);
+            newWordSession.AddAppInstance(engine, v_InstanceName);
 
             if (v_NewOpenDocument == "New Document")
             {

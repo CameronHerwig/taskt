@@ -20,11 +20,10 @@ namespace taskt.Commands
     public class IENavigateToURLCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("IE Instance Name")]
-        [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("IEBrowser || {vIEBrowser}")]
-        [Remarks("Failure to enter the correct instance or failure to first call **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("IE Browser Instance Name")]
+        [InputSpecification("Enter the unique instance that was specified in the **IE Create Browser** command.")]
+        [SampleUsage("MyIEBrowserInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **IE Create Browser** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -39,22 +38,19 @@ namespace taskt.Commands
         {
             CommandName = "IENavigateToURLCommand";
             SelectionName = "Navigate to URL";
-            v_InstanceName = "default";
+            v_InstanceName = "DefaultIEBrowser";
             CommandEnabled = true;
             CustomRendering = true;
         }
 
         public override void RunCommand(object sender)
         {
-            object browserObject = null;
-
             var engine = (AutomationEngineInstance)sender;
 
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            browserObject = engine.GetAppInstance(vInstance);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
             var browserInstance = (InternetExplorer)browserObject;
 
-            browserInstance.Navigate(v_URL.ConvertToUserVariable(engine));
+            browserInstance.Navigate(v_URL.ConvertUserVariableToString(engine));
             IECreateBrowserCommand.WaitForReadyState(browserInstance);
         }
 

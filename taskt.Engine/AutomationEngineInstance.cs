@@ -333,7 +333,7 @@ namespace taskt.Engine
             //bypass comments
             if (parentCommand.CommandName == "AddCodeCommentCommand" || parentCommand.IsCommented)
             {
-                ReportProgress($"Skipping Line {parentCommand.LineNumber}: {(parentCommand.v_IsPrivate ? _privateCommandLog : parentCommand.GetDisplayValue().ConvertToUserVariable(this))}", parentCommand.LogLevel);
+                ReportProgress($"Skipping Line {parentCommand.LineNumber}: {(parentCommand.v_IsPrivate ? _privateCommandLog : parentCommand.GetDisplayValue().ConvertUserVariableToString(this))}", parentCommand.LogLevel);
                 return;
             }
 
@@ -395,7 +395,7 @@ namespace taskt.Engine
                     if (parentCommand.CommandName == "LogMessageCommand")
                     {
                         string displayValue = parentCommand.GetDisplayValue().Replace("Log Message ['", "").Replace("']", "");
-                        string logMessage = displayValue.Split('-').Last().ConvertToUserVariable(this);
+                        string logMessage = displayValue.Split('-').Last().ConvertUserVariableToString(this);
                         displayValue = displayValue.Replace(displayValue.Split('-').Last(), logMessage);
                         ReportProgress($"Logging Line {parentCommand.LineNumber}: {(parentCommand.v_IsPrivate ? _privateCommandLog : displayValue)}",
                             parentCommand.LogLevel);
@@ -485,90 +485,9 @@ namespace taskt.Engine
                 }
             }
         }
-        public void AddAppInstance(string instanceName, object appObject) {
+        
 
-            if (AppInstances.ContainsKey(instanceName) && EngineSettings.OverrideExistingAppInstances)
-            {
-                ReportProgress("Overriding Existing Instance: " + instanceName);
-                AppInstances.Remove(instanceName);
-            }
-            else if (AppInstances.ContainsKey(instanceName) && !EngineSettings.OverrideExistingAppInstances)
-            {
-                throw new Exception("App Instance already exists and override has been disabled in engine settings! " +
-                    "Enable override existing app instances or use unique instance names!");
-            }
-
-            try
-            {
-                AppInstances.Add(instanceName, appObject);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public object GetAppInstance(string instanceName)
-        {
-            try
-            {
-                if (AppInstances.TryGetValue(instanceName, out object appObject))
-                {
-                    return appObject;
-                }
-                else
-                {
-                    throw new Exception("App Instance '" + instanceName + "' not found!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public void RemoveAppInstance(string instanceName)
-        {
-            try
-            {
-                if (AppInstances.ContainsKey(instanceName))
-                {
-                    AppInstances.Remove(instanceName);
-                }
-                else
-                {
-                    throw new Exception("App Instance '" + instanceName + "' not found!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void AddVariable(string variableName, object variableValue)
-        {
-            if (VariableList.Any(f => f.VariableName == variableName))
-            {
-                //update existing variable
-                var existingVariable = VariableList.FirstOrDefault(f => f.VariableName == variableName);
-                existingVariable.VariableName = variableName;
-                existingVariable.VariableValue = variableValue;
-            }
-            else if (VariableList.Any(f => "{" + f.VariableName + "}" == variableName))
-            {
-                //update existing edge-case variable due to user error
-                var existingVariable = VariableList.FirstOrDefault(f => "{" + f.VariableName + "}" == variableName);
-                existingVariable.VariableName = variableName;
-                existingVariable.VariableValue = variableValue;
-            }
-            else
-            {
-                //add new variable
-                var newVariable = new ScriptVariable();
-                newVariable.VariableName = variableName;
-                newVariable.VariableValue = variableValue;
-                VariableList.Add(newVariable);
-            }
-        }
+        
 
         public void CancelScript()
         {

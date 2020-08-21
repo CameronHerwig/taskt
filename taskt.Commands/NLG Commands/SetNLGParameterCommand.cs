@@ -21,11 +21,10 @@ namespace taskt.Commands
     public class SetNLGParameterCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Please Enter the instance name")]
-        [InputSpecification("Enter the unique instance name that was specified in the **Create NLG Instance** command")]
-        [SampleUsage("**nlgDefaultInstance** or **myInstance**")]
-        [Remarks("Failure to enter the correct instance name or failure to first call **Create NLG Instance** command will cause an error")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("NLG Instance Name")]
+        [InputSpecification("Enter the unique instance that was specified in the **Create NLG Instance** command.")]
+        [SampleUsage("MyNLGInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **Create NLG Instance** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -56,17 +55,15 @@ namespace taskt.Commands
             SelectionName = "Set NLG Parameter";
             CommandEnabled = true;
             CustomRendering = true;
-            v_InstanceName = "nlgDefaultInstance";
+            v_InstanceName = "DefaultNLG";
         }
 
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var p = (SPhraseSpec)engine.GetAppInstance(vInstance);
+            var p = (SPhraseSpec)v_InstanceName.GetAppInstance(engine);
 
-            var userInput = v_Parameter.ConvertToUserVariable(engine);
-
+            var userInput = v_Parameter.ConvertUserVariableToString(engine);
 
             switch (v_ParameterType)
             {
@@ -99,13 +96,12 @@ namespace taskt.Commands
             }
 
             //remove existing associations if override app instances is not enabled
-            engine.AppInstances.Remove(vInstance);
+            engine.AppInstances.Remove(v_InstanceName);
 
             //add to app instance to track
-            engine.AddAppInstance(vInstance, p);
-
-
+            p.AddAppInstance(engine, v_InstanceName);
         }
+
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);

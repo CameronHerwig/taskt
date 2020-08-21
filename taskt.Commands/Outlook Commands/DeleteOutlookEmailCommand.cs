@@ -49,7 +49,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            MailItem vMailItem = (MailItem)VariableMethods.LookupVariable(engine, v_MailItem).VariableValue;
+            MailItem vMailItem = (MailItem)v_MailItem.ConvertUserVariableToObject(engine);
 
             if (v_DeleteReadOnly == "Yes")
             {

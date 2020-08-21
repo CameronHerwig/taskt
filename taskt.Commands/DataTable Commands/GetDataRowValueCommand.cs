@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -9,7 +8,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -49,10 +47,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Value Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public GetDataRowValueCommand()
@@ -67,20 +64,20 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dataRowVariable = LookupVariable(engine);
-            var variableList = engine.VariableList;
+            var dataRowVariable = v_DataRow.ConvertUserVariableToObject(engine);
+
             DataRow dataRow;
+            var loopIndexVariable = "Loop.CurrentIndex".ConvertUserVariableToString(engine);
             //check if currently looping through datatable using BeginListLoopCommand
-            if (dataRowVariable.VariableValue is DataTable && engine.VariableList.Exists(x => x.VariableName == "Loop.CurrentIndex"))
+            if (dataRowVariable is DataTable && loopIndexVariable != null)
             {
-                var loopIndexVariable = engine.VariableList.Where(x => x.VariableName == "Loop.CurrentIndex").FirstOrDefault();
-                int loopIndex = int.Parse(loopIndexVariable.VariableValue.ToString());
-                dataRow = ((DataTable)dataRowVariable.VariableValue).Rows[loopIndex-1];
+                int loopIndex = int.Parse(loopIndexVariable.ToString());
+                dataRow = ((DataTable)dataRowVariable).Rows[loopIndex-1];
             }
             else 
-                dataRow = (DataRow)dataRowVariable.VariableValue;
+                dataRow = (DataRow)dataRowVariable;
 
-            var valueIndex = v_DataValueIndex.ConvertToUserVariable(engine);
+            var valueIndex = v_DataValueIndex.ConvertUserVariableToString(engine);
             string value = "";
             if (v_Option == "Column Index")
             {
@@ -112,24 +109,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Get Value From Column '{v_DataValueIndex}' in '{v_DataRow}' - Store Value in '{v_OutputUserVariableName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataRow).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataRow.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)
-                                         && v_DataRow.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataRow.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                   .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }        
     }
 }

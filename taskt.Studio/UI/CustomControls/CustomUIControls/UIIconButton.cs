@@ -53,7 +53,7 @@ namespace taskt.UI.CustomControls.CustomUIControls
         {
             Image = Resources.logo;
             DisplayTextBrush = Color.White;
-            Size = new Size(18, 18);
+            Size = new Size(20, 20);
             MouseEnter += UIPictureButton_MouseEnter;
             MouseLeave += UIPictureButton1_MouseLeave;
         }
@@ -87,7 +87,7 @@ namespace taskt.UI.CustomControls.CustomUIControls
             }
 
             if (Image != null)
-                e.Graphics.DrawImage(Image, (Width / 2) - 11, (Width / 2) - 11, 22, 22);
+                e.Graphics.DrawImage(Image, 0, 0, Width - Width/10, Height - Height/10);
         }
 
         protected override CreateParams CreateParams

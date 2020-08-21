@@ -9,6 +9,7 @@ using taskt.Core.Command;
 using taskt.Core.Common;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
+using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
 using taskt.UI.CustomControls.CustomUIControls;
@@ -32,10 +33,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Image Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
         [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public CaptureImageCommand()
@@ -52,7 +52,7 @@ namespace taskt.Commands
 
             //user image to bitmap
             Bitmap capturedBmp = new Bitmap(Common.Base64ToImage(v_ImageCapture));
-            engine.AddVariable(v_OutputUserVariableName, capturedBmp);
+            capturedBmp.StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

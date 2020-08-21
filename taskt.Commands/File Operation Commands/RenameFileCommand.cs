@@ -48,8 +48,8 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //apply variable logic
-            var sourceFile = v_SourceFilePath.ConvertToUserVariable(engine);
-            var newFileName = v_NewName.ConvertToUserVariable(engine);
+            var sourceFile = v_SourceFilePath.ConvertUserVariableToString(engine);
+            var newFileName = v_NewName.ConvertUserVariableToString(engine);
 
             //get source file name and info
             FileInfo sourceFileInfo = new FileInfo(sourceFile);

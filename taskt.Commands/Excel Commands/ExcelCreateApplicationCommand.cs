@@ -81,7 +81,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vFilePath = v_FilePath.ConvertToUserVariable(engine);
+            var vFilePath = v_FilePath.ConvertUserVariableToString(engine);
 
             if (v_CloseAllInstances == "Yes")
             {
@@ -98,7 +98,7 @@ namespace taskt.Commands
             else
                 newExcelSession.Visible = false;
 
-            engine.AddAppInstance(v_InstanceName, newExcelSession); 
+            newExcelSession.AddAppInstance(engine, v_InstanceName); 
 
             if (v_NewOpenWorkbook == "New Workbook")
             {

@@ -62,8 +62,8 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             Process scriptProc = new Process();
 
-            string scriptPath = v_ScriptPath.ConvertToUserVariable(engine);
-            string scriptArgs = v_ScriptArgs.ConvertToUserVariable(engine);
+            string scriptPath = v_ScriptPath.ConvertUserVariableToString(engine);
+            string scriptArgs = v_ScriptArgs.ConvertUserVariableToString(engine);
 
             switch(v_ScriptType)
             {

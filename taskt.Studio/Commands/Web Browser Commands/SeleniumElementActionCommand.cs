@@ -19,7 +19,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommandUtilities;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
@@ -40,9 +39,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Browser Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Browser** command.")]
-        [SampleUsage("MyBrowserInstance || {vBrowserInstance}")]
+        [SampleUsage("MyBrowserInstance")]
         [Remarks("Failure to enter the correct instance name or failure to first call the **Create Browser** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -163,9 +161,8 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //convert to user variable -- https://github.com/saucepleez/taskt/issues/66
-            var seleniumSearchParam = v_SeleniumSearchParameter.ConvertToUserVariable(engine);
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var browserObject = engine.GetAppInstance(vInstance);
+            var seleniumSearchParam = v_SeleniumSearchParameter.ConvertUserVariableToString(engine);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
             var seleniumInstance = (IWebDriver)browserObject;
             dynamic element = null;
 
@@ -175,7 +172,7 @@ namespace taskt.Commands
                                    where rw.Field<string>("Parameter Name") == "Timeout (Seconds)"
                                    select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                timeoutText = timeoutText.ConvertToUserVariable(engine);
+                timeoutText = timeoutText.ConvertUserVariableToString(engine);
                 int timeOut = Convert.ToInt32(timeoutText);
                 var timeToEnd = DateTime.Now.AddSeconds(timeOut);
 
@@ -221,11 +218,11 @@ namespace taskt.Commands
                 case "Double Left Click":
                     int userXAdjust = Convert.ToInt32((from rw in v_WebActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "X Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                     int userYAdjust = Convert.ToInt32((from rw in v_WebActionParameterTable.AsEnumerable()
                                                        where rw.Field<string>("Parameter Name") == "Y Adjustment"
-                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine));
+                                                       select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine));
 
                     var elementLocation = element.Location;
                     SendMouseMoveCommand newMouseMove = new SendMouseMoveCommand();
@@ -239,7 +236,7 @@ namespace taskt.Commands
                 case "Set Text":
                     string textToSet = (from rw in v_WebActionParameterTable.AsEnumerable()
                                         where rw.Field<string>("Parameter Name") == "Text To Set"
-                                        select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
+                                        select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine);
 
 
                     string clearElement = (from rw in v_WebActionParameterTable.AsEnumerable()
@@ -278,7 +275,7 @@ namespace taskt.Commands
                         else
                         {
                             //convert to user variable - https://github.com/saucepleez/taskt/issues/22
-                            var convertedChunk = chunkedString.ConvertToUserVariable(engine);
+                            var convertedChunk = chunkedString.ConvertUserVariableToString(engine);
                             element.SendKeys(convertedChunk);
                         }
                     }
@@ -293,10 +290,10 @@ namespace taskt.Commands
                                             where rw.Field<string>("Parameter Name") == "Clear Element Before Setting Text"
                                             select rw.Field<string>("Parameter Value")).FirstOrDefault();
 
-                    var secureStrVariable = VariableMethods.LookupVariable(engine, secureString);
+                    var secureStrVariable = secureString.ConvertUserVariableToObject(engine);
 
-                    if (secureStrVariable.VariableValue is SecureString)
-                        secureString = ((SecureString)secureStrVariable.VariableValue).ConvertSecureStringToString();
+                    if (secureStrVariable is SecureString)
+                        secureString = ((SecureString)secureStrVariable).ConvertSecureStringToString();
                     else
                         throw new ArgumentException("Provided Argument is not a 'Secure String'");
 
@@ -325,7 +322,7 @@ namespace taskt.Commands
                         else
                         {
                             //convert to user variable - https://github.com/saucepleez/taskt/issues/22
-                            var convertedChunk = chunkedString.ConvertToUserVariable(engine);
+                            var convertedChunk = chunkedString.ConvertUserVariableToString(engine);
                             element.SendKeys(convertedChunk);
                         }
                     }
@@ -339,7 +336,7 @@ namespace taskt.Commands
 
                     string attribName = (from rw in v_WebActionParameterTable.AsEnumerable()
                                             where rw.Field<string>("Parameter Name") == "Attribute Name"
-                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine);
 
                     var optionsItems = new List<string>();
                     var ele = (IWebElement)element;
@@ -352,16 +349,8 @@ namespace taskt.Commands
                         optionsItems.Add(optionValue);
                     }
 
-                    var requiredVariable = engine.VariableList.Where(x => x.VariableName == applyToVarName).FirstOrDefault();
-
-                    if (requiredVariable == null)
-                    {
-                        engine.VariableList.Add(new ScriptVariable() { VariableName = applyToVarName, CurrentPosition = 0 });
-                        requiredVariable = engine.VariableList.Where(x => x.VariableName == applyToVarName).FirstOrDefault();
-                    }
-
-                    requiredVariable.VariableValue = optionsItems;
-                    requiredVariable.CurrentPosition = 0;
+                    optionsItems.StoreInUserVariable(engine, applyToVarName);
+                   
                     break;
 
                 case "Select Option":
@@ -371,7 +360,7 @@ namespace taskt.Commands
 
                     string selectionParam = (from rw in v_WebActionParameterTable.AsEnumerable()
                                             where rw.Field<string>("Parameter Name") == "Selection Parameter"
-                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine);
 
                     seleniumInstance.SwitchTo().ActiveElement();
 
@@ -415,7 +404,7 @@ namespace taskt.Commands
 
                     string attributeName = (from rw in v_WebActionParameterTable.AsEnumerable()
                                             where rw.Field<string>("Parameter Name") == "Attribute Name"
-                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertToUserVariable(engine);
+                                            select rw.Field<string>("Parameter Value")).FirstOrDefault().ConvertUserVariableToString(engine);
 
                     string elementValue;
                     if (v_SeleniumElementAction == "Get Text")
@@ -445,10 +434,10 @@ namespace taskt.Commands
                         {
                             elementList.Add(item);
                         }
-                        engine.AddVariable(variableName, elementList);
+                        elementList.StoreInUserVariable(engine, variableName);
                     }
                     else
-                        engine.AddVariable(variableName, element);                    
+                        ((IWebElement)element).StoreInUserVariable(engine, variableName);                    
                     break;
 
                 case "Get Table":
@@ -484,7 +473,7 @@ namespace taskt.Commands
                     foreach (var row in doc.DocumentNode.SelectNodes("//tr[td]"))
                         DT.Rows.Add(row.SelectNodes("td").Select(td => Regex.Replace(td.InnerText, @"\t|\n|\r", "").Trim()).ToArray());
 
-                    engine.AddVariable(DTVariableName, DT);
+                    DT.StoreInUserVariable(engine, DTVariableName);
                     break;
 
                 case "Clear Element":
@@ -560,13 +549,10 @@ namespace taskt.Commands
         {
             //get engine reference
             var engine = (AutomationEngineInstance)sender;
-            var seleniumSearchParam = elementName.ConvertToUserVariable(engine);
-
-            //get instance name
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
+            var seleniumSearchParam = elementName.ConvertUserVariableToString(engine);
 
             //get stored app object
-            var browserObject = engine.GetAppInstance(vInstance);
+            var browserObject = v_InstanceName.GetAppInstance(engine);
 
             //get selenium instance driver
             var seleniumInstance = (ChromeDriver)browserObject;

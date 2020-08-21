@@ -12,7 +12,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -34,10 +33,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Count Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                  " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public GetListCountCommand()
@@ -52,43 +50,40 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //get variable by regular name
-            ScriptVariable listVariable = VariableMethods.LookupVariable(engine, v_ListName);
+            var listVariable = v_ListName.ConvertUserVariableToObject(engine);
 
             //if still null then throw exception
             if (listVariable == null)
             {
-                throw new System.Exception(
-                    "Complex Variable '" + v_ListName + "' or '" + 
-                    v_ListName.ApplyVariableFormatting() + 
-                    "' not found. Ensure the variable exists before attempting to modify it."
-                    );
+                throw new System.Exception("Complex Variable '" + v_ListName +
+                    "' not found. Ensure the variable exists before attempting to modify it.");
             }
 
             dynamic listToCount; 
-            if (listVariable.VariableValue is List<string>)
+            if (listVariable is List<string>)
             {
-                listToCount = (List<string>)listVariable.VariableValue;
+                listToCount = (List<string>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MailItem>)
+            else if (listVariable is List<MailItem>)
             {
-                listToCount = (List<MailItem>)listVariable.VariableValue;
+                listToCount = (List<MailItem>)listVariable;
             }
-            else if (listVariable.VariableValue is List<MimeMessage>)
+            else if (listVariable is List<MimeMessage>)
             {
-                listToCount = (List<MimeMessage>)listVariable.VariableValue;
+                listToCount = (List<MimeMessage>)listVariable;
             }
-            else if (listVariable.VariableValue is List<IWebElement>)
+            else if (listVariable is List<IWebElement>)
             {
-                listToCount = (List<IWebElement>)listVariable.VariableValue;
+                listToCount = (List<IWebElement>)listVariable;
             }
             else if (
-                (listVariable.VariableValue.ToString().StartsWith("[")) && 
-                (listVariable.VariableValue.ToString().EndsWith("]")) && 
-                (listVariable.VariableValue.ToString().Contains(","))
+                (listVariable.ToString().StartsWith("[")) && 
+                (listVariable.ToString().EndsWith("]")) && 
+                (listVariable.ToString().Contains(","))
                 )
             {
                 //automatically handle if user has given a json array
-                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.VariableValue.ToString()) as JArray;
+                JArray jsonArray = JsonConvert.DeserializeObject(listVariable.ToString()) as JArray;
 
                 var itemList = new List<string>();
                 foreach (var item in jsonArray)
@@ -97,7 +92,7 @@ namespace taskt.Commands
                     itemList.Add(value.ToString());
                 }
 
-                listVariable.VariableValue = itemList;
+                itemList.StoreInUserVariable(engine, v_ListName);
                 listToCount = itemList;
             }
             else
@@ -122,6 +117,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [From '{v_ListName}' - Store Count in '{v_OutputUserVariableName}']";
-        }
+        }       
     }
 }

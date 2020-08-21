@@ -68,10 +68,10 @@
             this.uiBtnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnCancel.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnCancel.Image")));
             this.uiBtnCancel.IsMouseOver = false;
-            this.uiBtnCancel.Location = new System.Drawing.Point(73, 1);
-            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnCancel.Location = new System.Drawing.Point(70, 1);
+            this.uiBtnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnCancel.Name = "uiBtnCancel";
-            this.uiBtnCancel.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnCancel.Size = new System.Drawing.Size(60, 60);
             this.uiBtnCancel.TabIndex = 15;
             this.uiBtnCancel.TabStop = false;
             this.uiBtnCancel.Text = "Cancel";
@@ -86,10 +86,10 @@
             this.uiBtnOK.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.uiBtnOK.Image = ((System.Drawing.Image)(resources.GetObject("uiBtnOK.Image")));
             this.uiBtnOK.IsMouseOver = false;
-            this.uiBtnOK.Location = new System.Drawing.Point(4, 1);
-            this.uiBtnOK.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnOK.Location = new System.Drawing.Point(10, 1);
+            this.uiBtnOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnOK.Name = "uiBtnOK";
-            this.uiBtnOK.Size = new System.Drawing.Size(64, 59);
+            this.uiBtnOK.Size = new System.Drawing.Size(60, 60);
             this.uiBtnOK.TabIndex = 14;
             this.uiBtnOK.TabStop = false;
             this.uiBtnOK.Text = "Ok";
@@ -105,14 +105,14 @@
             this.tlpElements.Controls.Add(this.pnlBottom, 0, 2);
             this.tlpElements.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpElements.Location = new System.Drawing.Point(0, 0);
-            this.tlpElements.Margin = new System.Windows.Forms.Padding(4);
+            this.tlpElements.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tlpElements.Name = "tlpElements";
             this.tlpElements.RowCount = 3;
             this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 119F));
             this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 63F));
             this.tlpElements.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tlpElements.Size = new System.Drawing.Size(862, 638);
+            this.tlpElements.Size = new System.Drawing.Size(861, 638);
             this.tlpElements.TabIndex = 17;
             // 
             // tvScriptElements
@@ -120,13 +120,13 @@
             this.tvScriptElements.BackColor = System.Drawing.Color.DimGray;
             this.tvScriptElements.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvScriptElements.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvScriptElements.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tvScriptElements.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvScriptElements.ForeColor = System.Drawing.Color.White;
             this.tvScriptElements.Location = new System.Drawing.Point(4, 123);
-            this.tvScriptElements.Margin = new System.Windows.Forms.Padding(4);
+            this.tvScriptElements.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tvScriptElements.Name = "tvScriptElements";
             this.tvScriptElements.ShowLines = false;
-            this.tvScriptElements.Size = new System.Drawing.Size(854, 448);
+            this.tvScriptElements.Size = new System.Drawing.Size(853, 448);
             this.tvScriptElements.TabIndex = 18;
             this.tvScriptElements.DoubleClick += new System.EventHandler(this.tvScriptElements_DoubleClick);
             this.tvScriptElements.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvScriptElements_KeyDown);
@@ -141,7 +141,7 @@
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(862, 119);
+            this.pnlTop.Size = new System.Drawing.Size(861, 119);
             this.pnlTop.TabIndex = 18;
             // 
             // lblDefineName
@@ -167,10 +167,10 @@
             this.uiBtnNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.uiBtnNew.Image = global::taskt.Properties.Resources.action_bar_new;
             this.uiBtnNew.IsMouseOver = false;
-            this.uiBtnNew.Location = new System.Drawing.Point(7, 55);
-            this.uiBtnNew.Margin = new System.Windows.Forms.Padding(4);
+            this.uiBtnNew.Location = new System.Drawing.Point(10, 55);
+            this.uiBtnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uiBtnNew.Name = "uiBtnNew";
-            this.uiBtnNew.Size = new System.Drawing.Size(64, 60);
+            this.uiBtnNew.Size = new System.Drawing.Size(60, 60);
             this.uiBtnNew.TabIndex = 13;
             this.uiBtnNew.TabStop = false;
             this.uiBtnNew.Text = "Add";
@@ -185,7 +185,7 @@
             this.pnlBottom.Location = new System.Drawing.Point(0, 575);
             this.pnlBottom.Margin = new System.Windows.Forms.Padding(0);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(862, 63);
+            this.pnlBottom.Size = new System.Drawing.Size(861, 63);
             this.pnlBottom.TabIndex = 19;
             this.pnlBottom.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlBottom_Paint);
             // 
@@ -194,10 +194,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(862, 638);
+            this.ClientSize = new System.Drawing.Size(861, 638);
             this.Controls.Add(this.tlpElements);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "frmScriptElements";
             this.Text = "Elements";
             this.TopMost = true;

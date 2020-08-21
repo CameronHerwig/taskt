@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -16,16 +17,15 @@ namespace taskt.Commands
     [Serializable]
     [Group("Engine Commands")]
     [Description("This command pauses the script for a set amount of time specified in milliseconds.")]
-    [UsesDescription("Use this command when you want to pause your script for a specific amount of time.  After the specified time is finished, the script will resume execution.")]
-    [ImplementationDescription("This command implements 'Thread.Sleep' to achieve automation.")]
+
     public class PauseScriptCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Amount of time to pause for (in milliseconds)")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
-        [InputSpecification("Enter a specific amount of time in milliseconds (ex. to specify 8 seconds, one would enter 8000) or specify a variable containing a value.")]
-        [SampleUsage("**8000** or **[vVariableWaitTime]**")]
+        [PropertyDescription("Pause Time (Milliseconds)")]      
+        [InputSpecification("Enter a specific amount of time in milliseconds.")]
+        [SampleUsage("1000 || {vTime}")]
         [Remarks("")]
+        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_PauseLength { get; set; }
 
         public PauseScriptCommand()
@@ -34,15 +34,17 @@ namespace taskt.Commands
             SelectionName = "Pause Script";
             CommandEnabled = true;
             CustomRendering = true;
+            v_PauseLength = "1000";
         }
 
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var userPauseLength = v_PauseLength.ConvertToUserVariable(engine);
+            var userPauseLength = v_PauseLength.ConvertUserVariableToString(engine);
             var pauseLength = int.Parse(userPauseLength);
-            System.Threading.Thread.Sleep(pauseLength);
+            Thread.Sleep(pauseLength);
         }
+
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
@@ -54,7 +56,7 @@ namespace taskt.Commands
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Wait for " + v_PauseLength + "ms]";
+            return base.GetDisplayValue() + $" [For '{v_PauseLength}' Milliseconds]";
         }
     }
 }

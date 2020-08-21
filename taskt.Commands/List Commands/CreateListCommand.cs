@@ -11,7 +11,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -47,10 +46,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output List Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public CreateListCommand()
@@ -81,7 +79,7 @@ namespace taskt.Commands
                     if (splitListItems != null)
                     {
                         foreach (string item in splitListItems)
-                            ((List<string>)vNewList).Add(item.Trim().ConvertToUserVariable(engine));
+                            ((List<string>)vNewList).Add(item.Trim().ConvertUserVariableToString(engine));
                     }                   
                     break;
                 case "DataTable":
@@ -91,9 +89,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             DataTable dataTable;
-                            ScriptVariable dataTableVariable = VariableMethods.LookupVariable(engine, item.Trim());
-                            if (dataTableVariable != null && dataTableVariable.VariableValue is DataTable)
-                                dataTable = (DataTable)dataTableVariable.VariableValue;
+                            var dataTableVariable = item.Trim().ConvertUserVariableToObject(engine);
+                            if (dataTableVariable != null && dataTableVariable is DataTable)
+                                dataTable = (DataTable)dataTableVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<DataTable>)vNewList).Add(dataTable);
@@ -107,9 +105,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MailItem mailItem;
-                            ScriptVariable mailItemVariable = VariableMethods.LookupVariable(engine, item.Trim());
-                            if (mailItemVariable != null && mailItemVariable.VariableValue is MailItem)
-                                mailItem = (MailItem)mailItemVariable.VariableValue;
+                            var mailItemVariable = item.Trim().ConvertUserVariableToObject(engine);
+                            if (mailItemVariable != null && mailItemVariable is MailItem)
+                                mailItem = (MailItem)mailItemVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<MailItem>)vNewList).Add(mailItem);
@@ -123,9 +121,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             MimeMessage mimeMessage;
-                            ScriptVariable mimeMessageVariable = VariableMethods.LookupVariable(engine, item.Trim());
-                            if (mimeMessageVariable != null && mimeMessageVariable.VariableValue is MimeMessage)
-                                mimeMessage = (MimeMessage)mimeMessageVariable.VariableValue;
+                            var mimeMessageVariable = item.Trim().ConvertUserVariableToObject(engine);
+                            if (mimeMessageVariable != null && mimeMessageVariable is MimeMessage)
+                                mimeMessage = (MimeMessage)mimeMessageVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<MimeMessage>)vNewList).Add(mimeMessage);
@@ -139,9 +137,9 @@ namespace taskt.Commands
                         foreach (string item in splitListItems)
                         {
                             IWebElement webElement;
-                            ScriptVariable webElementVariable = VariableMethods.LookupVariable(engine, item.Trim());
-                            if (webElementVariable != null && webElementVariable.VariableValue is IWebElement)
-                                webElement = (IWebElement)webElementVariable.VariableValue;
+                            var webElementVariable = item.Trim().ConvertUserVariableToObject(engine);
+                            if (webElementVariable != null && webElementVariable is IWebElement)
+                                webElement = (IWebElement)webElementVariable;
                             else
                                 throw new Exception("Invalid List Item type, please provide valid List Item type.");
                             ((List<IWebElement>)vNewList).Add(webElement);
@@ -150,7 +148,7 @@ namespace taskt.Commands
                     break;
             }
 
-            engine.AddVariable(v_OutputUserVariableName, vNewList);
+            ((object)vNewList).StoreInUserVariable(engine, v_OutputUserVariableName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

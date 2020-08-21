@@ -31,7 +31,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             new ColumnHeader{ Width = 20 },
             new ColumnHeader{ Text = "Script Commands", Width = -2 } });
             newLstScriptActions.Dock = DockStyle.Fill;
-            newLstScriptActions.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            newLstScriptActions.Font = new Font("Segoe UI", 11, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
             newLstScriptActions.FullRowSelect = true;
             newLstScriptActions.HeaderStyle = ColumnHeaderStyle.None;
             newLstScriptActions.HideSelection = false;
@@ -609,12 +609,12 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
                 case 1:
                     if (command.PauseBeforeExecution)
                     {
-                        var breakPointImg = new Bitmap(Resources.command_breakpoint, new Size(20, 20));
+                        var breakPointImg = new Bitmap(Resources.command_breakpoint, new Size(18, 18));
                         e.Graphics.DrawImage(breakPointImg, modifiedBounds.Left, modifiedBounds.Top + 3);
                     }
                     else if (command.IsCommented)
                     {
-                        var commentedImg = new Bitmap(Resources.command_disabled, new Size(20, 20));
+                        var commentedImg = new Bitmap(Resources.command_disabled, new Size(18, 18));
                         e.Graphics.DrawImage(commentedImg, modifiedBounds.Left, modifiedBounds.Top + 3);
                     }
                     else
@@ -948,7 +948,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
         private void pnlStatus_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawString(_notificationText, pnlStatus.Font, Brushes.White, 30, 4);
-            e.Graphics.DrawImage(Properties.Resources.message, 5, 3, 24, 24);
+            e.Graphics.DrawImage(Resources.message, 5, 3, 20, 20);
         }
         #endregion
 

@@ -69,10 +69,10 @@
             this.btnOkay.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnOkay.Image = ((System.Drawing.Image)(resources.GetObject("btnOkay.Image")));
             this.btnOkay.IsMouseOver = false;
-            this.btnOkay.Location = new System.Drawing.Point(389, 84);
+            this.btnOkay.Location = new System.Drawing.Point(415, 85);
             this.btnOkay.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.btnOkay.Name = "btnOkay";
-            this.btnOkay.Size = new System.Drawing.Size(71, 60);
+            this.btnOkay.Size = new System.Drawing.Size(60, 60);
             this.btnOkay.TabIndex = 29;
             this.btnOkay.TabStop = false;
             this.btnOkay.Text = "OK";
@@ -87,10 +87,10 @@
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
             this.btnCancel.IsMouseOver = false;
-            this.btnCancel.Location = new System.Drawing.Point(467, 84);
+            this.btnCancel.Location = new System.Drawing.Point(475, 85);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(8, 6, 8, 6);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(71, 60);
+            this.btnCancel.Size = new System.Drawing.Size(60, 60);
             this.btnCancel.TabIndex = 30;
             this.btnCancel.TabStop = false;
             this.btnCancel.Text = "Cancel";

@@ -462,15 +462,15 @@ namespace taskt.UI.CustomControls
                 {
                     TextBox targetTextbox = (TextBox)inputBox.Tag;
                     //concat variable name with brackets [vVariable] as engine searches for the same
-                    targetTextbox.Text = targetTextbox.Text + string.Concat(settings.EngineSettings.VariableStartMarker,
-                        newVariableSelector.lstVariables.SelectedItem.ToString(), settings.EngineSettings.VariableEndMarker);
+                    targetTextbox.Text = targetTextbox.Text + string.Concat("{",
+                        newVariableSelector.lstVariables.SelectedItem.ToString(), "}");
                 }
                 else if (inputBox.Tag is ComboBox)
                 {
                     ComboBox targetCombobox = (ComboBox)inputBox.Tag;
                     //concat variable name with brackets [vVariable] as engine searches for the same
-                    targetCombobox.Text = targetCombobox.Text + string.Concat(settings.EngineSettings.VariableStartMarker,
-                        newVariableSelector.lstVariables.SelectedItem.ToString(), settings.EngineSettings.VariableEndMarker);
+                    targetCombobox.Text = targetCombobox.Text + string.Concat("{",
+                        newVariableSelector.lstVariables.SelectedItem.ToString(), "}");
                 }
                 else if (inputBox.Tag is DataGridView)
                 {
@@ -490,8 +490,7 @@ namespace taskt.UI.CustomControls
                     }
 
                     targetDGV.SelectedCells[0].Value = targetDGV.SelectedCells[0].Value +
-                        string.Concat(settings.EngineSettings.VariableStartMarker, newVariableSelector.lstVariables.SelectedItem.ToString(),
-                        settings.EngineSettings.VariableEndMarker);
+                        string.Concat("{", newVariableSelector.lstVariables.SelectedItem.ToString(), "}");
                 }
 
 
@@ -939,11 +938,8 @@ namespace taskt.UI.CustomControls
                 cbo.Items.Clear();
 
                 foreach (var variable in ((frmCommandEditor)editor).ScriptVariables)
-                {
-                    cbo.Items.Add(variable.VariableName);
-                }
+                    cbo.Items.Add("{" + variable.VariableName + "}");
             }
-
             return cbo;
         }
 
@@ -957,11 +953,8 @@ namespace taskt.UI.CustomControls
                 cbo.Items.Clear();
 
                 foreach (var element in editor.ScriptElements)
-                {
-                    cbo.Items.Add(element.ElementName);
-                }
+                    cbo.Items.Add("<" + element.ElementName + ">");
             }
-
             return cbo;
         }
     }

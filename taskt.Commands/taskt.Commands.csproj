@@ -226,7 +226,6 @@
     <Compile Include="Text File Commands\WriteTextFileCommand.cs" />
     <Compile Include="Variable Commands\NewVariableCommand.cs" />
     <Compile Include="Variable Commands\SetVariableCommand.cs" />
-    <Compile Include="Variable Commands\SetVariableIndexCommand.cs" />
     <Compile Include="Word Commands\WordAppendDataTableCommand.cs" />
     <Compile Include="Word Commands\WordAppendImageCommand.cs" />
     <Compile Include="Word Commands\WordAppendTextCommand.cs" />

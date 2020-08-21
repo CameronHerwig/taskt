@@ -95,13 +95,13 @@ namespace taskt.Commands
             dynamic clonedCommand = Common.Clone(this);
 
             //translate variable
-            clonedCommand.v_InputHeader = clonedCommand.v_InputHeader.ConvertToUserVariable(sender);
-            clonedCommand.v_InputDirections = clonedCommand.v_InputDirections.ConvertToUserVariable(sender);
+            clonedCommand.v_InputHeader = ((string)clonedCommand.v_InputHeader).ConvertUserVariableToString(engine);
+            clonedCommand.v_InputDirections = ((string)clonedCommand.v_InputDirections).ConvertUserVariableToString(engine);
 
             //translate variables for each label
             foreach (DataRow rw in clonedCommand.v_UserInputConfig.Rows)
             {
-                rw["DefaultValue"] = rw["DefaultValue"].ToString().ConvertToUserVariable(engine);
+                rw["DefaultValue"] = rw["DefaultValue"].ToString().ConvertUserVariableToString(engine);
 
                 var targetVariable = rw["ApplyToVariable"] as string;
 
@@ -109,65 +109,34 @@ namespace taskt.Commands
                 {
                     var newMessage = new ShowMessageCommand();
                     newMessage.v_Message = "User Input question '" + rw["Label"] + "' is missing variables to apply results to! Results for the item will not be tracked.  To fix this, assign a variable in the designer!";
-                    newMessage.v_AutoCloseAfter = 10;
+                    newMessage.v_AutoCloseAfter = "10";
                     newMessage.RunCommand(sender);
                 }
             }
 
-
             //invoke ui for data collection
             var result = ((frmScriptEngine)engine.TasktEngineUI).Invoke(new Action(() =>
             {
-
                 //get input from user
               var userInputs = ((frmScriptEngine)engine.TasktEngineUI).ShowInput(clonedCommand);
 
                 //check if user provided input
                 if (userInputs != null)
                 {
-
                     //loop through each input and assign
                     for (int i = 0; i < userInputs.Count; i++)
-                    {
+                    {                       
                         //get target variable
                         var targetVariable = v_UserInputConfig.Rows[i]["ApplyToVariable"] as string;
-
-
-                        //if engine is expected to create variables, the user will not expect them to contain start/end markers
-                        //ex. {vAge} should not be created, vAge should be created and then called by doing {vAge}
-                        if ((!string.IsNullOrEmpty(targetVariable)) && (engine.EngineSettings.CreateMissingVariablesDuringExecution))
-                        {
-                            //remove start markers
-                            if (targetVariable.StartsWith(engine.EngineSettings.VariableStartMarker))
-                            {
-                                targetVariable = targetVariable.TrimStart(engine.EngineSettings.VariableStartMarker.ToCharArray());
-                            }
-
-                            //remove end markers
-                            if (targetVariable.EndsWith(engine.EngineSettings.VariableEndMarker))
-                            {
-                                targetVariable = targetVariable.TrimEnd(engine.EngineSettings.VariableEndMarker.ToCharArray());
-                            }
-                        }
-
 
                         //store user data in variable
                         if (!string.IsNullOrEmpty(targetVariable))
                         {
-                            userInputs[i].StoreInUserVariable(engine, targetVariable);
+                            ((object)userInputs[i]).StoreInUserVariable(engine, targetVariable);
                         }
-
-
                     }
-
-
                 }
-
-            }
-
-            ));
-
-
+            }));
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)

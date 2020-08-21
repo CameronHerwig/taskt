@@ -1,8 +1,6 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -11,7 +9,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -30,9 +27,8 @@ namespace taskt.Commands
         [XmlAttribute]
         [PropertyDescription("Excel Instance Name")]
         [InputSpecification("Enter the unique instance that was specified in the **Create Application** command.")]
-        [SampleUsage("MyExcelInstance || {vExcelInstance}")]
+        [SampleUsage("MyExcelInstance")]
         [Remarks("Failure to enter the correct instance or failure to first call the **Create Application** command will cause an error.")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -74,15 +70,13 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var vDataSetVariable = LookupVariable(engine);
-            var vTargetAddress = v_CellLocation.ConvertToUserVariable(engine);
-            var excelObject = engine.GetAppInstance(vInstance);
+            var vTargetAddress = v_CellLocation.ConvertUserVariableToString(engine);
+            var excelObject = v_InstanceName.GetAppInstance(engine);
 
             var excelInstance = (Application)excelObject;
             var excelSheet = (Worksheet)excelInstance.ActiveSheet;
 
-            DataTable Dt = (DataTable)vDataSetVariable.VariableValue;
+            DataTable Dt = (DataTable)v_DataTableToSet.ConvertUserVariableToObject(engine);
             if (string.IsNullOrEmpty(vTargetAddress) || vTargetAddress.Contains(":")) 
                 throw new Exception("Cell Location is invalid or empty");
           
@@ -154,24 +148,6 @@ namespace taskt.Commands
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Write '{v_DataTableToSet}' to Cell '{v_CellLocation}' - Instance Name '{v_InstanceName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DataTableToSet).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if (requiredVariable == null && v_DataTableToSet.StartsWith(sendingInstance.EngineSettings.VariableStartMarker) 
-                                         && v_DataTableToSet.EndsWith(sendingInstance.EngineSettings.VariableEndMarker))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DataTableToSet.Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                                                          .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }        
     }
 }

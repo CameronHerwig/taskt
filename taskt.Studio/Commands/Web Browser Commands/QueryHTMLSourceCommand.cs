@@ -38,10 +38,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Query Result Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public QueryHTMLSourceCommand()
@@ -56,7 +55,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(v_HTMLVariable.ConvertToUserVariable(engine));
+            doc.LoadHtml(v_HTMLVariable.ConvertUserVariableToString(engine));
 
             var div = doc.DocumentNode.SelectSingleNode(v_XPathQuery);
             string divString = div.InnerText;

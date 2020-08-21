@@ -43,7 +43,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            string windowName = v_WindowName.ConvertToUserVariable(engine);
+            string windowName = v_WindowName.ConvertUserVariableToString(engine);
 
             var targetWindows = User32Functions.FindTargetWindows(windowName);
 

@@ -947,7 +947,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.splitContainerStudioControls.Panel2.BackColor = System.Drawing.Color.Transparent;
             this.splitContainerStudioControls.Panel2.Controls.Add(this.uiScriptTabControl);
             this.splitContainerStudioControls.Size = new System.Drawing.Size(1351, 620);
-            this.splitContainerStudioControls.SplitterDistance = 299;
+            this.splitContainerStudioControls.SplitterDistance = 328;
             this.splitContainerStudioControls.SplitterWidth = 5;
             this.splitContainerStudioControls.TabIndex = 4;
             // 
@@ -961,7 +961,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.uiPaneTabs.Margin = new System.Windows.Forms.Padding(4);
             this.uiPaneTabs.Name = "uiPaneTabs";
             this.uiPaneTabs.SelectedIndex = 0;
-            this.uiPaneTabs.Size = new System.Drawing.Size(299, 620);
+            this.uiPaneTabs.Size = new System.Drawing.Size(328, 620);
             this.uiPaneTabs.TabIndex = 26;
             // 
             // tpProject
@@ -972,7 +972,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tpProject.Location = new System.Drawing.Point(4, 32);
             this.tpProject.Name = "tpProject";
             this.tpProject.Padding = new System.Windows.Forms.Padding(3);
-            this.tpProject.Size = new System.Drawing.Size(291, 584);
+            this.tpProject.Size = new System.Drawing.Size(320, 584);
             this.tpProject.TabIndex = 5;
             this.tpProject.Text = "Project";
             this.tpProject.UseVisualStyleBackColor = true;
@@ -990,14 +990,14 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tlpProject.RowCount = 2;
             this.tlpProject.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tlpProject.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpProject.Size = new System.Drawing.Size(285, 578);
+            this.tlpProject.Size = new System.Drawing.Size(314, 578);
             this.tlpProject.TabIndex = 1;
             // 
             // tvProject
             // 
             this.tvProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.tvProject.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvProject.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.tvProject.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.tvProject.ForeColor = System.Drawing.Color.White;
             this.tvProject.ImageIndex = 0;
             this.tvProject.ImageList = this.imgListProjectPane;
@@ -1005,7 +1005,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tvProject.Name = "tvProject";
             this.tvProject.SelectedImageIndex = 0;
             this.tvProject.ShowLines = false;
-            this.tvProject.Size = new System.Drawing.Size(279, 541);
+            this.tvProject.Size = new System.Drawing.Size(308, 541);
             this.tvProject.TabIndex = 0;
             this.tvProject.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvProject_BeforeExpand);
             this.tvProject.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProject_NodeMouseClick);
@@ -1032,7 +1032,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.pnlProjectButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlProjectButtons.Location = new System.Drawing.Point(3, 3);
             this.pnlProjectButtons.Name = "pnlProjectButtons";
-            this.pnlProjectButtons.Size = new System.Drawing.Size(279, 25);
+            this.pnlProjectButtons.Size = new System.Drawing.Size(308, 25);
             this.pnlProjectButtons.TabIndex = 1;
             // 
             // uiBtnCollapse
@@ -1107,7 +1107,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tpCommands.Location = new System.Drawing.Point(4, 32);
             this.tpCommands.Name = "tpCommands";
             this.tpCommands.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCommands.Size = new System.Drawing.Size(291, 584);
+            this.tpCommands.Size = new System.Drawing.Size(320, 584);
             this.tpCommands.TabIndex = 4;
             this.tpCommands.Text = "Commands";
             this.tpCommands.UseVisualStyleBackColor = true;
@@ -1125,7 +1125,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tlpCommands.RowCount = 2;
             this.tlpCommands.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tlpCommands.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCommands.Size = new System.Drawing.Size(285, 578);
+            this.tlpCommands.Size = new System.Drawing.Size(314, 578);
             this.tlpCommands.TabIndex = 10;
             // 
             // tvCommands
@@ -1133,13 +1133,13 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.tvCommands.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
             this.tvCommands.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvCommands.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvCommands.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.tvCommands.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.tvCommands.ForeColor = System.Drawing.Color.White;
             this.tvCommands.Location = new System.Drawing.Point(4, 35);
             this.tvCommands.Margin = new System.Windows.Forms.Padding(4);
             this.tvCommands.Name = "tvCommands";
             this.tvCommands.ShowLines = false;
-            this.tvCommands.Size = new System.Drawing.Size(277, 539);
+            this.tvCommands.Size = new System.Drawing.Size(306, 539);
             this.tvCommands.TabIndex = 9;
             this.tvCommands.DoubleClick += new System.EventHandler(this.tvCommands_DoubleClick);
             this.tvCommands.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tvCommands_KeyPress);
@@ -1150,7 +1150,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.pnlCommandSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlCommandSearch.Location = new System.Drawing.Point(3, 3);
             this.pnlCommandSearch.Name = "pnlCommandSearch";
-            this.pnlCommandSearch.Size = new System.Drawing.Size(279, 25);
+            this.pnlCommandSearch.Size = new System.Drawing.Size(308, 25);
             this.pnlCommandSearch.TabIndex = 10;
             // 
             // txtCommandSearch
@@ -1159,7 +1159,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.txtCommandSearch.ForeColor = System.Drawing.Color.LightGray;
             this.txtCommandSearch.Location = new System.Drawing.Point(0, 0);
             this.txtCommandSearch.Name = "txtCommandSearch";
-            this.txtCommandSearch.Size = new System.Drawing.Size(279, 30);
+            this.txtCommandSearch.Size = new System.Drawing.Size(308, 30);
             this.txtCommandSearch.TabIndex = 0;
             this.txtCommandSearch.Text = "Type Here to Search";
             this.txtCommandSearch.TextChanged += new System.EventHandler(this.txtCommandSearch_TextChanged);
@@ -1174,7 +1174,7 @@ namespace taskt.UI.Forms.ScriptBuilder_Forms
             this.uiScriptTabControl.Name = "uiScriptTabControl";
             this.uiScriptTabControl.SelectedIndex = 0;
             this.uiScriptTabControl.ShowToolTips = true;
-            this.uiScriptTabControl.Size = new System.Drawing.Size(1047, 620);
+            this.uiScriptTabControl.Size = new System.Drawing.Size(1018, 620);
             this.uiScriptTabControl.TabIndex = 3;
             this.uiScriptTabControl.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.uiScriptTabControl_DrawItem);
             this.uiScriptTabControl.SelectedIndexChanged += new System.EventHandler(this.uiScriptTabControl_SelectedIndexChanged);

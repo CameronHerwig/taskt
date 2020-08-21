@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
@@ -11,7 +10,6 @@ using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
 using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
-using taskt.Core.Script;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
 using taskt.UI.CustomControls;
@@ -69,12 +67,12 @@ namespace taskt.Commands
             var engine = (AutomationEngineInstance)sender;
             
             //get variablized input
-            var variableInput = v_JsonObject.ConvertToUserVariable(engine);
+            var variableInput = v_JsonObject.ConvertUserVariableToString(engine);
 
             foreach (DataRow rw in v_ParseObjects.Rows)
             {
-                var jsonSelector = rw.Field<string>("Json Selector").ConvertToUserVariable(engine);
-                var targetVariableName = rw.Field<string>("Output Variable").ConvertToUserVariable(engine);
+                var jsonSelector = rw.Field<string>("Json Selector").ConvertUserVariableToString(engine);
+                var targetVariableName = rw.Field<string>("Output Variable").ConvertUserVariableToString(engine);
 
                 //create objects
                 JObject o;
@@ -107,18 +105,7 @@ namespace taskt.Commands
                     resultList.Add(result.ToString());
                 }
 
-                //get variable
-                var requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == targetVariableName).FirstOrDefault();
-
-                //create if var does not exist
-                if (requiredComplexVariable == null)
-                {
-                    engine.VariableList.Add(new ScriptVariable() { VariableName = targetVariableName, CurrentPosition = 0 });
-                    requiredComplexVariable = engine.VariableList.Where(x => x.VariableName == targetVariableName).FirstOrDefault();
-                }
-
-                //assign value to variable
-                requiredComplexVariable.VariableValue = resultList;
+                resultList.StoreInUserVariable(engine, targetVariableName);               
             }
         }
 

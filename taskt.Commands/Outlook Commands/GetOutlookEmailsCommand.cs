@@ -85,10 +85,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output MailItem List Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         public GetOutlookEmailsCommand()
@@ -106,10 +105,10 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vFolder = v_SourceFolder.ConvertToUserVariable(engine);
-            var vFilter = v_Filter.ConvertToUserVariable(engine);
-            var vAttachmentDirectory = v_AttachmentDirectory.ConvertToUserVariable(engine);
-            var vMessageDirectory = v_MessageDirectory.ConvertToUserVariable(engine);
+            var vFolder = v_SourceFolder.ConvertUserVariableToString(engine);
+            var vFilter = v_Filter.ConvertUserVariableToString(engine);
+            var vAttachmentDirectory = v_AttachmentDirectory.ConvertUserVariableToString(engine);
+            var vMessageDirectory = v_MessageDirectory.ConvertUserVariableToString(engine);
 
             if (vFolder == "") 
                 vFolder = "Inbox";
@@ -161,7 +160,7 @@ namespace taskt.Commands
                         }   
                     }
                 }
-                engine.AddVariable(v_OutputUserVariableName, outMail);
+                outMail.StoreInUserVariable(engine, v_OutputUserVariableName);
             }
         }      
 

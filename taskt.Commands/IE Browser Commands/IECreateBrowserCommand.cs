@@ -22,11 +22,11 @@ namespace taskt.Commands
     public class IECreateBrowserCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("IE Instance Name")]
-        [InputSpecification("Enter a unique name that will represent the IE Browser instance.")]
-        [SampleUsage("MyIEInstance")]
+        [PropertyDescription("IE Browser Instance Name")]
+        [InputSpecification("Enter a unique name that will represent the application instance.")]
+        [SampleUsage("MyIEBrowserInstance")]
         [Remarks("This unique name allows you to refer to the instance by name in future commands, " +
-                 "ensuring that the commands you specify run against the correct IE Browser.")]
+                 "ensuring that the commands you specify run against the correct application.")]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -50,7 +50,7 @@ namespace taskt.Commands
         {
             CommandName = "IECreateBrowserCommand";
             SelectionName = "Create Browser";
-            v_InstanceName = "default";
+            v_InstanceName = "DefaultIEBrowser";
             CommandEnabled = true;
             CustomRendering = true;
         }
@@ -58,7 +58,7 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var webURL = v_URL.ConvertToUserVariable(engine);
+            var webURL = v_URL.ConvertUserVariableToString(engine);
 
             InternetExplorer newBrowserSession = new InternetExplorer();
             try
@@ -73,7 +73,7 @@ namespace taskt.Commands
             }
 
             //add app instance
-            engine.AddAppInstance(v_InstanceName, newBrowserSession);
+            newBrowserSession.AddAppInstance(engine, v_InstanceName);
 
             //handle app instance tracking
             if (v_InstanceTracking == "Keep Instance Alive")

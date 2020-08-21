@@ -25,11 +25,10 @@ namespace taskt.Commands
     public class ExecuteDatabaseQueryCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Please Enter the instance name")]
-        [InputSpecification("Enter the unique instance name that was specified in the **Create Excel** command")]
-        [SampleUsage("**myInstance** or **seleniumInstance**")]
-        [Remarks("Failure to enter the correct instance name or failure to first call **Create Excel** command will cause an error")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("Database Instance Name")]
+        [InputSpecification("Enter the unique instance that was specified in the **Define Database Connection** command.")]
+        [SampleUsage("MyBrowserInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **Define Database Connection** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
@@ -67,30 +66,29 @@ namespace taskt.Commands
         [NonSerialized]
         private List<Control> QueryParametersControls;
 
-
         [XmlAttribute]
-        [PropertyDescription("Apply Result To Variable")]
-        [InputSpecification("Select or provide a variable from the variable list")]
-        [SampleUsage("**vSomeVariable**")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required to pre-define your variables, however, it is highly recommended.")]
-        public string v_DatasetName { get; set; }
+        [PropertyDescription("Output Dataset Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public ExecuteDatabaseQueryCommand()
         {
-            this.CommandName = "ExecuteDatabaseQueryCommand";
-            this.SelectionName = "Execute Database Query";
-            this.CommandEnabled = true;
-            this.CustomRendering = true;
-            this.v_InstanceName = "sqlDefault";
+            CommandName = "ExecuteDatabaseQueryCommand";
+            SelectionName = "Execute Database Query";
+            CommandEnabled = true;
+            CustomRendering = true;
+            v_InstanceName = "DefaultDatabase";
 
-            this.v_QueryParameters = new System.Data.DataTable
+            v_QueryParameters = new DataTable
             {
                 TableName = "QueryParamTable" + DateTime.Now.ToString("MMddyy.hhmmss")
             };
 
-            this.v_QueryParameters.Columns.Add("Parameter Name");
-            this.v_QueryParameters.Columns.Add("Parameter Value");
-            this.v_QueryParameters.Columns.Add("Parameter Type");
+            v_QueryParameters.Columns.Add("Parameter Name");
+            v_QueryParameters.Columns.Add("Parameter Value");
+            v_QueryParameters.Columns.Add("Parameter Type");
 
         }
 
@@ -98,22 +96,21 @@ namespace taskt.Commands
         {
             //create engine, instance, query
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var query = v_Query.ConvertToUserVariable(engine);
+            var query = v_Query.ConvertUserVariableToString(engine);
 
             //define connection
-            var databaseConnection = (OleDbConnection)engine.GetAppInstance(vInstance);
-            var queryExecutionType = v_QueryType.ConvertToUserVariable(engine);
+            var databaseConnection = (OleDbConnection)v_InstanceName.GetAppInstance(engine);
+            var queryExecutionType = v_QueryType.ConvertUserVariableToString(engine);
 
             //define commad
-            var oleCommand = new System.Data.OleDb.OleDbCommand(query, databaseConnection);
+            var oleCommand = new OleDbCommand(query, databaseConnection);
 
             //add parameters
-            foreach (DataRow rw in this.v_QueryParameters.Rows)
+            foreach (DataRow rw in v_QueryParameters.Rows)
             {
-                var parameterName = rw.Field<string>("Parameter Name").ConvertToUserVariable(engine);
-                var parameterValue = rw.Field<string>("Parameter Value").ConvertToUserVariable(engine);
-                var parameterType = rw.Field<string>("Parameter Type").ConvertToUserVariable(engine);
+                var parameterName = rw.Field<string>("Parameter Name").ConvertUserVariableToString(engine);
+                var parameterValue = rw.Field<string>("Parameter Value").ConvertUserVariableToString(engine);
+                var parameterType = rw.Field<string>("Parameter Type").ConvertUserVariableToString(engine);
 
                 object convertedValue = null;
                 //"STRING", "BOOLEAN", "DECIMAL", "INT16", "INT32", "INT64", "DATETIME", "DOUBLE", "SINGLE", "GUID", "BYTE", "BYTE[]"
@@ -175,10 +172,10 @@ namespace taskt.Commands
                 databaseConnection.Close();
 
                 
-                dataTable.TableName = v_DatasetName;
+                dataTable.TableName = v_OutputUserVariableName;
                 engine.DataTables.Add(dataTable);
 
-                engine.AddVariable(v_DatasetName, dataTable);
+                dataTable.StoreInUserVariable(engine, v_OutputUserVariableName);
            
             }
             else if (queryExecutionType == "Execute NonQuery")
@@ -187,7 +184,7 @@ namespace taskt.Commands
                 var result = oleCommand.ExecuteNonQuery();
                 databaseConnection.Close();
 
-                engine.AddVariable(v_DatasetName, result.ToString());
+                result.ToString().StoreInUserVariable(engine, v_OutputUserVariableName);
             }
             else if(queryExecutionType == "Execute Stored Procedure")
             {
@@ -195,7 +192,7 @@ namespace taskt.Commands
                 databaseConnection.Open();
                 var result = oleCommand.ExecuteNonQuery();
                 databaseConnection.Close();
-                engine.AddVariable(v_DatasetName, result.ToString());
+                result.ToString().StoreInUserVariable(engine, v_OutputUserVariableName);
             }
             else
             {
@@ -264,19 +261,19 @@ namespace taskt.Commands
 
 
             RenderedControls.AddRange(CommandControls.CreateDefaultDropdownGroupFor("v_QueryType", this, editor));
-            RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_DatasetName", this, editor));
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
             return RenderedControls;
 
         }
 
         private void AddParameter(object sender, EventArgs e)
         {
-            this.v_QueryParameters.Rows.Add();
+            v_QueryParameters.Rows.Add();
         }
 
         public override string GetDisplayValue()
         {
-            return $"{base.GetDisplayValue()} - [{v_QueryType}, Apply Result to Variable '{v_DatasetName}', Instance Name: '{v_InstanceName}']";
+            return $"{base.GetDisplayValue()} - [{v_QueryType}, Apply Result to Variable '{v_OutputUserVariableName}', Instance Name: '{v_InstanceName}']";
         }
     }
 }

@@ -74,10 +74,10 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vRecipients = v_Recipients.ConvertToUserVariable(engine);
-            var vAttachment = v_Attachments.ConvertToUserVariable(engine);
-            var vSubject = v_Subject.ConvertToUserVariable(engine);
-            var vBody = v_Body.ConvertToUserVariable(engine);
+            var vRecipients = v_Recipients.ConvertUserVariableToString(engine);
+            var vAttachment = v_Attachments.ConvertUserVariableToString(engine);
+            var vSubject = v_Subject.ConvertUserVariableToString(engine);
+            var vBody = v_Body.ConvertUserVariableToString(engine);
             var splitRecipients = vRecipients.Split(';');
 
             Application outlookApp = new Application();

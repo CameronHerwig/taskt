@@ -41,7 +41,7 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
 
-            var preference = v_PreferenceType.ConvertToUserVariable(engine);
+            var preference = v_PreferenceType.ConvertUserVariableToString(engine);
 
             switch (preference)
             {

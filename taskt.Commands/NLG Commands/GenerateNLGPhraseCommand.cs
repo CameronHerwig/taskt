@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using taskt.Core.Attributes.ClassAttributes;
 using taskt.Core.Attributes.PropertyAttributes;
 using taskt.Core.Command;
-using taskt.Core.Enums;
 using taskt.Core.Infrastructure;
 using taskt.Core.Utilities.CommonUtilities;
 using taskt.Engine;
@@ -22,16 +21,18 @@ namespace taskt.Commands
     public class GenerateNLGPhraseCommand : ScriptCommand
     {
         [XmlAttribute]
-        [PropertyDescription("Please Enter the instance name")]
-        [InputSpecification("Enter the unique instance name that was specified in the **Create NLG Instance** command")]
-        [SampleUsage("**nlgDefaultInstance** or **myInstance**")]
-        [Remarks("Failure to enter the correct instance name or failure to first call **Create NLG Instance** command will cause an error")]
-        [PropertyUIHelper(UIAdditionalHelperType.ShowVariableHelper)]
+        [PropertyDescription("NLG Instance Name")]
+        [InputSpecification("Enter the unique instance that was specified in the **Create NLG Instance** command.")]
+        [SampleUsage("MyNLGInstance")]
+        [Remarks("Failure to enter the correct instance name or failure to first call the **Create NLG Instance** command will cause an error.")]
         public string v_InstanceName { get; set; }
 
         [XmlAttribute]
-        [PropertyDescription("Select Variable to Receive Output")]
-        public string v_applyToVariableName { get; set; }
+        [PropertyDescription("Output Phrase Variable")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
+        public string v_OutputUserVariableName { get; set; }
 
         public GenerateNLGPhraseCommand()
         {
@@ -39,20 +40,19 @@ namespace taskt.Commands
             SelectionName = "Generate NLG Phrase";
             CommandEnabled = true;
             CustomRendering = true;
-            v_InstanceName = "nlgDefaultInstance";
+            v_InstanceName = "DefaultNLG";
         }
 
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var vInstance = v_InstanceName.ConvertToUserVariable(engine);
-            var p = (SPhraseSpec)engine.GetAppInstance(vInstance);
+            var p = (SPhraseSpec)v_InstanceName.GetAppInstance(engine);
 
             Lexicon lexicon = Lexicon.getDefaultLexicon();
             Realiser realiser = new Realiser(lexicon);
 
             String phraseOutput = realiser.realiseSentence(p);
-            phraseOutput.StoreInUserVariable(engine, v_applyToVariableName);
+            phraseOutput.StoreInUserVariable(engine, v_OutputUserVariableName);
 
         }
         public override List<Control> Render(IfrmCommandEditor editor)
@@ -60,19 +60,14 @@ namespace taskt.Commands
             base.Render(editor);
 
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_InstanceName", this, editor));
-
-            //apply to variable name
-            RenderedControls.Add(CommandControls.CreateDefaultLabelFor("v_applyToVariableName", this));
-            var applyToVariableControl = CommandControls.CreateStandardComboboxFor("v_applyToVariableName", this).AddVariableNames(editor);
-            RenderedControls.AddRange(CommandControls.CreateUIHelpersFor("v_applyToVariableName", this, new Control[] { applyToVariableControl }, editor));
-            RenderedControls.Add(applyToVariableControl);
+            RenderedControls.AddRange(CommandControls.CreateDefaultOutputGroupFor("v_OutputUserVariableName", this, editor));
 
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
-            return base.GetDisplayValue() + " [Apply to '" + v_applyToVariableName +  "', Instance Name: '" + v_InstanceName + "']";
+            return base.GetDisplayValue() + " [Apply to '" + v_OutputUserVariableName +  "', Instance Name: '" + v_InstanceName + "']";
         }
     }
 }

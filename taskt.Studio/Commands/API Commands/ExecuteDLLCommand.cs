@@ -61,10 +61,9 @@ namespace taskt.Commands
 
         [XmlAttribute]
         [PropertyDescription("Output Result Variable")]
-        [InputSpecification("Select or provide a variable from the variable list.")]
-        [SampleUsage("vUserVariable")]
-        [Remarks("If you have enabled the setting **Create Missing Variables at Runtime** then you are not required" +
-                 " to pre-define your variables; however, it is highly recommended.")]
+        [InputSpecification("Create a new variable or select a variable from the list.")]
+        [SampleUsage("{vUserVariable}")]
+        [Remarks("Variables not pre-defined in the Variable Manager will be automatically generated at runtime.")]
         public string v_OutputUserVariableName { get; set; }
 
         [XmlIgnore]
@@ -96,9 +95,9 @@ namespace taskt.Commands
         {
             var engine = (AutomationEngineInstance)sender;
             //get file path
-            var filePath = v_FilePath.ConvertToUserVariable(engine);
-            var className = v_ClassName.ConvertToUserVariable(engine);
-            var methodName = v_MethodName.ConvertToUserVariable(engine);
+            var filePath = v_FilePath.ConvertUserVariableToString(engine);
+            var className = v_ClassName.ConvertUserVariableToString(engine);
+            var methodName = v_MethodName.ConvertUserVariableToString(engine);
 
             //if file path does not exist
             if (!File.Exists(filePath))
@@ -142,7 +141,7 @@ namespace taskt.Commands
                                                                    .Where(rws => rws.Field<string>("Parameter Name") == paramName)
                                                                    .Select(rws => rws.Field<string>("Parameter Value"))
                                                                    .FirstOrDefault()
-                                                                   .ConvertToUserVariable(engine);
+                                                                   .ConvertUserVariableToString(engine);
 
                     dynamic parseResult;
                     //check namespace and convert

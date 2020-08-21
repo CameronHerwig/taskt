@@ -57,53 +57,32 @@ namespace taskt.Commands
         public override void RunCommand(object sender)
         {
             var engine = (AutomationEngineInstance)sender;
-            var dictionaryVariable = LookupVariable(engine);
+            var dictionaryVariable = v_DictionaryName.ConvertUserVariableToObject(engine);
 
-            Dictionary<string, string> outputDictionary = (Dictionary<string, string>)dictionaryVariable.VariableValue;
+            Dictionary<string, string> outputDictionary = (Dictionary<string, string>)dictionaryVariable;
 
             foreach (DataRow rwColumnName in v_ColumnNameDataTable.Rows)
             {
                 outputDictionary.Add(
-                    rwColumnName.Field<string>("Keys").ConvertToUserVariable(engine), 
-                    rwColumnName.Field<string>("Values").ConvertToUserVariable(engine));
+                    rwColumnName.Field<string>("Keys").ConvertUserVariableToString(engine), 
+                    rwColumnName.Field<string>("Values").ConvertUserVariableToString(engine));
             }
-            dictionaryVariable.VariableValue = outputDictionary;
+            outputDictionary.StoreInUserVariable(engine, v_DictionaryName);
         }
 
         public override List<Control> Render(IfrmCommandEditor editor)
         {
             base.Render(editor);
 
-            //create standard group controls
             RenderedControls.AddRange(CommandControls.CreateDefaultInputGroupFor("v_DictionaryName", this, editor));
             RenderedControls.AddRange(CommandControls.CreateDataGridViewGroupFor("v_ColumnNameDataTable", this, editor));
+
             return RenderedControls;
         }
 
         public override string GetDisplayValue()
         {
             return base.GetDisplayValue() + $" [Add {v_ColumnNameDataTable.Rows.Count} Item(s) in '{v_DictionaryName}']";
-        }
-
-        private ScriptVariable LookupVariable(AutomationEngineInstance sendingInstance)
-        {
-            //search for the variable
-            var requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == v_DictionaryName).FirstOrDefault();
-
-            //if variable was not found but it starts with variable naming pattern
-            if ((requiredVariable == null) && 
-                (v_DictionaryName.StartsWith(sendingInstance.EngineSettings.VariableStartMarker)) && 
-                (v_DictionaryName.EndsWith(sendingInstance.EngineSettings.VariableEndMarker)))
-            {
-                //reformat and attempt
-                var reformattedVariable = v_DictionaryName
-                    .Replace(sendingInstance.EngineSettings.VariableStartMarker, "")
-                    .Replace(sendingInstance.EngineSettings.VariableEndMarker, "");
-
-                requiredVariable = sendingInstance.VariableList.Where(var => var.VariableName == reformattedVariable).FirstOrDefault();
-            }
-
-            return requiredVariable;
-        }
+        }      
     }
 }
