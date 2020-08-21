@@ -23,9 +23,5 @@ namespace taskt.Core.Script
         /// To check if the value is a secure string
         /// </summary>
         public bool IsSecureString { get; set; }
-
-        /// <summary>
-        /// retrieve value of the variable
-        /// </summary>
     }
 }

@@ -19,7 +19,7 @@ namespace taskt.Commands
 {
     [Serializable]
     [Group("Excel Commands")]
-    [Description("This command gets the range from an Excel Worksheet and stores it in a DataTable or Delimited String.")]
+    [Description("This command gets the range from an Excel Worksheet and stores it in a DataTable.")]
 
     public class ExcelGetRangeCommand : ScriptCommand
     {
